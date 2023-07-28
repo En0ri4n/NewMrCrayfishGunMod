@@ -2,7 +2,7 @@ package com.mrcrayfish.guns.common;
 
 import com.google.common.collect.Maps;
 import com.mrcrayfish.guns.item.GunItem;
-import com.mrcrayfish.guns.util.GunEnchantmentHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -32,6 +32,12 @@ public class ShootTracker
     private static final Map<Player, ShootTracker> SHOOT_TRACKER_MAP = new WeakHashMap<>();
 
     private final Map<Item, Pair<Long, Integer>> cooldownMap = Maps.newHashMap();
+    private final Player player;
+
+    public ShootTracker(Player player)
+    {
+        this.player = player;
+    }
 
     /**
      * Gets the cooldown tracker for the specified player UUID.
@@ -41,7 +47,7 @@ public class ShootTracker
      */
     public static ShootTracker getShootTracker(Player player)
     {
-        return SHOOT_TRACKER_MAP.computeIfAbsent(player, player1 -> new ShootTracker());
+        return SHOOT_TRACKER_MAP.computeIfAbsent(player, player1 -> new ShootTracker(player));
     }
 
     /**
@@ -53,7 +59,7 @@ public class ShootTracker
      */
     public void putCooldown(ItemStack weapon, GunItem item, Gun modifiedGun)
     {
-        int rate = GunEnchantmentHelper.getRate(weapon, modifiedGun);
+        int rate = GunPotionHelper.getRate(this.player, weapon, modifiedGun);
         rate = GunModifierHelper.getModifiedRate(weapon, rate);
         this.cooldownMap.put(item, Pair.of(Util.getMillis(), rate * 50));
     }

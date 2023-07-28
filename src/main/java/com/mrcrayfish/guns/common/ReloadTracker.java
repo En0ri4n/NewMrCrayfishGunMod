@@ -6,7 +6,7 @@ import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
-import com.mrcrayfish.guns.util.GunEnchantmentHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.WeakHashMap;
 
 /**
@@ -63,7 +62,7 @@ public class ReloadTracker
     private boolean isWeaponFull()
     {
         CompoundTag tag = this.stack.getOrCreateTag();
-        return tag.getInt("AmmoCount") >= GunEnchantmentHelper.getAmmoCapacity(this.stack, this.gun);
+        return tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(this.stack, this.gun);
     }
 
     private boolean hasNoAmmo(Player player)
@@ -74,7 +73,7 @@ public class ReloadTracker
     private boolean canReload(Player player)
     {
         int deltaTicks = player.tickCount - this.startTick;
-        int interval = GunEnchantmentHelper.getReloadInterval(this.stack);
+        int interval = GunPotionHelper.getReloadInterval(player, this.stack);
         return deltaTicks > 0 && deltaTicks % interval == 0;
     }
 
@@ -88,7 +87,7 @@ public class ReloadTracker
             CompoundTag tag = this.stack.getTag();
             if(tag != null)
             {
-                int maxAmmo = GunEnchantmentHelper.getAmmoCapacity(this.stack, this.gun);
+                int maxAmmo = GunPotionHelper.getAmmoCapacity(this.stack, this.gun);
                 amount = Math.min(amount, maxAmmo - tag.getInt("AmmoCount"));
                 tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
             }

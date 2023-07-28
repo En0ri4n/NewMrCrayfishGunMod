@@ -13,17 +13,16 @@ import com.mrcrayfish.guns.crafting.WorkbenchRecipe;
 import com.mrcrayfish.guns.crafting.WorkbenchRecipes;
 import com.mrcrayfish.guns.entity.ProjectileEntity;
 import com.mrcrayfish.guns.event.GunFireEvent;
-import com.mrcrayfish.guns.init.ModEnchantments;
 import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.interfaces.IProjectileFactory;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.IColored;
 import com.mrcrayfish.guns.network.PacketHandler;
+import com.mrcrayfish.guns.network.message.C2SMessageShoot;
 import com.mrcrayfish.guns.network.message.S2CMessageBulletTrail;
 import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
-import com.mrcrayfish.guns.network.message.C2SMessageShoot;
-import com.mrcrayfish.guns.util.GunEnchantmentHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -45,7 +44,6 @@ import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.MinecraftForge;
@@ -78,9 +76,12 @@ public class ServerPlayHandler
 
         Level world = player.level;
         ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-        if(heldItem.getItem() instanceof GunItem item && (Gun.hasAmmo(heldItem) || player.isCreative()))
+        if(heldItem.getItem() instanceof GunItem item && (Gun.hasAmmo(player, heldItem) || player.isCreative()))
         {
             Gun modifiedGun = item.getModifiedGun(heldItem);
+
+            item.damageItem(heldItem, 1, player, entity -> entity.broadcastBreakEvent(InteractionHand.MAIN_HAND)); // damage the gun
+
             if(modifiedGun != null)
             {
                 if(MinecraftForge.EVENT_BUS.post(new GunFireEvent.Pre(player, heldItem)))
@@ -123,7 +124,7 @@ public class ServerPlayHandler
                 }
                 if(!projectileProps.isVisible())
                 {
-                    ParticleOptions data = GunEnchantmentHelper.getParticle(heldItem);
+                    ParticleOptions data = GunPotionHelper.getParticle(heldItem);
                     S2CMessageBulletTrail messageBulletTrail = new S2CMessageBulletTrail(spawnedProjectiles, projectileProps, player.getId(), data);
                     PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(player.getX(), player.getY(), player.getZ(), Config.COMMON.network.projectileTrackingRange.get(), player.level.dimension())), messageBulletTrail);
                 }
@@ -164,19 +165,6 @@ public class ServerPlayHandler
                     S2CMessageGunSound messageSound = new S2CMessageGunSound(fireSound, SoundSource.PLAYERS, (float) posX, (float) posY, (float) posZ, volume, pitch, player.getId(), muzzle, false);
                     PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(posX, posY, posZ, radius, player.level.dimension());
                     PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> targetPoint), messageSound);
-                }
-
-                if(!player.isCreative())
-                {
-                    CompoundTag tag = heldItem.getOrCreateTag();
-                    if(!tag.getBoolean("IgnoreAmmo"))
-                    {
-                        int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.RECLAIMED.get(), heldItem);
-                        if(level == 0 || player.level.random.nextInt(4 - Mth.clamp(level, 1, 2)) != 0)
-                        {
-                            tag.putInt("AmmoCount", Math.max(0, tag.getInt("AmmoCount") - 1));
-                        }
-                    }
                 }
 
                 player.awardStat(Stats.ITEM_USED.get(item));

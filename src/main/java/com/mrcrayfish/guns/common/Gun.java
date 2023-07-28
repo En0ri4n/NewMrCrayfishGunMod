@@ -7,6 +7,7 @@ import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.annotation.Ignored;
 import com.mrcrayfish.guns.annotation.Optional;
 import com.mrcrayfish.guns.client.ClientHandler;
+import com.mrcrayfish.guns.common.config.JsonSerializable;
 import com.mrcrayfish.guns.compat.BackpackHelper;
 import com.mrcrayfish.guns.debug.Debug;
 import com.mrcrayfish.guns.debug.IDebugWidget;
@@ -26,6 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -41,7 +43,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
+public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu, JsonSerializable
 {
     protected General general = new General();
     protected Projectile projectile = new Projectile();
@@ -83,23 +85,26 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
     @Override
     public void getEditorWidgets(List<Pair<Component, Supplier<IDebugWidget>>> widgets)
     {
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+        {
             ItemStack heldItem = Objects.requireNonNull(Minecraft.getInstance().player).getMainHandItem();
             ItemStack scope = Gun.getScopeStack(heldItem);
             if(scope.getItem() instanceof ScopeItem scopeItem)
             {
-                widgets.add(Pair.of(scope.getItem().getName(scope), () -> new DebugButton(new TextComponent("Edit"), btn -> {
+                widgets.add(Pair.of(scope.getItem().getName(scope), () -> new DebugButton(new TextComponent("Edit"), btn ->
+                {
                     Minecraft.getInstance().setScreen(ClientHandler.createEditorScreen(Debug.getScope(scopeItem)));
                 })));
             }
 
-            widgets.add(Pair.of(this.modules.getEditorLabel(), () -> new DebugButton(new TextComponent(">"), btn -> {
+            widgets.add(Pair.of(this.modules.getEditorLabel(), () -> new DebugButton(new TextComponent(">"), btn ->
+            {
                 Minecraft.getInstance().setScreen(ClientHandler.createEditorScreen(this.modules));
             })));
         });
     }
 
-    public static class General implements INBTSerializable<CompoundTag>
+    public static class General implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         @Optional
         private boolean auto = false;
@@ -123,6 +128,8 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         private boolean alwaysSpread;
         @Optional
         private float spread;
+        @Optional
+        private int durability = 512;
 
         @Override
         public CompoundTag serializeNBT()
@@ -140,6 +147,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             tag.putInt("ProjectileAmount", this.projectileAmount);
             tag.putBoolean("AlwaysSpread", this.alwaysSpread);
             tag.putFloat("Spread", this.spread);
+            tag.putInt("Durability", this.durability);
             return tag;
         }
 
@@ -194,8 +202,13 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             {
                 this.spread = tag.getFloat("Spread");
             }
+            if(tag.contains("Durability", Tag.TAG_ANY_NUMERIC))
+            {
+                this.durability = tag.getInt("Durability");
+            }
         }
 
+        @Override
         public JsonObject toJsonObject()
         {
             Preconditions.checkArgument(this.rate > 0, "Rate must be more than zero");
@@ -208,19 +221,77 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             Preconditions.checkArgument(this.projectileAmount >= 1, "Projectile amount must be more than or equal to one");
             Preconditions.checkArgument(this.spread >= 0.0F, "Spread must be more than or equal to zero");
             JsonObject object = new JsonObject();
-            if(this.auto) object.addProperty("auto", true);
+            object.addProperty("auto", true);
             object.addProperty("rate", this.rate);
             object.addProperty("gripType", this.gripType.getId().toString());
             object.addProperty("maxAmmo", this.maxAmmo);
-            if(this.reloadAmount != 1) object.addProperty("reloadAmount", this.reloadAmount);
-            if(this.recoilAngle != 0.0F) object.addProperty("recoilAngle", this.recoilAngle);
-            if(this.recoilKick != 0.0F) object.addProperty("recoilKick", this.recoilKick);
-            if(this.recoilDurationOffset != 0.0F) object.addProperty("recoilDurationOffset", this.recoilDurationOffset);
-            if(this.recoilAdsReduction != 0.2F) object.addProperty("recoilAdsReduction", this.recoilAdsReduction);
-            if(this.projectileAmount != 1) object.addProperty("projectileAmount", this.projectileAmount);
-            if(this.alwaysSpread) object.addProperty("alwaysSpread", true);
-            if(this.spread != 0.0F) object.addProperty("spread", this.spread);
+            object.addProperty("reloadAmount", this.reloadAmount);
+            object.addProperty("recoilAngle", this.recoilAngle);
+            object.addProperty("recoilKick", this.recoilKick);
+            object.addProperty("recoilDurationOffset", this.recoilDurationOffset);
+            object.addProperty("recoilAdsReduction", this.recoilAdsReduction);
+            object.addProperty("projectileAmount", this.projectileAmount);
+            object.addProperty("alwaysSpread", true);
+            object.addProperty("spread", this.spread);
+            object.addProperty("durability", this.durability);
             return object;
+        }
+
+        @Override
+        public void loadConfig(JsonObject json)
+        {
+            if(json.has("auto"))
+            {
+                this.auto = json.get("auto").getAsBoolean();
+            }
+            if(json.has("rate"))
+            {
+                this.rate = json.get("rate").getAsInt();
+            }
+            if(json.has("gripType"))
+            {
+                this.gripType = GripType.getType(ResourceLocation.tryParse(json.get("gripType").getAsString()));
+            }
+            if(json.has("maxAmmo"))
+            {
+                this.maxAmmo = json.get("maxAmmo").getAsInt();
+            }
+            if(json.has("reloadAmount"))
+            {
+                this.reloadAmount = json.get("reloadAmount").getAsInt();
+            }
+            if(json.has("recoilAngle"))
+            {
+                this.recoilAngle = json.get("recoilAngle").getAsFloat();
+            }
+            if(json.has("recoilKick"))
+            {
+                this.recoilKick = json.get("recoilKick").getAsFloat();
+            }
+            if(json.has("recoilDurationOffset"))
+            {
+                this.recoilDurationOffset = json.get("recoilDurationOffset").getAsFloat();
+            }
+            if(json.has("recoilAdsReduction"))
+            {
+                this.recoilAdsReduction = json.get("recoilAdsReduction").getAsFloat();
+            }
+            if(json.has("projectileAmount"))
+            {
+                this.projectileAmount = json.get("projectileAmount").getAsInt();
+            }
+            if(json.has("alwaysSpread"))
+            {
+                this.alwaysSpread = json.get("alwaysSpread").getAsBoolean();
+            }
+            if(json.has("spread"))
+            {
+                this.spread = json.get("spread").getAsFloat();
+            }
+            if(json.has("durability"))
+            {
+                this.durability = json.get("durability").getAsInt();
+            }
         }
 
         /**
@@ -340,9 +411,17 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         {
             return this.spread;
         }
+
+        /**
+         * @return The durability of this weapon
+         */
+        public int getDurability()
+        {
+            return this.durability;
+        }
     }
 
-    public static class Projectile implements INBTSerializable<CompoundTag>
+    public static class Projectile implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         private ResourceLocation item = new ResourceLocation(Reference.MOD_ID, "basic_ammo");
         @Optional
@@ -422,6 +501,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             }
         }
 
+        @Override
         public JsonObject toJsonObject()
         {
             Preconditions.checkArgument(this.damage >= 0.0F, "Damage must be more than or equal to zero");
@@ -431,16 +511,61 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             Preconditions.checkArgument(this.trailLengthMultiplier >= 0.0, "Projectile trail length multiplier must be more than or equal to zero");
             JsonObject object = new JsonObject();
             object.addProperty("item", this.item.toString());
-            if(this.visible) object.addProperty("visible", true);
+            object.addProperty("visible", true);
             object.addProperty("damage", this.damage);
             object.addProperty("size", this.size);
             object.addProperty("speed", this.speed);
             object.addProperty("life", this.life);
-            if(this.gravity) object.addProperty("gravity", true);
-            if(this.damageReduceOverLife) object.addProperty("damageReduceOverLife", this.damageReduceOverLife);
-            if(this.trailColor != 0xFFD289) object.addProperty("trailColor", this.trailColor);
-            if(this.trailLengthMultiplier != 1.0) object.addProperty("trailLengthMultiplier", this.trailLengthMultiplier);
+            object.addProperty("gravity", true);
+            object.addProperty("damageReduceOverLife", this.damageReduceOverLife);
+            object.addProperty("trailColor", this.trailColor);
+            object.addProperty("trailLengthMultiplier", this.trailLengthMultiplier);
             return object;
+        }
+
+        @Override
+        public void loadConfig(JsonObject json)
+        {
+            if(json.has("item"))
+            {
+                this.item = new ResourceLocation(json.get("item").getAsString());
+            }
+            if(json.has("visible"))
+            {
+                this.visible = json.get("visible").getAsBoolean();
+            }
+            if(json.has("damage"))
+            {
+                this.damage = json.get("damage").getAsFloat();
+            }
+            if(json.has("size"))
+            {
+                this.size = json.get("size").getAsFloat();
+            }
+            if(json.has("speed"))
+            {
+                this.speed = json.get("speed").getAsDouble();
+            }
+            if(json.has("life"))
+            {
+                this.life = json.get("life").getAsInt();
+            }
+            if(json.has("gravity"))
+            {
+                this.gravity = json.get("gravity").getAsBoolean();
+            }
+            if(json.has("damageReduceOverLife"))
+            {
+                this.damageReduceOverLife = json.get("damageReduceOverLife").getAsBoolean();
+            }
+            if(json.has("trailColor"))
+            {
+                this.trailColor = json.get("trailColor").getAsInt();
+            }
+            if(json.has("trailLengthMultiplier"))
+            {
+                this.trailLengthMultiplier = json.get("trailLengthMultiplier").getAsDouble();
+            }
         }
 
         public Projectile copy()
@@ -540,7 +665,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         }
     }
 
-    public static class Sounds implements INBTSerializable<CompoundTag>
+    public static class Sounds implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         @Optional
         @Nullable
@@ -610,6 +735,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             }
         }
 
+        @Override
         public JsonObject toJsonObject()
         {
             JsonObject object = new JsonObject();
@@ -634,6 +760,31 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
                 object.addProperty("enchantedFire", this.enchantedFire.toString());
             }
             return object;
+        }
+
+        @Override
+        public void loadConfig(JsonObject json)
+        {
+            if(json.has("fire"))
+            {
+                this.fire = ResourceLocation.tryParse(json.get("fire").getAsString());
+            }
+            if(json.has("reload"))
+            {
+                this.reload = ResourceLocation.tryParse(json.get("reload").getAsString());
+            }
+            if(json.has("cock"))
+            {
+                this.cock = ResourceLocation.tryParse(json.get("cock").getAsString());
+            }
+            if(json.has("silencedFire"))
+            {
+                this.silencedFire = ResourceLocation.tryParse(json.get("silencedFire").getAsString());
+            }
+            if(json.has("enchantedFire"))
+            {
+                this.enchantedFire = ResourceLocation.tryParse(json.get("enchantedFire").getAsString());
+            }
         }
 
         public Sounds copy()
@@ -700,7 +851,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         }
     }
 
-    public static class Display implements INBTSerializable<CompoundTag>
+    public static class Display implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         @Optional
         @Nullable
@@ -739,11 +890,18 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             {
                 Preconditions.checkArgument(this.size >= 0, "Muzzle flash size must be more than or equal to zero");
                 JsonObject object = super.toJsonObject();
-                if(this.size != 0.5)
-                {
-                    object.addProperty("size", this.size);
-                }
+                object.addProperty("size", this.size);
                 return object;
+            }
+
+            @Override
+            public void loadConfig(JsonObject json)
+            {
+                super.loadConfig(json);
+                if(json.has("size"))
+                {
+                    this.size = json.get("size").getAsDouble();
+                }
             }
 
             public Flash copy()
@@ -805,6 +963,21 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             return object;
         }
 
+        @Override
+        public void loadConfig(JsonObject json)
+        {
+            if(json.has("flash"))
+            {
+                JsonObject flashJson = json.getAsJsonObject("flash");
+                if(flashJson != null)
+                {
+                    Flash flash = new Flash();
+                    flash.loadConfig(flashJson);
+                    this.flash = flash;
+                }
+            }
+        }
+
         public Display copy()
         {
             Display display = new Display();
@@ -816,7 +989,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         }
     }
 
-    public static class Modules implements INBTSerializable<CompoundTag>, IEditorMenu
+    public static class Modules implements INBTSerializable<CompoundTag>, IEditorMenu, JsonSerializable
     {
         private transient Zoom cachedZoom;
 
@@ -845,30 +1018,40 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         @Override
         public void getEditorWidgets(List<Pair<Component, Supplier<IDebugWidget>>> widgets)
         {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                widgets.add(Pair.of(new TextComponent("Enabled Iron Sights"), () -> new DebugToggle(this.zoom != null, val -> {
-                    if(val) {
-                        if(this.cachedZoom != null) {
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+            {
+                widgets.add(Pair.of(new TextComponent("Enabled Iron Sights"), () -> new DebugToggle(this.zoom != null, val ->
+                {
+                    if(val)
+                    {
+                        if(this.cachedZoom != null)
+                        {
                             this.zoom = this.cachedZoom;
-                        } else {
+                        }
+                        else
+                        {
                             this.zoom = new Zoom();
                             this.cachedZoom = this.zoom;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         this.cachedZoom = this.zoom;
                         this.zoom = null;
                     }
                 })));
 
-                widgets.add(Pair.of(new TextComponent("Adjust Iron Sights"), () -> new DebugButton(new TextComponent(">"), btn -> {
-                    if(btn.active && this.zoom != null) {
+                widgets.add(Pair.of(new TextComponent("Adjust Iron Sights"), () -> new DebugButton(new TextComponent(">"), btn ->
+                {
+                    if(btn.active && this.zoom != null)
+                    {
                         Minecraft.getInstance().setScreen(ClientHandler.createEditorScreen(this.zoom));
                     }
                 }, () -> this.zoom != null)));
             });
         }
 
-        public static class Zoom extends Positioned implements IEditorMenu
+        public static class Zoom extends Positioned implements IEditorMenu, JsonSerializable
         {
             @Optional
             private float fovModifier;
@@ -891,11 +1074,22 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
                 }
             }
 
+            @Override
             public JsonObject toJsonObject()
             {
                 JsonObject object = super.toJsonObject();
                 object.addProperty("fovModifier", this.fovModifier);
                 return object;
+            }
+
+            @Override
+            public void loadConfig(JsonObject json)
+            {
+                super.loadConfig(json);
+                if(json.has("fovModifier"))
+                {
+                    this.fovModifier = json.get("fovModifier").getAsFloat();
+                }
             }
 
             public Zoom copy()
@@ -917,8 +1111,10 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             @Override
             public void getEditorWidgets(List<Pair<Component, Supplier<IDebugWidget>>> widgets)
             {
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                    widgets.add(Pair.of(new TextComponent("FOV Modifier"), () -> new DebugSlider(0.0, 1.0, this.fovModifier, 0.01, 3, val -> {
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+                {
+                    widgets.add(Pair.of(new TextComponent("FOV Modifier"), () -> new DebugSlider(0.0, 1.0, this.fovModifier, 0.01, 3, val ->
+                    {
                         this.fovModifier = val.floatValue();
                     })));
                 });
@@ -934,7 +1130,9 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
                 return new Builder();
             }
 
-            public static class Builder extends AbstractBuilder<Builder> {}
+            public static class Builder extends AbstractBuilder<Builder>
+            {
+            }
 
             protected static abstract class AbstractBuilder<T extends AbstractBuilder<T>> extends Positioned.AbstractBuilder<T>
             {
@@ -965,7 +1163,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             }
         }
 
-        public static class Attachments implements INBTSerializable<CompoundTag>
+        public static class Attachments implements INBTSerializable<CompoundTag>, JsonSerializable
         {
             @Optional
             @Nullable
@@ -1048,6 +1246,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
                 }
             }
 
+            @Override
             public JsonObject toJsonObject()
             {
                 JsonObject object = new JsonObject();
@@ -1068,6 +1267,27 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
                     object.add("underBarrel", this.underBarrel.toJsonObject());
                 }
                 return object;
+            }
+
+            @Override
+            public void loadConfig(JsonObject json)
+            {
+                if(json.has("scope"))
+                {
+                    this.scope = new ScaledPositioned(json.getAsJsonObject("scope"));
+                }
+                if(json.has("barrel"))
+                {
+                    this.barrel = new ScaledPositioned(json.getAsJsonObject("barrel"));
+                }
+                if(json.has("stock"))
+                {
+                    this.stock = new ScaledPositioned(json.getAsJsonObject("stock"));
+                }
+                if(json.has("underBarrel"))
+                {
+                    this.underBarrel = new ScaledPositioned(json.getAsJsonObject("underBarrel"));
+                }
             }
 
             public Attachments copy()
@@ -1127,6 +1347,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             }
         }
 
+        @Override
         public JsonObject toJsonObject()
         {
             JsonObject object = new JsonObject();
@@ -1136,6 +1357,21 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             }
             GunJsonUtil.addObjectIfNotEmpty(object, "attachments", this.attachments.toJsonObject());
             return object;
+        }
+
+        @Override
+        public void loadConfig(JsonObject json)
+        {
+            if(json.has("zoom"))
+            {
+                this.zoom = new Zoom();
+                this.zoom.loadConfig(json.getAsJsonObject("zoom"));
+            }
+            if(json.has("attachments"))
+            {
+                this.attachments = new Attachments();
+                this.attachments.loadConfig(json.getAsJsonObject("attachments"));
+            }
         }
 
         public Modules copy()
@@ -1150,7 +1386,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         }
     }
 
-    public static class Positioned implements INBTSerializable<CompoundTag>
+    public static class Positioned implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         @Optional
         protected double xOffset;
@@ -1186,22 +1422,22 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             }
         }
 
+        @Override
         public JsonObject toJsonObject()
         {
             JsonObject object = new JsonObject();
-            if(this.xOffset != 0)
-            {
-                object.addProperty("xOffset", this.xOffset);
-            }
-            if(this.yOffset != 0)
-            {
-                object.addProperty("yOffset", this.yOffset);
-            }
-            if(this.zOffset != 0)
-            {
-                object.addProperty("zOffset", this.zOffset);
-            }
+            object.addProperty("xOffset", this.xOffset);
+            object.addProperty("yOffset", this.yOffset);
+            object.addProperty("zOffset", this.zOffset);
             return object;
+        }
+
+        @Override
+        public void loadConfig(JsonObject json)
+        {
+            this.xOffset = GsonHelper.getAsDouble(json, "xOffset", 0);
+            this.yOffset = GsonHelper.getAsDouble(json, "yOffset", 0);
+            this.zOffset = GsonHelper.getAsDouble(json, "zOffset", 0);
         }
 
         public double getXOffset()
@@ -1228,7 +1464,9 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             return positioned;
         }
 
-        public static class Builder extends AbstractBuilder<Builder> {}
+        public static class Builder extends AbstractBuilder<Builder>
+        {
+        }
 
         protected static abstract class AbstractBuilder<T extends AbstractBuilder<T>> extends SuperBuilder<Positioned, T>
         {
@@ -1290,6 +1528,11 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
             this.deserializeNBT(tag);
         }
 
+        public ScaledPositioned(JsonObject object)
+        {
+            this.loadConfig(object);
+        }
+
         @Override
         public CompoundTag serializeNBT()
         {
@@ -1312,10 +1555,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         public JsonObject toJsonObject()
         {
             JsonObject object = super.toJsonObject();
-            if(this.scale != 1.0)
-            {
-                object.addProperty("scale", this.scale);
-            }
+            object.addProperty("scale", this.scale);
             return object;
         }
 
@@ -1373,6 +1613,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         }
     }
 
+    @Override
     public JsonObject toJsonObject()
     {
         JsonObject object = new JsonObject();
@@ -1382,6 +1623,31 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         GunJsonUtil.addObjectIfNotEmpty(object, "display", this.display.toJsonObject());
         GunJsonUtil.addObjectIfNotEmpty(object, "modules", this.modules.toJsonObject());
         return object;
+    }
+
+    @Override
+    public void loadConfig(JsonObject json)
+    {
+        if(json.has("general"))
+        {
+            this.general.loadConfig(json.getAsJsonObject("general"));
+        }
+        if(json.has("projectile"))
+        {
+            this.projectile.loadConfig(json.getAsJsonObject("projectile"));
+        }
+        if(json.has("sounds"))
+        {
+            this.sounds.loadConfig(json.getAsJsonObject("sounds"));
+        }
+        if(json.has("display"))
+        {
+            this.display.loadConfig(json.getAsJsonObject("display"));
+        }
+        if(json.has("modules"))
+        {
+            this.modules.loadConfig(json.getAsJsonObject("modules"));
+        }
     }
 
     public static Gun create(CompoundTag tag)
@@ -1462,8 +1728,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
 
     public static boolean hasAttachmentEquipped(ItemStack stack, Gun gun, IAttachment.Type type)
     {
-        if(!gun.canAttachType(type))
-            return false;
+        if(!gun.canAttachType(type)) return false;
 
         CompoundTag compound = stack.getTag();
         if(compound != null && compound.contains("Attachments", Tag.TAG_COMPOUND))
@@ -1547,7 +1812,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
         return stack != null && stack.getItem().getRegistryName().equals(id);
     }
 
-    public static boolean hasAmmo(ItemStack gunStack)
+    public static boolean hasAmmo(Player player, ItemStack gunStack)
     {
         CompoundTag tag = gunStack.getOrCreateTag();
         return tag.getBoolean("IgnoreAmmo") || tag.getInt("AmmoCount") > 0;
@@ -1565,6 +1830,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu
                 {
                     return Mth.clamp(scope.getFovModifier(), 0.01F, 1.0F);
                 }
+
                 modifier -= scope.getAdditionalZoom();
             }
         }

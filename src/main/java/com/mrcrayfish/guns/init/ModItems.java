@@ -13,7 +13,6 @@ import com.mrcrayfish.guns.item.StockItem;
 import com.mrcrayfish.guns.item.StunGrenadeItem;
 import com.mrcrayfish.guns.item.UnderBarrelItem;
 import com.mrcrayfish.guns.item.attachment.impl.Barrel;
-import com.mrcrayfish.guns.item.attachment.impl.Scope;
 import com.mrcrayfish.guns.item.attachment.impl.Stock;
 import com.mrcrayfish.guns.item.attachment.impl.UnderBarrel;
 import net.minecraft.world.item.Item;
@@ -35,10 +34,11 @@ public class ModItems
     public static final RegistryObject<Item> MACHINE_PISTOL = REGISTER.register("machine_pistol", () -> new GunItem(new Item.Properties().stacksTo(1).tab(GunMod.GROUP)));
     public static final RegistryObject<Item> HEAVY_RIFLE = REGISTER.register("heavy_rifle", () -> new GunItem(new Item.Properties().stacksTo(1).tab(GunMod.GROUP)));
 
-    public static final RegistryObject<Item> BASIC_BULLET = REGISTER.register("basic_bullet", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
-    public static final RegistryObject<Item> ADVANCED_AMMO = REGISTER.register("advanced_bullet", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
-    public static final RegistryObject<Item> SHELL = REGISTER.register("shell", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
-    public static final RegistryObject<Item> MISSILE = REGISTER.register("missile", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> BASIC_AMMO = REGISTER.register("basic_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> ADVANCED_AMMO = REGISTER.register("advanced_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> SHELL_AMMO = REGISTER.register("shell_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> MISSILE_AMMO = REGISTER.register("missile_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
+
     public static final RegistryObject<Item> GRENADE = REGISTER.register("grenade", () -> new GrenadeItem(new Item.Properties().tab(GunMod.GROUP), 20 * 4));
     public static final RegistryObject<Item> STUN_GRENADE = REGISTER.register("stun_grenade", () -> new StunGrenadeItem(new Item.Properties().tab(GunMod.GROUP), 72000));
 

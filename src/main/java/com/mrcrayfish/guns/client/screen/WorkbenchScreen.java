@@ -124,7 +124,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchContainer>
 
         if(!ammo.isEmpty())
         {
-            this.tabs.add(new Tab(new ItemStack(ModItems.SHELL.get()), "ammo", ammo));
+            this.tabs.add(new Tab(new ItemStack(ModItems.SHELL_AMMO.get()), "ammo", ammo));
         }
 
         if(!misc.isEmpty())

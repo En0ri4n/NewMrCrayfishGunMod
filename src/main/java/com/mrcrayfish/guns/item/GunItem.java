@@ -6,10 +6,9 @@ import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.debug.Debug;
 import com.mrcrayfish.guns.enchantment.EnchantmentTypes;
-import com.mrcrayfish.guns.util.GunEnchantmentHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +29,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
@@ -42,7 +40,7 @@ public class GunItem extends Item implements IColored, IMeta
 
     public GunItem(Item.Properties properties)
     {
-        super(properties);
+        super(properties.durability(1000));
     }
 
     public void setGun(NetworkGunManager.Supplier supplier)
@@ -88,7 +86,7 @@ public class GunItem extends Item implements IColored, IMeta
 
         float damage = modifiedGun.getProjectile().getDamage();
         damage = GunModifierHelper.getModifiedProjectileDamage(stack, damage);
-        damage = GunEnchantmentHelper.getAcceleratorDamage(stack, damage);
+        damage = GunPotionHelper.getAcceleratorDamage(stack, damage);
         tooltip.add(new TranslatableComponent("info.cgm.damage", ChatFormatting.WHITE + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(damage) + additionalDamageText).withStyle(ChatFormatting.GRAY));
 
         if(tagCompound != null)
@@ -100,7 +98,7 @@ public class GunItem extends Item implements IColored, IMeta
             else
             {
                 int ammoCount = tagCompound.getInt("AmmoCount");
-                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunEnchantmentHelper.getAmmoCapacity(stack, modifiedGun)).withStyle(ChatFormatting.GRAY));
+                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunPotionHelper.getAmmoCapacity(stack, modifiedGun)).withStyle(ChatFormatting.GRAY));
             }
         }
 
@@ -128,28 +126,6 @@ public class GunItem extends Item implements IColored, IMeta
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
     {
         return slotChanged;
-    }
-
-    @Override
-    public boolean isBarVisible(ItemStack stack)
-    {
-        CompoundTag tagCompound = stack.getOrCreateTag();
-        Gun modifiedGun = this.getModifiedGun(stack);
-        return !tagCompound.getBoolean("IgnoreAmmo") && tagCompound.getInt("AmmoCount") != GunEnchantmentHelper.getAmmoCapacity(stack, modifiedGun);
-    }
-
-    @Override
-    public int getBarWidth(ItemStack stack)
-    {
-        CompoundTag tagCompound = stack.getOrCreateTag();
-        Gun modifiedGun = this.getModifiedGun(stack);
-        return (int) (13.0 * (tagCompound.getInt("AmmoCount") / (double) GunEnchantmentHelper.getAmmoCapacity(stack, modifiedGun)));
-    }
-
-    @Override
-    public int getBarColor(ItemStack stack)
-    {
-        return Objects.requireNonNull(ChatFormatting.YELLOW.getColor());
     }
 
     public Gun getModifiedGun(ItemStack stack)
@@ -192,13 +168,13 @@ public class GunItem extends Item implements IColored, IMeta
     @Override
     public boolean isEnchantable(ItemStack stack)
     {
-        return this.getItemStackLimit(stack) == 1;
+        return false;
     }
 
     @Override
     public int getEnchantmentValue()
     {
-        return 5;
+        return 0;
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.C2SMessageShoot;
 import com.mrcrayfish.guns.network.message.C2SMessageShooting;
-import com.mrcrayfish.guns.util.GunEnchantmentHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -128,7 +127,7 @@ public class ShootingHandler
         if(player != null)
         {
             ItemStack heldItem = player.getMainHandItem();
-            if(heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) || player.isCreative()) && !PlayerReviveHelper.isBleeding(player))
+            if(heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(player, heldItem) || player.isCreative()) && !PlayerReviveHelper.isBleeding(player))
             {
                 boolean shooting = mc.options.keyAttack.isDown();
                 if(GunMod.controllableLoaded)
@@ -197,7 +196,7 @@ public class ShootingHandler
         if(!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if(!Gun.hasAmmo(heldItem) && !player.isCreative())
+        if(!Gun.hasAmmo(player, heldItem) && !player.isCreative())
             return;
         
         if(player.isSpectator())
@@ -215,7 +214,7 @@ public class ShootingHandler
             if(MinecraftForge.EVENT_BUS.post(new GunFireEvent.Pre(player, heldItem)))
                 return;
 
-            int rate = GunEnchantmentHelper.getRate(heldItem, modifiedGun);
+            int rate = GunPotionHelper.getRate(player, heldItem, modifiedGun);
             rate = GunModifierHelper.getModifiedRate(heldItem, rate);
             tracker.addCooldown(heldItem.getItem(), rate);
             PacketHandler.getPlayChannel().sendToServer(new C2SMessageShoot(player));

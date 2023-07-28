@@ -114,7 +114,7 @@ public class RecipeGen extends RecipeProvider
                 .build(consumer);
 
         // Ammo
-        WorkbenchRecipeBuilder.crafting(ModItems.BASIC_BULLET.get(), 64)
+        WorkbenchRecipeBuilder.crafting(ModItems.BASIC_AMMO.get(), 64)
                 .addIngredient(WorkbenchIngredient.of(Items.COPPER_INGOT, 4))
                 .addIngredient(WorkbenchIngredient.of(Tags.Items.GUNPOWDER, 1))
                 .addCriterion("has_copper_ingot", has(Items.COPPER_INGOT))
@@ -126,7 +126,7 @@ public class RecipeGen extends RecipeProvider
                 .addCriterion("has_copper_ingot", has(Items.COPPER_INGOT))
                 .addCriterion("has_gunpowder", has(Tags.Items.GUNPOWDER))
                 .build(consumer);
-        WorkbenchRecipeBuilder.crafting(ModItems.SHELL.get(), 48)
+        WorkbenchRecipeBuilder.crafting(ModItems.SHELL_AMMO.get(), 48)
                 .addIngredient(WorkbenchIngredient.of(Items.COPPER_INGOT, 4))
                 .addIngredient(WorkbenchIngredient.of(Tags.Items.NUGGETS_GOLD, 1))
                 .addIngredient(WorkbenchIngredient.of(Tags.Items.GUNPOWDER, 1))
@@ -134,7 +134,7 @@ public class RecipeGen extends RecipeProvider
                 .addCriterion("has_gold_nugget", has(Tags.Items.NUGGETS_GOLD))
                 .addCriterion("has_gunpowder", has(Tags.Items.GUNPOWDER))
                 .build(consumer);
-        WorkbenchRecipeBuilder.crafting(ModItems.MISSILE.get())
+        WorkbenchRecipeBuilder.crafting(ModItems.MISSILE_AMMO.get())
                 .addIngredient(WorkbenchIngredient.of(Tags.Items.NUGGETS_IRON, 2))
                 .addIngredient(WorkbenchIngredient.of(Tags.Items.GUNPOWDER, 4))
                 .addCriterion("has_iron_ingot", has(Tags.Items.NUGGETS_IRON))

@@ -1,21 +1,23 @@
 package com.mrcrayfish.guns.util;
 
 import com.mrcrayfish.guns.common.Gun;
+import com.mrcrayfish.guns.init.ModEffects;
 import com.mrcrayfish.guns.init.ModEnchantments;
 import com.mrcrayfish.guns.particles.TrailData;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Map;
 
 /**
  * Author: MrCrayfish
  */
-public class GunEnchantmentHelper
+public class GunPotionHelper
 {
     public static ParticleOptions getParticle(ItemStack weapon)
     {
@@ -31,10 +33,10 @@ public class GunEnchantmentHelper
         return new TrailData(weapon.isEnchanted());
     }
 
-    public static int getReloadInterval(ItemStack weapon)
+    public static int getReloadInterval(Player player, ItemStack weapon)
     {
         int interval = 10;
-        int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.QUICK_HANDS.get(), weapon);
+        int level = player.getEffect(ModEffects.QUICK_HANDS.get()).getAmplifier();
         if(level > 0)
         {
             interval -= 3 * level;
@@ -42,7 +44,7 @@ public class GunEnchantmentHelper
         return Math.max(interval, 1);
     }
 
-    public static int getRate(ItemStack weapon, Gun modifiedGun)
+    public static int getRate(Player player, ItemStack weapon, Gun modifiedGun)
     {
         int rate = modifiedGun.getGeneral().getRate();
         int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.TRIGGER_FINGER.get(), weapon);

@@ -35,38 +35,6 @@ public class ReflectionUtil
 
     public static void setItemMaxDurability(Item item, int maxDamage)
     {
-        prepareField(maxDamageField);
-        setFieldValue(maxDamageField, item, maxDamage);
-    }
-
-    private static void setFieldValue(Field field, Object instance, Object value)
-    {
-        prepareField(field);
-
-        try
-        {
-            field.set(instance, value);
-        }
-        catch(IllegalAccessException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void prepareField(Field field)
-    {
-        try
-        {
-            field.setAccessible(true);
-            // Remove final modifier
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        new FieldReflection(maxDamageField).set(item, maxDamage);
     }
 }

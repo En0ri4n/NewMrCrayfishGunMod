@@ -59,10 +59,10 @@ public class ReloadTracker
     /**
      * @return
      */
-    private boolean isWeaponFull()
+    private boolean isWeaponFull(Player player)
     {
         CompoundTag tag = this.stack.getOrCreateTag();
-        return tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(this.stack, this.gun);
+        return tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(player, this.stack, this.gun);
     }
 
     private boolean hasNoAmmo(Player player)
@@ -87,7 +87,7 @@ public class ReloadTracker
             CompoundTag tag = this.stack.getTag();
             if(tag != null)
             {
-                int maxAmmo = GunPotionHelper.getAmmoCapacity(this.stack, this.gun);
+                int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.gun);
                 amount = Math.min(amount, maxAmmo - tag.getInt("AmmoCount"));
                 tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
             }
@@ -128,7 +128,7 @@ public class ReloadTracker
                     RELOAD_TRACKER_MAP.put(player, new ReloadTracker(player));
                 }
                 ReloadTracker tracker = RELOAD_TRACKER_MAP.get(player);
-                if(!tracker.isSameWeapon(player) || tracker.isWeaponFull() || tracker.hasNoAmmo(player))
+                if(!tracker.isSameWeapon(player) || tracker.isWeaponFull(player) || tracker.hasNoAmmo(player))
                 {
                     RELOAD_TRACKER_MAP.remove(player);
                     ModSyncedDataKeys.RELOADING.setValue(player, false);
@@ -137,7 +137,7 @@ public class ReloadTracker
                 if(tracker.canReload(player))
                 {
                     tracker.increaseAmmo(player);
-                    if(tracker.isWeaponFull() || tracker.hasNoAmmo(player))
+                    if(tracker.isWeaponFull(player) || tracker.hasNoAmmo(player))
                     {
                         RELOAD_TRACKER_MAP.remove(player);
                         ModSyncedDataKeys.RELOADING.setValue(player, false);

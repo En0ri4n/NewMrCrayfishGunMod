@@ -3,6 +3,7 @@ package com.mrcrayfish.guns.util;
 import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.interfaces.IGunModifier;
 import com.mrcrayfish.guns.item.attachment.IAttachment;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Mth;
 
@@ -262,7 +263,7 @@ public class GunModifierHelper
         return Mth.clamp(rate, 0, Integer.MAX_VALUE);
     }
 
-    public static float getCriticalChance(ItemStack weapon)
+    public static float getCriticalChance(LivingEntity shooter, ItemStack weapon)
     {
         float chance = 0F;
         for(int i = 0; i < IAttachment.Type.values().length; i++)
@@ -273,7 +274,7 @@ public class GunModifierHelper
                 chance += modifier.criticalChance();
             }
         }
-        chance += GunPotionHelper.getPuncturingChance(weapon);
+        chance += GunPotionHelper.getPuncturingChance(shooter, weapon);
         return Mth.clamp(chance, 0F, 1F);
     }
 }

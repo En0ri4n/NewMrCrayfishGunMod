@@ -12,7 +12,7 @@
     "spread": 20.0
   },
   "projectile": {
-    "item": "cgm:shell",
+    "item": "cgm:shell_ammo",
     "damage": 18.0,
     "size": 1.0,
     "speed": 10.0,

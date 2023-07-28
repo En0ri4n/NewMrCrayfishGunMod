@@ -77,7 +77,6 @@ public class GunMod
         ModContainers.REGISTER.register(bus);
         ModEffects.REGISTER.register(bus);
         ModPotions.REGISTER.register(bus);
-        ModEnchantments.REGISTER.register(bus);
         ModEntities.REGISTER.register(bus);
         ModItems.REGISTER.register(bus);
         ModParticleTypes.REGISTER.register(bus);

@@ -6,9 +6,10 @@ import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.debug.Debug;
 import com.mrcrayfish.guns.enchantment.EnchantmentTypes;
-import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.KeybindComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,6 +60,11 @@ public class GunItem extends Item implements IColored, IMeta
     {
         Gun modifiedGun = this.getModifiedGun(stack);
 
+        // TODO: check if this is the right way
+        Player player = Minecraft.getInstance().player; // Pas sur que ce soit une bonne idée mais on va voir x)
+
+        if(player == null) return;
+
         Item ammo = ForgeRegistries.ITEMS.getValue(modifiedGun.getProjectile().getItem());
         if(ammo != null)
         {
@@ -86,7 +93,7 @@ public class GunItem extends Item implements IColored, IMeta
 
         float damage = modifiedGun.getProjectile().getDamage();
         damage = GunModifierHelper.getModifiedProjectileDamage(stack, damage);
-        damage = GunPotionHelper.getAcceleratorDamage(stack, damage);
+        damage = GunPotionHelper.getAcceleratorDamage(player, stack, damage);
         tooltip.add(new TranslatableComponent("info.cgm.damage", ChatFormatting.WHITE + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(damage) + additionalDamageText).withStyle(ChatFormatting.GRAY));
 
         if(tagCompound != null)
@@ -98,7 +105,7 @@ public class GunItem extends Item implements IColored, IMeta
             else
             {
                 int ammoCount = tagCompound.getInt("AmmoCount");
-                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunPotionHelper.getAmmoCapacity(stack, modifiedGun)).withStyle(ChatFormatting.GRAY));
+                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunPotionHelper.getAmmoCapacity(player, stack, modifiedGun)).withStyle(ChatFormatting.GRAY));
             }
         }
 

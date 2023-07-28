@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
  */
 public class AmmoItem extends Item implements IAmmo, JsonSerializable
 {
-    private int maxAmmo;
+    private int maxAmmo = 100;
 
     public AmmoItem(Properties properties)
     {

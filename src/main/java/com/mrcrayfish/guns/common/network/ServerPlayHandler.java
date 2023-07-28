@@ -80,7 +80,14 @@ public class ServerPlayHandler
         {
             Gun modifiedGun = item.getModifiedGun(heldItem);
 
-            item.damageItem(heldItem, 1, player, entity -> entity.broadcastBreakEvent(InteractionHand.MAIN_HAND)); // damage the gun
+            if(!player.isCreative())
+            {
+                heldItem.setDamageValue(heldItem.getDamageValue() + 1); // damage the item
+
+                CompoundTag tag = heldItem.getOrCreateTag();
+                if(tag.contains("AmmoCount")) tag.putInt("AmmoCount", tag.getInt("AmmoCount") - 1); // decrement ammo count
+                heldItem.setTag(tag);
+            }
 
             if(modifiedGun != null)
             {
@@ -124,7 +131,7 @@ public class ServerPlayHandler
                 }
                 if(!projectileProps.isVisible())
                 {
-                    ParticleOptions data = GunPotionHelper.getParticle(heldItem);
+                    ParticleOptions data = GunPotionHelper.getParticle(player, heldItem);
                     S2CMessageBulletTrail messageBulletTrail = new S2CMessageBulletTrail(spawnedProjectiles, projectileProps, player.getId(), data);
                     PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(player.getX(), player.getY(), player.getZ(), Config.COMMON.network.projectileTrackingRange.get(), player.level.dimension())), messageBulletTrail);
                 }

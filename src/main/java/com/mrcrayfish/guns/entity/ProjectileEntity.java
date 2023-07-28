@@ -7,7 +7,7 @@ import com.mrcrayfish.guns.common.Gun.Projectile;
 import com.mrcrayfish.guns.common.ModTags;
 import com.mrcrayfish.guns.common.SpreadTracker;
 import com.mrcrayfish.guns.event.GunProjectileHitEvent;
-import com.mrcrayfish.guns.init.ModEnchantments;
+import com.mrcrayfish.guns.init.ModEffects;
 import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.interfaces.IDamageable;
 import com.mrcrayfish.guns.interfaces.IExplosionDamageable;
@@ -19,8 +19,8 @@ import com.mrcrayfish.guns.network.message.S2CMessageProjectileHitBlock;
 import com.mrcrayfish.guns.network.message.S2CMessageProjectileHitEntity;
 import com.mrcrayfish.guns.network.message.S2CMessageRemoveProjectile;
 import com.mrcrayfish.guns.util.BufferUtil;
-import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.ReflectionUtil;
 import com.mrcrayfish.guns.util.math.ExtendedEntityRayTraceResult;
 import com.mrcrayfish.guns.world.ProjectileExplosion;
@@ -38,30 +38,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
-import net.minecraft.world.level.block.BellBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.TargetBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
@@ -70,11 +57,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -115,7 +98,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         /* Get speed and set motion */
         Vec3 dir = this.getDirection(shooter, weapon, item, modifiedGun);
-        double speedModifier = GunPotionHelper.getProjectileSpeedModifier(weapon);
+        double speedModifier = GunPotionHelper.getProjectileSpeedModifier(shooter, weapon);
         double speed = GunModifierHelper.getModifiedProjectileSpeed(weapon, this.projectile.getSpeed() * speedModifier);
         this.setDeltaMovement(dir.x * speed, dir.y * speed, dir.z * speed);
         this.updateHeading();
@@ -232,7 +215,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
 
             List<EntityResult> hitEntities = null;
-            int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.COLLATERAL.get(), this.weapon);
+            int level = GunPotionHelper.getEffectLevel(shooter, ModEffects.COLLATERAL.get());
             if(level == 0)
             {
                 EntityResult entityResult = this.findEntityOnPath(startVec, endVec);
@@ -473,7 +456,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 bell.attemptToRing(this.level, pos, blockHitResult.getDirection());
             }
 
-            int fireStarterLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
+            int fireStarterLevel = GunPotionHelper.getEffectLevel(shooter, ModEffects.FIRE_STARTER.get());
             if(fireStarterLevel > 0 && Config.COMMON.gameplay.griefing.setFireToBlocks.get())
             {
                 BlockPos offsetPos = pos.relative(blockHitResult.getDirection());
@@ -503,7 +486,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 }
             }
 
-            int fireStarterLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
+            int fireStarterLevel = GunPotionHelper.getEffectLevel(shooter, ModEffects.FIRE_STARTER.get());
             if(fireStarterLevel > 0)
             {
                 entity.setSecondsOnFire(2);
@@ -511,7 +494,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
             this.onHitEntity(entity, result.getLocation(), startVec, endVec, entityHitResult.isHeadshot());
 
-            int collateralLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.COLLATERAL.get(), weapon);
+            int collateralLevel = GunPotionHelper.getEffectLevel(shooter, ModEffects.COLLATERAL.get());
             if(collateralLevel == 0)
             {
                 this.remove(RemovalReason.KILLED);
@@ -524,7 +507,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     protected void onHitEntity(Entity entity, Vec3 hitVec, Vec3 startVec, Vec3 endVec, boolean headshot)
     {
         float damage = this.getDamage();
-        float newDamage = this.getCriticalDamage(this.weapon, this.random, damage);
+        float newDamage = this.getCriticalDamage(this.shooter, this.weapon, this.random, damage);
         boolean critical = damage != newDamage;
         damage = newDamage;
 
@@ -645,13 +628,13 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
         float damage = initialDamage / this.general.getProjectileAmount();
         damage = GunModifierHelper.getModifiedDamage(this.weapon, this.modifiedGun, damage);
-        damage = GunPotionHelper.getAcceleratorDamage(this.weapon, damage);
+        damage = GunPotionHelper.getAcceleratorDamage(this.shooter, this.weapon, damage);
         return Math.max(0F, damage);
     }
 
-    private float getCriticalDamage(ItemStack weapon, Random rand, float damage)
+    private float getCriticalDamage(LivingEntity shooter, ItemStack weapon, Random rand, float damage)
     {
-        float chance = GunModifierHelper.getCriticalChance(weapon);
+        float chance = GunModifierHelper.getCriticalChance(shooter, weapon);
         if(rand.nextFloat() < chance)
         {
             return (float) (damage * Config.COMMON.gameplay.criticalDamageMultiplier.get());

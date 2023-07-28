@@ -134,7 +134,7 @@ public class ControllerHandler
                 GunItem gunItem = (GunItem) heldItem.getItem();
                 Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                 CompoundTag tag = heldItem.getTag();
-                if(tag != null && tag.getInt("AmmoCount") < GunPotionHelper.getAmmoCapacity(heldItem, modifiedGun))
+                if(tag != null && tag.getInt("AmmoCount") < GunPotionHelper.getAmmoCapacity(player, heldItem, modifiedGun))
                 {
                     event.getActions().put(GunButtonBindings.RELOAD, new Action(new TranslatableComponent("cgm.action.reload"), Action.Side.LEFT));
                 }

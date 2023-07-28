@@ -107,7 +107,7 @@ public class ReloadHandler
                     if(tag != null && !tag.contains("IgnoreAmmo", Tag.TAG_BYTE))
                     {
                         Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
-                        if(tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(stack, gun))
+                        if(tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(player, stack, gun))
                             return;
                         if(MinecraftForge.EVENT_BUS.post(new GunReloadEvent.Pre(player, stack)))
                             return;

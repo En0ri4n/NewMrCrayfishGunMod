@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "cgm:shell"
+      "cgm:shell_ammo"
     ]
   },
   "criteria": {
@@ -41,7 +41,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "cgm:shell"
+        "recipe": "cgm:shell_ammo"
       }
     }
   },

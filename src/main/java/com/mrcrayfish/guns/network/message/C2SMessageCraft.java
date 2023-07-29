@@ -12,6 +12,8 @@ import java.util.function.Supplier;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class C2SMessageCraft extends PlayMessage<C2SMessageCraft>
 {

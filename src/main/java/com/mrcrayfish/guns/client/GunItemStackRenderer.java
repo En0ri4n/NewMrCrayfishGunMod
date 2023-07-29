@@ -11,7 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunItemStackRenderer extends BlockEntityWithoutLevelRenderer
 {

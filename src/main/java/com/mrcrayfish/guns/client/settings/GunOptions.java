@@ -19,7 +19,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunOptions
 {

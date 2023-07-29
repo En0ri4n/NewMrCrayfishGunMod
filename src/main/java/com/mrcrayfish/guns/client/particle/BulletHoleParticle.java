@@ -22,6 +22,8 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class BulletHoleParticle extends TextureSheetParticle
 {

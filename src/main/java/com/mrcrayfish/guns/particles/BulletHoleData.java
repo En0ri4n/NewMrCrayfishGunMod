@@ -14,6 +14,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class BulletHoleData implements ParticleOptions
 {

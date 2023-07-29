@@ -19,7 +19,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class TechCrosshair extends Crosshair
 {

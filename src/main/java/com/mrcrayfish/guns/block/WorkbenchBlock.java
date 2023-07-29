@@ -28,6 +28,8 @@ import java.util.Map;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class WorkbenchBlock extends RotatedObjectBlock implements EntityBlock
 {

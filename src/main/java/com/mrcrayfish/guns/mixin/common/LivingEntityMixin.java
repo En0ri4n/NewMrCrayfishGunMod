@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin

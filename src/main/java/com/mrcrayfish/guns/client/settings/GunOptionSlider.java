@@ -6,6 +6,8 @@ import net.minecraft.client.ProgressOption;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunOptionSlider// extends SliderButton
 {

@@ -14,7 +14,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ReflectionUtil
 {

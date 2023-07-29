@@ -27,7 +27,9 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)

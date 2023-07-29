@@ -26,7 +26,9 @@ import java.util.Optional;
 //TODO eventually convert to deserialized objects
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @SuppressWarnings("ConstantConditions")
 public final class PropertyHelper

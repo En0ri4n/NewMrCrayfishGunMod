@@ -22,6 +22,8 @@ import java.util.Objects;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public abstract class GunProvider implements DataProvider
 {

@@ -11,6 +11,8 @@ import net.minecraft.client.resources.sounds.SoundInstance.Attenuation;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunShotSound extends AbstractSoundInstance
 {

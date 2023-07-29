@@ -13,6 +13,8 @@ import javax.annotation.Nullable;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 @OnlyIn(Dist.CLIENT)
 public class TrailParticle extends BaseAshSmokeParticle

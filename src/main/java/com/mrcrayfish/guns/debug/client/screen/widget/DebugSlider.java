@@ -11,7 +11,9 @@ import net.minecraftforge.client.gui.widget.ForgeSlider;
 import java.util.function.Consumer;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class DebugSlider extends ForgeSlider implements IDebugWidget
 {

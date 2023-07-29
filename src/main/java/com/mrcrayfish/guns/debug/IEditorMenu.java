@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public interface IEditorMenu
 {

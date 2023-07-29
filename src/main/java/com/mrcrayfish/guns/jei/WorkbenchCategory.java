@@ -42,6 +42,8 @@ import java.util.stream.Stream;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class WorkbenchCategory implements IRecipeCategory<WorkbenchRecipe>
 {

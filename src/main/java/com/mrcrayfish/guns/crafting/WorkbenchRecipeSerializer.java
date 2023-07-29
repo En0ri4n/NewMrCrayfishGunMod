@@ -15,7 +15,9 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import javax.annotation.Nullable;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class WorkbenchRecipeSerializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<WorkbenchRecipe>
 {

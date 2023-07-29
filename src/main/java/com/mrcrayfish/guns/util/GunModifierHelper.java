@@ -8,7 +8,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.util.Mth;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunModifierHelper
 {

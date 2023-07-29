@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class DebugToggle extends DebugButton implements IDebugWidget
 {

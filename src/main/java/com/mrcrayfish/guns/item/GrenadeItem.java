@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GrenadeItem extends AmmoItem
 {

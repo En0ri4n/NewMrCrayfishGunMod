@@ -19,7 +19,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Objects;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @JeiPlugin
 public class GunModPlugin implements IModPlugin

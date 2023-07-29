@@ -6,7 +6,9 @@ import net.minecraft.world.phys.AABB;
 import javax.annotation.Nullable;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class NoChildHeadshotBox<T extends LivingEntity> extends BasicHeadshotBox<T>
 {

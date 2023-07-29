@@ -6,7 +6,9 @@ import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.client.settings.KeyConflictContext;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public enum GunConflictContext implements IKeyConflictContext
 {

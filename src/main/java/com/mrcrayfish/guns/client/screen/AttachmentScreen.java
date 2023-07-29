@@ -43,7 +43,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class AttachmentScreen extends AbstractContainerScreen<AttachmentContainer>
 {

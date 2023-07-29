@@ -7,6 +7,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class CustomGun implements INBTSerializable<CompoundTag>
 {

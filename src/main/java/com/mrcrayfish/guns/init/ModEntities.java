@@ -18,6 +18,8 @@ import java.util.function.BiFunction;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ModEntities
 {

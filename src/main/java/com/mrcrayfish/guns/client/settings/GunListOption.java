@@ -3,7 +3,9 @@ package com.mrcrayfish.guns.client.settings;
 import com.mrcrayfish.guns.interfaces.IResourceLocation;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunListOption<E extends IResourceLocation>
 {

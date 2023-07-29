@@ -16,6 +16,8 @@ import com.mojang.math.Vector3f;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class MissileRenderer extends EntityRenderer<MissileEntity>
 {

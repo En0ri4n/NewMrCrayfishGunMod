@@ -5,7 +5,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class BufferUtil
 {

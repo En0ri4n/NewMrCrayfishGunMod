@@ -22,6 +22,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class OneHandedPose implements IHeldAnimation
 {

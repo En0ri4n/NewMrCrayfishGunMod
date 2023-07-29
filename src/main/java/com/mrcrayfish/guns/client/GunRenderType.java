@@ -17,7 +17,9 @@ import net.minecraftforge.fml.common.Mod;
 import java.io.IOException;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 
 public final class GunRenderType extends RenderType

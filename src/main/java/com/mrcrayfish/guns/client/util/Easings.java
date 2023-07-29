@@ -11,6 +11,8 @@ import java.util.stream.Collectors;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public enum Easings implements StringRepresentable
 {

@@ -17,7 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT)
 public class ModelOverrides

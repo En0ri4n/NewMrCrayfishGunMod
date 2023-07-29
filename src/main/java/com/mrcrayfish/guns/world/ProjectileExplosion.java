@@ -25,7 +25,9 @@ import java.util.Set;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ProjectileExplosion extends Explosion
 {

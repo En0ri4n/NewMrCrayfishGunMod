@@ -21,7 +21,9 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public abstract class ThrowableItemEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData
 {

@@ -8,6 +8,8 @@ import javax.annotation.Nullable;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class BasicHeadshotBox<T extends LivingEntity> implements IHeadshotBox<T>
 {

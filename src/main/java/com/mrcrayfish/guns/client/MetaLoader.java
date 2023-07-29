@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public final class MetaLoader implements IDataLoader<MetaLoader.ItemResource>
 {

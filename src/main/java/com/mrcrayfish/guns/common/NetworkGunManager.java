@@ -45,7 +45,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class NetworkGunManager extends SimplePreparableReloadListener<Map<GunItem, Gun>>

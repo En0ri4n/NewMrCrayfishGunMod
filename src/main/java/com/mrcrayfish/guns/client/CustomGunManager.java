@@ -23,6 +23,8 @@ import java.util.Optional;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT)
 public class CustomGunManager

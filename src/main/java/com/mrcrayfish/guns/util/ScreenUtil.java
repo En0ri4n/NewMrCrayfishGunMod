@@ -4,7 +4,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ScreenUtil
 {

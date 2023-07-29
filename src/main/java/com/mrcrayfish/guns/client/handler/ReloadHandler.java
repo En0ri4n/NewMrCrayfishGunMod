@@ -21,7 +21,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ReloadHandler
 {

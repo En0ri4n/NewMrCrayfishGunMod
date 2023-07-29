@@ -51,7 +51,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Predicate;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ServerPlayHandler
 {

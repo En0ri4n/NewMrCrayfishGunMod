@@ -26,7 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class BulletTrailRenderingHandler
 {

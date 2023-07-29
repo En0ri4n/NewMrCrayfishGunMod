@@ -15,7 +15,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class MissileEntity extends ProjectileEntity
 {

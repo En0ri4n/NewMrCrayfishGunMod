@@ -7,7 +7,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class AttachmentItem extends Item implements IMeta
 {

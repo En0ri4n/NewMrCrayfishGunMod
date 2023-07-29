@@ -13,7 +13,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.sounds.SoundSource;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class AttachmentSlot extends Slot
 {

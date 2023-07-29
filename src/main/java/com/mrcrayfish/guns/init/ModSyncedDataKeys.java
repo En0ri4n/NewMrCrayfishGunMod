@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ModSyncedDataKeys
 {

@@ -29,6 +29,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ControllerHandler
 {

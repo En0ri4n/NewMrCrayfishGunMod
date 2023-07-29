@@ -29,6 +29,8 @@ import java.util.function.Supplier;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class Debug

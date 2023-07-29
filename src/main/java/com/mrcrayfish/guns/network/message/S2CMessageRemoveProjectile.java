@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class S2CMessageRemoveProjectile extends PlayMessage<S2CMessageRemoveProjectile>
 {

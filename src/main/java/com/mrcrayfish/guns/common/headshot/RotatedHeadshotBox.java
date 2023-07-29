@@ -7,7 +7,9 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class RotatedHeadshotBox<T extends LivingEntity> extends BasicHeadshotBox<T>
 {

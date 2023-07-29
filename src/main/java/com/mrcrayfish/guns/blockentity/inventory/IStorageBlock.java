@@ -9,6 +9,8 @@ import net.minecraft.core.NonNullList;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public interface IStorageBlock extends Container, MenuProvider
 {

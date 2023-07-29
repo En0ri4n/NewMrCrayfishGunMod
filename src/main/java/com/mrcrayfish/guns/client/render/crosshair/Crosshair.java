@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public abstract class Crosshair implements IResourceLocation
 {

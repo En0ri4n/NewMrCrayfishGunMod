@@ -3,7 +3,9 @@ package com.mrcrayfish.guns.util;
 import java.lang.reflect.Field;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Deprecated(since = "1.3.0", forRemoval = true)
 public class OptifineHelper

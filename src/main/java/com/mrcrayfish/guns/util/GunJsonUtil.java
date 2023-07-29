@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunJsonUtil
 {

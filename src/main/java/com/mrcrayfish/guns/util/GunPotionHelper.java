@@ -13,7 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunPotionHelper
 {

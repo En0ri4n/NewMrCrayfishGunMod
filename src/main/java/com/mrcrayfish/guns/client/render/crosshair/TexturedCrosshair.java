@@ -16,7 +16,9 @@ import com.mojang.math.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class TexturedCrosshair extends Crosshair
 {

@@ -3,7 +3,9 @@ package com.mrcrayfish.guns.client;
 import com.mojang.math.Vector3f;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public enum SwayType
 {

@@ -10,7 +10,9 @@ import net.minecraft.core.Direction;
 import javax.annotation.Nullable;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public abstract class RotatedObjectBlock extends HorizontalDirectionalBlock
 {

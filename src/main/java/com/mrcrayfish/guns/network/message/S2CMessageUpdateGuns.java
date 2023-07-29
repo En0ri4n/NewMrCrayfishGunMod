@@ -15,7 +15,9 @@ import org.apache.commons.lang3.Validate;
 import java.util.function.Supplier;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class S2CMessageUpdateGuns extends PlayMessage<S2CMessageUpdateGuns>
 {

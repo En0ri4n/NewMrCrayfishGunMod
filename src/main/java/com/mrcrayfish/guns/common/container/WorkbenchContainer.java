@@ -13,6 +13,8 @@ import net.minecraft.core.BlockPos;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class WorkbenchContainer extends AbstractContainerMenu
 {

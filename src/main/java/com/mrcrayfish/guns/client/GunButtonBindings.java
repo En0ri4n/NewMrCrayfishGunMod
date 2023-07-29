@@ -5,7 +5,9 @@ import com.mrcrayfish.controllable.client.ButtonBinding;
 import com.mrcrayfish.controllable.client.Buttons;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunButtonBindings
 {

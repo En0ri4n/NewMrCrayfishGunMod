@@ -5,7 +5,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment.Rarity;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class OverCapacityEnchantment extends GunEnchantment
 {

@@ -10,7 +10,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class GunSliderPercentageOption extends ProgressOption
 {

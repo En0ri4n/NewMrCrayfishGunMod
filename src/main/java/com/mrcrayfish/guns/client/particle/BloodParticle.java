@@ -19,6 +19,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 @OnlyIn(Dist.CLIENT)
 public class BloodParticle extends TextureSheetParticle

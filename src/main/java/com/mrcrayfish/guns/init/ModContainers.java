@@ -13,6 +13,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ModContainers
 {

@@ -8,7 +8,9 @@ import javax.annotation.Nullable;
 import java.util.stream.Collectors;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class WorkbenchRecipes
 {

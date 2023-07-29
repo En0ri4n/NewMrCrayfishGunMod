@@ -3,7 +3,9 @@ package com.mrcrayfish.guns.crafting;
 import net.minecraft.world.item.crafting.RecipeType;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ModRecipeType
 {

@@ -6,6 +6,8 @@ import com.mrcrayfish.guns.item.attachment.impl.Scope;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class Attachments
 {

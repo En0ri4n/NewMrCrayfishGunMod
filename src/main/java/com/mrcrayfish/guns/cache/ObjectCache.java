@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public final class ObjectCache
 {

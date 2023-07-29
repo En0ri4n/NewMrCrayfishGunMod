@@ -6,6 +6,8 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class InventoryUtil
 {

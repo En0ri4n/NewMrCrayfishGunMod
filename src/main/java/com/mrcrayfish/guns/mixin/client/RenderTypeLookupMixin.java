@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * Author: MrCrayfish
+ *
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mixin(ItemBlockRenderTypes.class)
 public class RenderTypeLookupMixin

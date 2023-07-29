@@ -17,7 +17,9 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class S2CMessageBulletTrail extends PlayMessage<S2CMessageBulletTrail>
 {

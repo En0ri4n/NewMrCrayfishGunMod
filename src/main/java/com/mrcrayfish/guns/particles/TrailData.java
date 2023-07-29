@@ -11,7 +11,9 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class TrailData implements ParticleOptions
 {

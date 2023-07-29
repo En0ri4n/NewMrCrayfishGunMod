@@ -1,7 +1,9 @@
 package com.mrcrayfish.guns.client.render.pose;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class LimbPose
 {

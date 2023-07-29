@@ -3,10 +3,7 @@ package com.mrcrayfish.guns.common.network;
 import com.mrcrayfish.guns.Config;
 import com.mrcrayfish.guns.GunMod;
 import com.mrcrayfish.guns.blockentity.WorkbenchBlockEntity;
-import com.mrcrayfish.guns.common.Gun;
-import com.mrcrayfish.guns.common.ProjectileManager;
-import com.mrcrayfish.guns.common.ShootTracker;
-import com.mrcrayfish.guns.common.SpreadTracker;
+import com.mrcrayfish.guns.common.*;
 import com.mrcrayfish.guns.common.container.AttachmentContainer;
 import com.mrcrayfish.guns.common.container.WorkbenchContainer;
 import com.mrcrayfish.guns.crafting.WorkbenchRecipe;
@@ -21,6 +18,7 @@ import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.C2SMessageShoot;
 import com.mrcrayfish.guns.network.message.S2CMessageBulletTrail;
 import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
+import com.mrcrayfish.guns.network.message.S2CMessageNotification;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.core.BlockPos;
@@ -41,7 +39,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -82,7 +79,7 @@ public class ServerPlayHandler
 
             if(!player.isCreative())
             {
-                heldItem.setDamageValue(heldItem.getDamageValue() + 1); // damage the item
+                heldItem.hurtAndBreak(1, player, broker -> broker.broadcastBreakEvent(InteractionHand.MAIN_HAND)); // damage the item
 
                 CompoundTag tag = heldItem.getOrCreateTag();
                 if(tag.contains("AmmoCount")) tag.putInt("AmmoCount", tag.getInt("AmmoCount") - 1); // decrement ammo count
@@ -180,6 +177,7 @@ public class ServerPlayHandler
         else
         {
             world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.8F);
+            PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> player), new S2CMessageNotification(NotificationType.EMPTY_AMMO));
         }
     }
 
@@ -252,6 +250,9 @@ public class ServerPlayHandler
     public static void handleUnload(ServerPlayer player)
     {
         ItemStack stack = player.getMainHandItem();
+
+        PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> player), new S2CMessageNotification(NotificationType.UNLOADING));
+
         if(stack.getItem() instanceof GunItem)
         {
             CompoundTag tag = stack.getTag();
@@ -264,23 +265,40 @@ public class ServerPlayHandler
                 Gun gun = gunItem.getModifiedGun(stack);
                 ResourceLocation id = gun.getProjectile().getItem();
 
-                Item item = ForgeRegistries.ITEMS.getValue(id);
-                if(item == null)
+                while(count > 0)
                 {
-                    return;
-                }
+                    AmmoContext context = Gun.findNonFullAmmo(player, id);
 
-                int maxStackSize = item.getMaxStackSize();
-                int stacks = count / maxStackSize;
-                for(int i = 0; i < stacks; i++)
-                {
-                    spawnAmmo(player, new ItemStack(item, maxStackSize));
-                }
+                    if(context == AmmoContext.NONE)
+                    {
+                        ItemStack ammoStack = new ItemStack(ForgeRegistries.ITEMS.getValue(gun.getProjectile().getItem()), 1);
 
-                int remaining = count % maxStackSize;
-                if(remaining > 0)
-                {
-                    spawnAmmo(player, new ItemStack(item, remaining));
+                        if(count > ammoStack.getMaxDamage())
+                        {
+                            count -= ammoStack.getMaxDamage();
+                        }
+                        else
+                        {
+                            ammoStack.setDamageValue(ammoStack.getMaxDamage() - (ammoStack.getMaxDamage() - count));
+                            count = 0;
+                        }
+
+                        spawnAmmo(player, ammoStack);
+                        continue;
+                    }
+
+                    ItemStack ammoStack = context.stack();
+
+                    int finalDamage = ammoStack.getDamageValue() - count;
+                    if(finalDamage <= 0)
+                    {
+                        count -= ammoStack.getMaxDamage() - ammoStack.getDamageValue();
+                        ammoStack.setDamageValue(0);
+                    }
+                    else
+                    {
+                        ammoStack.setDamageValue(finalDamage);
+                    }
                 }
             }
         }

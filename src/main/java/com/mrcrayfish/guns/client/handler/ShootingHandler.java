@@ -1,14 +1,17 @@
 package com.mrcrayfish.guns.client.handler;
 
 import com.mrcrayfish.guns.GunMod;
+import com.mrcrayfish.guns.client.network.ClientPlayHandler;
 import com.mrcrayfish.guns.common.GripType;
 import com.mrcrayfish.guns.common.Gun;
+import com.mrcrayfish.guns.common.NotificationType;
 import com.mrcrayfish.guns.compat.PlayerReviveHelper;
 import com.mrcrayfish.guns.event.GunFireEvent;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.C2SMessageShoot;
 import com.mrcrayfish.guns.network.message.C2SMessageShooting;
+import com.mrcrayfish.guns.network.message.S2CMessageNotification;
 import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import net.minecraft.client.Minecraft;
@@ -197,7 +200,10 @@ public class ShootingHandler
             return;
 
         if(!Gun.hasAmmo(player, heldItem) && !player.isCreative())
+        {
+            Minecraft.getInstance().doRunTask(() -> ClientPlayHandler.handleNotification(new S2CMessageNotification(NotificationType.EMPTY_AMMO)));
             return;
+        }
         
         if(player.isSpectator())
             return;

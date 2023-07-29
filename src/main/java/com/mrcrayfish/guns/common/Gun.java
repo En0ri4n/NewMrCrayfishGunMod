@@ -1807,6 +1807,30 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu, JsonSeri
         return AmmoContext.NONE;
     }
 
+    public static AmmoContext findNonFullAmmo(Player player, ResourceLocation id)
+    {
+        if(player.isCreative())
+        {
+            Item item = ForgeRegistries.ITEMS.getValue(id);
+            ItemStack ammo = item != null ? new ItemStack(item) : ItemStack.EMPTY;
+            return new AmmoContext(ammo, null);
+        }
+
+        for(int i = 0; i < player.getInventory().getContainerSize(); ++i)
+        {
+            ItemStack stack = player.getInventory().getItem(i);
+            if(isAmmo(stack, id) && stack.isDamaged())
+            {
+                return new AmmoContext(stack, player.getInventory());
+            }
+        }
+        if(GunMod.backpackedLoaded)
+        {
+            return BackpackHelper.findAmmo(player, id);
+        }
+        return AmmoContext.NONE;
+    }
+
     public static boolean isAmmo(ItemStack stack, ResourceLocation id)
     {
         return stack != null && stack.getItem().getRegistryName().equals(id);

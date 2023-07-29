@@ -1,11 +1,18 @@
 {
   "general": {
+    "auto": true,
     "rate": 20,
     "gripType": "cgm:two_handed",
     "maxAmmo": 1,
+    "reloadAmount": 1,
     "recoilAngle": 5.0,
     "recoilKick": 1.0,
-    "recoilDurationOffset": 0.25
+    "recoilDurationOffset": 0.25,
+    "recoilAdsReduction": 0.2,
+    "projectileAmount": 1,
+    "alwaysSpread": true,
+    "spread": 0.0,
+    "durability": 512
   },
   "projectile": {
     "item": "cgm:grenade",
@@ -14,7 +21,10 @@
     "size": 0.2,
     "speed": 1.5,
     "life": 50,
-    "gravity": true
+    "gravity": true,
+    "damageReduceOverLife": false,
+    "trailColor": 16765577,
+    "trailLengthMultiplier": 1.0
   },
   "sounds": {
     "fire": "cgm:item.grenade_launcher.fire",
@@ -22,6 +32,7 @@
   },
   "display": {
     "flash": {
+      "xOffset": 0.0,
       "yOffset": 3.5,
       "zOffset": -3.8,
       "size": 0.75
@@ -29,18 +40,23 @@
   },
   "modules": {
     "zoom": {
+      "xOffset": 0.0,
       "yOffset": 5.7,
       "zOffset": 3.0,
       "fovModifier": 0.6
     },
     "attachments": {
       "scope": {
+        "xOffset": 0.0,
         "yOffset": 5.2,
-        "zOffset": 2.7
+        "zOffset": 2.7,
+        "scale": 1.0
       },
       "stock": {
+        "xOffset": 0.0,
         "yOffset": 3.6,
-        "zOffset": 8.2
+        "zOffset": 8.2,
+        "scale": 1.0
       }
     }
   }

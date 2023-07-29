@@ -7,16 +7,24 @@
     "reloadAmount": 20,
     "recoilAngle": 4.0,
     "recoilKick": 0.25,
+    "recoilDurationOffset": 0.0,
     "recoilAdsReduction": 0.5,
+    "projectileAmount": 1,
     "alwaysSpread": true,
-    "spread": 6.0
+    "spread": 6.0,
+    "durability": 512
   },
   "projectile": {
     "item": "cgm:basic_ammo",
+    "visible": true,
     "damage": 3.0,
     "size": 0.2,
     "speed": 10.0,
-    "life": 20
+    "life": 20,
+    "gravity": true,
+    "damageReduceOverLife": false,
+    "trailColor": 16765577,
+    "trailLengthMultiplier": 1.0
   },
   "sounds": {
     "fire": "cgm:item.machine_pistol.fire",
@@ -27,6 +35,7 @@
   },
   "display": {
     "flash": {
+      "xOffset": 0.0,
       "yOffset": 3.5,
       "zOffset": 1.79,
       "size": 0.35
@@ -34,23 +43,29 @@
   },
   "modules": {
     "zoom": {
+      "xOffset": 0.0,
       "yOffset": 4.8,
       "zOffset": -1.0,
       "fovModifier": 0.8
     },
     "attachments": {
       "scope": {
+        "xOffset": 0.0,
         "yOffset": 4.0,
-        "zOffset": 5.5
+        "zOffset": 5.5,
+        "scale": 1.0
       },
       "barrel": {
+        "xOffset": 0.0,
         "yOffset": 3.2,
         "zOffset": 2.2,
         "scale": 0.5
       },
       "stock": {
+        "xOffset": 0.0,
         "yOffset": 3.2,
-        "zOffset": 8.2
+        "zOffset": 8.2,
+        "scale": 1.0
       }
     }
   }

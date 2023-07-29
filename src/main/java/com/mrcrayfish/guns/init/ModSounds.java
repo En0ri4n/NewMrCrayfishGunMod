@@ -1,8 +1,11 @@
 package com.mrcrayfish.guns.init;
 
 import com.mrcrayfish.guns.Reference;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -10,6 +13,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModSounds 
 {
 	public static final DeferredRegister<SoundEvent> REGISTER = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Reference.MOD_ID);
+
+	public static final SoundSource GUNS_SOURCE_SOUND;
 
 	public static final RegistryObject<SoundEvent> ITEM_PISTOL_FIRE = register("item.pistol.fire");
 	public static final RegistryObject<SoundEvent> ITEM_PISTOL_SILENCED_FIRE = register("item.pistol.silenced_fire");
@@ -47,5 +52,14 @@ public class ModSounds
 	private static RegistryObject<SoundEvent> register(String key)
 	{
 		return REGISTER.register(key, () -> new SoundEvent(new ResourceLocation(Reference.MOD_ID, key)));
+	}
+
+	public static SimpleSoundInstance forSource(SoundEvent soundEvent, SoundSource soundSource, float volume, float pitch)
+	{
+		return new SimpleSoundInstance(soundEvent.getLocation(), soundSource, pitch, volume, false, 0, SoundInstance.Attenuation.NONE, 0.0D, 0.0D, 0.0D, true);
+	}
+
+	static {
+		GUNS_SOURCE_SOUND = SoundSource.valueOf("GUNS");
 	}
 }

@@ -40,4 +40,29 @@ public class BackpackHelper
 
         return AmmoContext.NONE;
     }
+
+    public static AmmoContext findNonFullAmmo(Player player, ResourceLocation id)
+    {
+        ItemStack backpack = Backpacked.getBackpackStack(player);
+        if(backpack.isEmpty())
+            return AmmoContext.NONE;
+
+        if(EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MARKSMAN.get(), backpack) <= 0)
+            return AmmoContext.NONE;
+
+        BackpackInventory inventory = ((BackpackedInventoryAccess) player).getBackpackedInventory();
+        if(inventory == null)
+            return AmmoContext.NONE;
+
+        for(int i = 0; i < inventory.getContainerSize(); i++)
+        {
+            ItemStack stack = inventory.getItem(i);
+            if(Gun.isAmmo(stack, id) && stack.isDamaged())
+            {
+                return new AmmoContext(stack, inventory);
+            }
+        }
+
+        return AmmoContext.NONE;
+    }
 }

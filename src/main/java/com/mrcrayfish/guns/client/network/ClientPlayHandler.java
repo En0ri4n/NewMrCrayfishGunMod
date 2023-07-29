@@ -1,6 +1,5 @@
 package com.mrcrayfish.guns.client.network;
 
-import com.mojang.math.Vector3d;
 import com.mrcrayfish.guns.Config;
 import com.mrcrayfish.guns.client.BulletTrail;
 import com.mrcrayfish.guns.client.CustomGunManager;
@@ -9,14 +8,8 @@ import com.mrcrayfish.guns.client.handler.BulletTrailRenderingHandler;
 import com.mrcrayfish.guns.client.handler.GunRenderingHandler;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.init.ModParticleTypes;
-import com.mrcrayfish.guns.network.message.S2CMessageBlood;
-import com.mrcrayfish.guns.network.message.S2CMessageBulletTrail;
-import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
-import com.mrcrayfish.guns.network.message.S2CMessageProjectileHitBlock;
-import com.mrcrayfish.guns.network.message.S2CMessageProjectileHitEntity;
-import com.mrcrayfish.guns.network.message.S2CMessageRemoveProjectile;
-import com.mrcrayfish.guns.network.message.S2CMessageStunGrenade;
-import com.mrcrayfish.guns.network.message.S2CMessageUpdateGuns;
+import com.mrcrayfish.guns.init.ModSounds;
+import com.mrcrayfish.guns.network.message.*;
 import com.mrcrayfish.guns.particles.BulletHoleData;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +32,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.Objects;
 
 /**
  * Author: MrCrayfish
@@ -59,11 +51,11 @@ public class ClientPlayHandler
 
         if(message.getShooterId() == mc.player.getId())
         {
-            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(message.getId(), SoundSource.PLAYERS, message.getVolume(), message.getPitch(), false, 0, SoundInstance.Attenuation.NONE, 0, 0, 0, true));
+            Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(message.getId(), ModSounds.GUNS_SOURCE_SOUND, message.getVolume(), message.getPitch(), false, 0, SoundInstance.Attenuation.NONE, 0, 0, 0, true));
         }
         else
         {
-            Minecraft.getInstance().getSoundManager().play(new GunShotSound(message.getId(), SoundSource.PLAYERS, message.getX(), message.getY(), message.getZ(), message.getVolume(), message.getPitch(), message.isReload()));
+            Minecraft.getInstance().getSoundManager().play(new GunShotSound(message.getId(), ModSounds.GUNS_SOURCE_SOUND, message.getX(), message.getY(), message.getZ(), message.getVolume(), message.getPitch(), message.isReload()));
         }
     }
 
@@ -164,6 +156,11 @@ public class ClientPlayHandler
         }
     }
 
+    public static void handleNotification(S2CMessageNotification notification)
+    {
+        System.out.println("Notification received : " + notification.getNotification());
+    }
+
     private static double getRandomDir(Random random)
     {
         return -0.25 + random.nextDouble() * 0.5;
@@ -180,7 +177,7 @@ public class ClientPlayHandler
         if(event == null)
             return;
 
-        mc.getSoundManager().play(SimpleSoundInstance.forUI(event, 1.0F, 1.0F + world.random.nextFloat() * 0.2F));
+        mc.getSoundManager().play(ModSounds.forSource(event, SoundSource.AMBIENT, 1.0F, 1.0F + world.random.nextFloat() * 0.2F));
     }
 
     @Nullable

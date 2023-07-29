@@ -6,12 +6,15 @@ import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
+import com.mrcrayfish.guns.network.message.S2CMessageNotification;
 import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
@@ -83,15 +86,17 @@ public class ReloadTracker
         ItemStack ammo = context.stack();
         if(!ammo.isEmpty())
         {
-            int amount = Math.min(ammo.getCount(), this.gun.getGeneral().getReloadAmount());
+            int amount = Math.min(ammo.getMaxDamage() - ammo.getDamageValue(), this.gun.getGeneral().getReloadAmount());
             CompoundTag tag = this.stack.getTag();
+
             if(tag != null)
             {
                 int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.gun);
                 amount = Math.min(amount, maxAmmo - tag.getInt("AmmoCount"));
                 tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
+
+                ammo.hurtAndBreak(amount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
             }
-            ammo.shrink(amount);
 
             // Trigger that the container changed
             Container container = context.container();
@@ -137,6 +142,9 @@ public class ReloadTracker
                 if(tracker.canReload(player))
                 {
                     tracker.increaseAmmo(player);
+
+                    PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new S2CMessageNotification(NotificationType.RELOADING));
+
                     if(tracker.isWeaponFull(player) || tracker.hasNoAmmo(player))
                     {
                         RELOAD_TRACKER_MAP.remove(player);

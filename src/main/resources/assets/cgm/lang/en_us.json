@@ -12,7 +12,7 @@
     "item.cgm.heavy_rifle": "Heavy Rifle",
     "item.cgm.basic_ammo": "Basic Ammo",
     "item.cgm.advanced_ammo": "Advanced Bullet",
-    "item.cgm.shell_ammo_ammo": "Shell",
+    "item.cgm.shell_ammo": "Shell",
     "item.cgm.grenade": "Grenade",
     "item.cgm.stun_grenade": "Stun Grenade",
     "item.cgm.missile_ammo": "Missile",
@@ -40,10 +40,14 @@
     "info.cgm.ammo": "Ammo: %s",
     "info.cgm.ammo_type": "Ammo Type: %s",
     "info.cgm.attachment_help": "Press %s in-game for Attachments",
+
     "key.categories.cgm": "MrCrayfish's Gun Mod",
     "key.cgm.reload": "Reload",
     "key.cgm.unload": "Unload",
     "key.cgm.attachments": "Modify Attachments",
+
+    "soundCategory.guns": "Guns",
+
     "effect.cgm.blinded": "Blinded",
     "effect.cgm.deafened": "Deafened",
     "subtitle.cgm.stun.explosion": "Stun Grenade Explosion",

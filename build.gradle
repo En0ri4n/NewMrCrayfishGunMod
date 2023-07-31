@@ -99,6 +99,8 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.255:api")
     runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.255")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    runtimeOnly fg.deobf("curse.maven:stabx-modern-guns-690674:4535375")
 }
 
 jar {

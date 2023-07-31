@@ -79,19 +79,24 @@ public class ReloadHandler
 
         if(KeyBinds.KEY_RELOAD.isDown() && event.getAction() == GLFW.GLFW_PRESS)
         {
-            if(!ModSyncedDataKeys.RELOADING.getValue(player))
-            {
-                this.setReloading(true);
-            }
-            else
-            {
-                this.setReloading(false);
-            }
+            reloadGun(player);
         }
         if(KeyBinds.KEY_UNLOAD.consumeClick() && event.getAction() == GLFW.GLFW_PRESS)
         {
             this.setReloading(false);
             PacketHandler.getPlayChannel().sendToServer(new C2SMessageUnload());
+        }
+    }
+
+    public void reloadGun(Player player)
+    {
+        if(!ModSyncedDataKeys.RELOADING.getValue(player))
+        {
+            this.setReloading(true);
+        }
+        else
+        {
+            this.setReloading(false);
         }
     }
 

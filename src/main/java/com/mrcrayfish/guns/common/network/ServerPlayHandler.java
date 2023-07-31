@@ -75,7 +75,7 @@ public class ServerPlayHandler
 
         Level world = player.level;
         ItemStack heldItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-        if(heldItem.getItem() instanceof GunItem item && (Gun.hasAmmo(player, heldItem) || player.isCreative()))
+        if(heldItem.getItem() instanceof GunItem item && (Gun.hasAmmo(heldItem) || player.isCreative()))
         {
             Gun modifiedGun = item.getModifiedGun(heldItem);
 

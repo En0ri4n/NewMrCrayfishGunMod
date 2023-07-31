@@ -15,6 +15,7 @@ import com.mrcrayfish.guns.debug.IEditorMenu;
 import com.mrcrayfish.guns.debug.client.screen.widget.DebugButton;
 import com.mrcrayfish.guns.debug.client.screen.widget.DebugSlider;
 import com.mrcrayfish.guns.debug.client.screen.widget.DebugToggle;
+import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.ScopeItem;
 import com.mrcrayfish.guns.item.attachment.IAttachment;
 import com.mrcrayfish.guns.item.attachment.impl.Scope;
@@ -27,6 +28,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -1836,10 +1838,19 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu, JsonSeri
         return stack != null && stack.getItem().getRegistryName().equals(id);
     }
 
-    public static boolean hasAmmo(Player player, ItemStack gunStack)
+    public static boolean hasAmmo(ItemStack gunStack)
     {
         CompoundTag tag = gunStack.getOrCreateTag();
         return tag.getBoolean("IgnoreAmmo") || tag.getInt("AmmoCount") > 0;
+    }
+
+    public static boolean hasAmmoInInventory(Player player, GunItem gunItem)
+    {
+        for(ItemStack stack : player.getInventory().items)
+            if(stack.getItem() == ForgeRegistries.ITEMS.getValue(gunItem.getGun().getProjectile().getItem()))
+                return true;
+
+        return false;
     }
 
     public static float getFovModifier(ItemStack stack, Gun modifiedGun)

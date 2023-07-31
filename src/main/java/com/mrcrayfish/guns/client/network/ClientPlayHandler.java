@@ -7,11 +7,21 @@ import com.mrcrayfish.guns.client.audio.GunShotSound;
 import com.mrcrayfish.guns.client.handler.BulletTrailRenderingHandler;
 import com.mrcrayfish.guns.client.handler.GunRenderingHandler;
 import com.mrcrayfish.guns.common.NetworkGunManager;
+import com.mrcrayfish.guns.common.NotificationType;
 import com.mrcrayfish.guns.init.ModParticleTypes;
 import com.mrcrayfish.guns.init.ModSounds;
 import com.mrcrayfish.guns.network.message.*;
 import com.mrcrayfish.guns.particles.BulletHoleData;
+import net.minecraft.commands.arguments.ComponentArgument;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
+import net.minecraft.server.commands.TitleCommand;
+import net.minecraft.world.level.block.JukeboxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -34,7 +44,9 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 public class ClientPlayHandler
 {
@@ -156,9 +168,27 @@ public class ClientPlayHandler
         }
     }
 
-    public static void handleNotification(S2CMessageNotification notification)
+    public static void handleNotification(NotificationType notification)
     {
-        System.out.println("Notification received : " + notification.getNotification());
+        Minecraft mc = Minecraft.getInstance();
+
+        MutableComponent component = new TextComponent("NULL");
+
+        switch(notification)
+        {
+            case AMMO_DISPLAY -> {}
+            case EMPTY_AMMO -> {
+                component = new TranslatableComponent("cgm.notification.empty_ammo");
+            }
+            case RELOADING -> {
+                component = new TranslatableComponent("cgm.notification.reloading");
+            }
+            case UNLOADING -> {
+                component = new TranslatableComponent("cgm.notification.unloading");
+            }
+        }
+
+        mc.getConnection().setActionBarText(new ClientboundSetActionBarTextPacket(component));
     }
 
     private static double getRandomDir(Random random)

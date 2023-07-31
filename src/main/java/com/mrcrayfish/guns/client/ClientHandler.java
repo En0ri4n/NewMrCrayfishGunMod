@@ -9,6 +9,7 @@ import com.mrcrayfish.guns.client.render.gun.model.MiniGunModel;
 import com.mrcrayfish.guns.client.render.gun.model.SimpleModel;
 import com.mrcrayfish.guns.client.screen.AttachmentScreen;
 import com.mrcrayfish.guns.client.screen.WorkbenchScreen;
+import com.mrcrayfish.guns.client.screen.overlay.GunInfosOverlay;
 import com.mrcrayfish.guns.client.settings.GunOptions;
 import com.mrcrayfish.guns.client.util.PropertyHelper;
 import com.mrcrayfish.guns.debug.Debug;
@@ -37,6 +38,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -47,7 +49,9 @@ import org.lwjgl.glfw.GLFW;
 import java.lang.reflect.Field;
 
 /**
- * Author: MrCrayfish
+ * Author: MrCrayfish<p>
+ * <p>
+ * Transformed and adapted as needed by: En0ri4n
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT)
 public class ClientHandler
@@ -79,6 +83,12 @@ public class ClientHandler
         registerColors();
         registerModelOverrides();
         registerScreenFactories();
+        registerOverlays();
+    }
+
+    private static void registerOverlays()
+    {
+        OverlayRegistry.registerOverlayTop("gun_info", GunInfosOverlay.get());
     }
 
     private static void setupRenderLayers()

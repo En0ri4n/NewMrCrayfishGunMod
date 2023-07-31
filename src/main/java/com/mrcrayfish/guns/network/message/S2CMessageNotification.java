@@ -34,7 +34,7 @@ public class S2CMessageNotification extends PlayMessage<S2CMessageNotification>
     @Override
     public void handle(S2CMessageNotification message, Supplier<NetworkEvent.Context> supplier)
     {
-        supplier.get().enqueueWork(() -> ClientPlayHandler.handleNotification(message));
+        supplier.get().enqueueWork(() -> ClientPlayHandler.handleNotification(message.notification));
         supplier.get().setPacketHandled(true);
     }
 

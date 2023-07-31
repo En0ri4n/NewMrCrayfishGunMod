@@ -7,6 +7,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+/**
+ * Author: En0ri4n
+ */
 public class ModPotions
 {
     public static final DeferredRegister<Potion> REGISTER = DeferredRegister.create(ForgeRegistries.POTIONS, Reference.MOD_ID);

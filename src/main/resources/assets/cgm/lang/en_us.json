@@ -48,6 +48,10 @@
 
     "soundCategory.guns": "Guns",
 
+    "cgm.notification.empty_ammo": "§cNo Ammo",
+    "cgm.notification.reloading": "§aReloading...",
+    "cgm.notification.unloading": "§6Ammo Unloaded",
+
     "effect.cgm.blinded": "Blinded",
     "effect.cgm.deafened": "Deafened",
     "subtitle.cgm.stun.explosion": "Stun Grenade Explosion",

@@ -11,9 +11,8 @@ import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.C2SMessageShoot;
 import com.mrcrayfish.guns.network.message.C2SMessageShooting;
-import com.mrcrayfish.guns.network.message.S2CMessageNotification;
-import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -132,7 +131,7 @@ public class ShootingHandler
         if(player != null)
         {
             ItemStack heldItem = player.getMainHandItem();
-            if(heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(player, heldItem) || player.isCreative()) && !PlayerReviveHelper.isBleeding(player))
+            if(heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) || player.isCreative()) && !PlayerReviveHelper.isBleeding(player))
             {
                 boolean shooting = mc.options.keyAttack.isDown();
                 if(GunMod.controllableLoaded)
@@ -201,9 +200,12 @@ public class ShootingHandler
         if(!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if(!Gun.hasAmmo(player, heldItem) && !player.isCreative())
+        if(!Gun.hasAmmo(heldItem) && !player.isCreative())
         {
-            Minecraft.getInstance().doRunTask(() -> ClientPlayHandler.handleNotification(new S2CMessageNotification(NotificationType.EMPTY_AMMO)));
+            if(Gun.hasAmmoInInventory(player, (GunItem) heldItem.getItem()))
+                ReloadHandler.get().reloadGun(player);
+            else
+                ClientPlayHandler.handleNotification(NotificationType.EMPTY_AMMO);
             return;
         }
         

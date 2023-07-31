@@ -37,7 +37,7 @@ public class MiniGunModel implements IOverrideModel
 
         boolean shooting = ModSyncedDataKeys.SHOOTING.getValue(player);
         ItemStack heldItem = player.getMainHandItem();
-        if(!Gun.hasAmmo(player, heldItem) && !player.isCreative())
+        if(!Gun.hasAmmo(heldItem) && !player.isCreative())
         {
             shooting = false;
         }

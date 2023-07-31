@@ -17,6 +17,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Author: En0ri4n
+ */
 public class GunConfigs
 {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();

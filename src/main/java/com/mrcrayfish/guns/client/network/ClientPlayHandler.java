@@ -173,18 +173,13 @@ public class ClientPlayHandler
         switch(notification)
         {
             case AMMO_DISPLAY -> {}
-            case EMPTY_AMMO -> {
-                component = new TranslatableComponent("cgm.notification.empty_ammo");
-            }
-            case RELOADING -> {
-                component = new TranslatableComponent("cgm.notification.reloading");
-            }
-            case UNLOADING -> {
-                component = new TranslatableComponent("cgm.notification.unloading");
-            }
+            case EMPTY_AMMO -> component = new TranslatableComponent("cgm.notification.empty_ammo");
+            case RELOADING -> component = new TranslatableComponent("cgm.notification.reloading");
+            case UNLOADING -> component = new TranslatableComponent("cgm.notification.unloading");
         }
 
-        mc.getConnection().setActionBarText(new ClientboundSetActionBarTextPacket(component));
+        if(mc.getConnection() != null)
+            mc.getConnection().setActionBarText(new ClientboundSetActionBarTextPacket(component));
     }
 
     private static double getRandomDir(Random random)

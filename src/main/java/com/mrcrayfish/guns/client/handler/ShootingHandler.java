@@ -7,6 +7,7 @@ import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.common.NotificationType;
 import com.mrcrayfish.guns.compat.PlayerReviveHelper;
 import com.mrcrayfish.guns.event.GunFireEvent;
+import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.C2SMessageShoot;
@@ -200,9 +201,12 @@ public class ShootingHandler
         if(!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if(!Gun.hasAmmo(heldItem) && !player.isCreative())
+        if(ModSyncedDataKeys.RELOADING.getValue(player))
+            return;
+
+        if(!Gun.hasAmmo(heldItem) && !player.isCreative() && !ModSyncedDataKeys.RELOADING.getValue(player))
         {
-            if(Gun.hasAmmoInInventory(player, (GunItem) heldItem.getItem()))
+            if(Gun.hasAmmoInInventory(player, (GunItem) heldItem.getItem()) && !ModSyncedDataKeys.RELOADING.getValue(player))
                 ReloadHandler.get().reloadGun(player);
             else
                 ClientPlayHandler.handleNotification(NotificationType.EMPTY_AMMO);
@@ -216,6 +220,7 @@ public class ShootingHandler
             return;
 
         ItemCooldowns tracker = player.getCooldowns();
+
         if(!tracker.isOnCooldown(heldItem.getItem()))
         {
             GunItem gunItem = (GunItem) heldItem.getItem();

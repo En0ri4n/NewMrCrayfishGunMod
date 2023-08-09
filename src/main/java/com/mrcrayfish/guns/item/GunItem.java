@@ -5,7 +5,6 @@ import com.mrcrayfish.guns.client.GunItemStackRenderer;
 import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.debug.Debug;
-import com.mrcrayfish.guns.enchantment.EnchantmentTypes;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.ChatFormatting;
@@ -17,6 +16,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.KeybindComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -36,7 +36,7 @@ import java.util.Locale;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
-public class GunItem extends Item implements IColored, IMeta
+public class GunItem extends Item implements IColored, IMeta, IHasAmmo
 {
     private WeakHashMap<CompoundTag, Gun> modifiedGunCache = new WeakHashMap<>();
 
@@ -108,7 +108,7 @@ public class GunItem extends Item implements IColored, IMeta
             else
             {
                 int ammoCount = tagCompound.getInt("AmmoCount");
-                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunPotionHelper.getAmmoCapacity(player, stack, modifiedGun)).withStyle(ChatFormatting.GRAY));
+                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunPotionHelper.getAmmoCapacity(player, stack, this)).withStyle(ChatFormatting.GRAY));
             }
         }
 
@@ -193,5 +193,99 @@ public class GunItem extends Item implements IColored, IMeta
                 return new GunItemStackRenderer();
             }
         });
+    }
+
+    @Override
+    public int getAmmoCount(ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            return stack.getOrCreateTag().getInt("AmmoCount");
+        }
+
+        return 0;
+    }
+
+    @Override
+    public int getReloadAmount(ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+            return gun.getGeneral().getReloadAmount();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public boolean canUnload(ItemStack stack)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean ignoreAmmo(ItemStack stack)
+    {
+        return stack.getOrCreateTag().getBoolean("IgnoreAmmo");
+    }
+
+    @Override
+    public boolean isAmmo(ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+            return gun.getProjectile().getItem().equals(stack.getItem().getRegistryName());
+        }
+
+        return false;
+    }
+
+    @Override
+    public int getAmmoCapacity(Player player, ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            return GunPotionHelper.getAmmoCapacity(player, stack, this);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public ResourceLocation getAmmoType(ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+            return gun.getProjectile().getItem();
+        }
+
+        return new ResourceLocation("empty");
+    }
+
+    @Override
+    public int getMaxAmmo(ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+            return gun.getGeneral().getMaxAmmo();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public ResourceLocation getReloadSound(ItemStack stack)
+    {
+        if(stack.getItem() instanceof GunItem)
+        {
+            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+            return gun.getSounds().getReload();
+        }
+
+        return new ResourceLocation("empty");
     }
 }

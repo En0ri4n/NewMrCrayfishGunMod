@@ -4,6 +4,7 @@ import com.mrcrayfish.guns.Config;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.item.GunItem;
+import com.mrcrayfish.guns.item.IHasAmmo;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
 import com.mrcrayfish.guns.network.message.S2CMessageNotification;
@@ -14,7 +15,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
@@ -40,14 +40,14 @@ public class ReloadTracker
     private final int startTick;
     private final int slot;
     private final ItemStack stack;
-    private final Gun gun;
+    private final IHasAmmo iHasAmmo;
 
     private ReloadTracker(Player player)
     {
         this.startTick = player.tickCount;
         this.slot = player.getInventory().selected;
         this.stack = player.getInventory().getSelected();
-        this.gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+        this.iHasAmmo = ((IHasAmmo) stack.getItem());
     }
 
     /**
@@ -62,17 +62,17 @@ public class ReloadTracker
     }
 
     /**
-     * @return
+     * @return True if the weapon is full
      */
     private boolean isWeaponFull(Player player)
     {
         CompoundTag tag = this.stack.getOrCreateTag();
-        return tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(player, this.stack, this.gun);
+        return tag.getInt("AmmoCount") >= iHasAmmo.getAmmoCapacity(player, this.stack);
     }
 
     private boolean hasNoAmmo(Player player)
     {
-        return Gun.findAmmo(player, this.gun.getProjectile().getItem()).stack().isEmpty();
+        return Gun.findAmmo(player, iHasAmmo.getAmmoType(this.stack)).stack().isEmpty();
     }
 
     private boolean canReload(Player player)
@@ -84,20 +84,38 @@ public class ReloadTracker
 
     private void increaseAmmo(Player player)
     {
-        AmmoContext context = Gun.findAmmo(player, this.gun.getProjectile().getItem());
+        AmmoContext context = Gun.findAmmo(player, iHasAmmo.getAmmoType(this.stack));
         ItemStack ammo = context.stack();
-        if(!ammo.isEmpty())
-        {
-            int amount = Math.min(ammo.getMaxDamage() - ammo.getDamageValue(), this.gun.getGeneral().getReloadAmount());
-            CompoundTag tag = this.stack.getTag();
 
+        if(ammo.isEmpty()) return;
+
+        int amount = Math.min(iHasAmmo.getMaxAmmo(this.stack) - iHasAmmo.getAmmoCount(this.stack), iHasAmmo.getReloadAmount(stack));
+        CompoundTag tag = this.stack.getTag();
+
+        if(context.stack().getItem() instanceof IHasAmmo)
+        {
             if(tag != null)
             {
-                int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.gun);
+                int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.iHasAmmo);
                 amount = Math.min(amount, maxAmmo - tag.getInt("AmmoCount"));
                 tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
+            }
 
-                ammo.hurtAndBreak(amount, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+            // Trigger that the container changed
+            Container container = context.container();
+            if(container != null)
+            {
+                container.setChanged();
+            }
+        }
+        else
+        {
+            if(tag != null)
+            {
+                int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.iHasAmmo);
+                amount = Math.min(amount, stack.getCount());
+                tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
+                stack.shrink(amount);
             }
 
             // Trigger that the container changed
@@ -108,7 +126,7 @@ public class ReloadTracker
             }
         }
 
-        ResourceLocation reloadSound = this.gun.getSounds().getReload();
+        ResourceLocation reloadSound = iHasAmmo.getReloadSound(this.stack);
         if(reloadSound != null)
         {
             double radius = Config.SERVER.reloadMaxDistance.get();
@@ -127,7 +145,7 @@ public class ReloadTracker
             {
                 if(!RELOAD_TRACKER_MAP.containsKey(player))
                 {
-                    if(!(player.getInventory().getSelected().getItem() instanceof GunItem))
+                    if(!(player.getInventory().getSelected().getItem() instanceof IHasAmmo))
                     {
                         ModSyncedDataKeys.RELOADING.setValue(player, false);
                         return;
@@ -152,8 +170,11 @@ public class ReloadTracker
                         RELOAD_TRACKER_MAP.remove(player);
                         ModSyncedDataKeys.RELOADING.setValue(player, false);
 
+                        if(!(tracker.stack.getItem() instanceof GunItem)) // Only guns
+                            return;
+
                         final Player finalPlayer = player;
-                        final Gun gun = tracker.gun;
+                        final Gun gun = ((GunItem) tracker.stack.getItem()).getModifiedGun(tracker.stack);
                         DelayedTask.runAfter(4, () ->
                         {
                             ResourceLocation cockSound = gun.getSounds().getCock();

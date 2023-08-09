@@ -4,6 +4,7 @@ import com.mrcrayfish.framework.api.FrameworkAPI;
 import com.mrcrayfish.framework.api.network.FrameworkChannelBuilder;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.client.CustomGunManager;
+import com.mrcrayfish.guns.common.NetworkAmmoManager;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.network.message.*;
 import net.minecraft.resources.ResourceLocation;
@@ -34,7 +35,7 @@ public class PacketHandler
                 .registerPlayMessage(C2SMessageCraft.class, NetworkDirection.PLAY_TO_SERVER)
                 .registerPlayMessage(S2CMessageBulletTrail.class, NetworkDirection.PLAY_TO_CLIENT)
                 .registerPlayMessage(C2SMessageAttachments.class, NetworkDirection.PLAY_TO_SERVER)
-                .registerPlayMessage(S2CMessageUpdateGuns.class, NetworkDirection.PLAY_TO_CLIENT)
+                .registerPlayMessage(S2CMessageUpdateGunsAndAmmos.class, NetworkDirection.PLAY_TO_CLIENT)
                 .registerPlayMessage(S2CMessageBlood.class, NetworkDirection.PLAY_TO_CLIENT)
                 .registerPlayMessage(C2SMessageShooting.class, NetworkDirection.PLAY_TO_SERVER)
                 .registerPlayMessage(S2CMessageGunSound.class, NetworkDirection.PLAY_TO_CLIENT)
@@ -46,5 +47,6 @@ public class PacketHandler
 
         FrameworkAPI.registerLoginData(new ResourceLocation(Reference.MOD_ID, "network_gun_manager"), NetworkGunManager.LoginData::new);
         FrameworkAPI.registerLoginData(new ResourceLocation(Reference.MOD_ID, "custom_gun_manager"), CustomGunManager.LoginData::new);
+        FrameworkAPI.registerLoginData(new ResourceLocation(Reference.MOD_ID, "network_ammo_manager"), NetworkAmmoManager.LoginData::new);
     }
 }

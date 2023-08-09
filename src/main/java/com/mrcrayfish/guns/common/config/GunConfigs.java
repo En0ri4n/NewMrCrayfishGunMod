@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mrcrayfish.guns.GunMod;
+import com.mrcrayfish.guns.common.Ammo;
 import com.mrcrayfish.guns.common.Gun;
-import com.mrcrayfish.guns.item.AmmoItem;
+import com.mrcrayfish.guns.item.MagazineItem;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.util.ReflectionUtil;
 import net.minecraft.resources.ResourceLocation;
@@ -24,26 +25,26 @@ public class GunConfigs
 {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
     private static final Map<ResourceLocation, Gun> guns = new HashMap<>();
-    private static final Map<ResourceLocation, AmmoItem> ammos = new HashMap<>();
+    private static final Map<ResourceLocation, Ammo> ammos = new HashMap<>();
 
-    public static void addGun(GunItem item)
+    private static void addGun(GunItem item)
     {
         guns.put(item.getRegistryName(), item.getGun());
     }
 
-    public static void addAmmo(AmmoItem item)
+    private static void addAmmo(MagazineItem item)
     {
-        ammos.put(item.getRegistryName(), item);
+        ammos.put(item.getRegistryName(), item.getAmmo());
     }
 
     public static void load(MinecraftServer server)
     {
         ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof GunItem).forEach(item -> addGun((GunItem) item));
-        ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof AmmoItem).forEach(item -> addAmmo((AmmoItem) item));
+        ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof MagazineItem).forEach(item -> addAmmo((MagazineItem) item));
 
         guns.forEach((id, gun) ->
         {
-            JsonObject config = getConfig(server, id, gun);
+            JsonObject config = getConfig(server, id, gun, false);
             GunMod.LOGGER.debug("Loading config for gun " + id);
             gun.loadConfig(config);
             setDurability(id, gun.getGeneral().getDurability()); // Special case for durability because we need to use Reflection
@@ -51,10 +52,9 @@ public class GunConfigs
 
         ammos.forEach((id, ammo) ->
         {
-            JsonObject config = getConfig(server, id, ammo);
+            JsonObject config = getConfig(server, id, ammo, true);
             GunMod.LOGGER.debug("Loading config for ammo " + id);
             ammo.loadConfig(config);
-            setDurability(id, ammo.getMaxAmmo()); // Special case for durability because we need to use Reflection
         });
     }
 
@@ -64,9 +64,9 @@ public class GunConfigs
         ReflectionUtil.setItemMaxDurability(item, durability);
     }
 
-    private static JsonObject getConfig(MinecraftServer server, ResourceLocation registryName, JsonSerializable gun)
+    private static JsonObject getConfig(MinecraftServer server, ResourceLocation registryName, JsonSerializable serializable, boolean isAmmo)
     {
-        File gunConfig = new File(getConfigFolder(server), registryName.getPath() + ".json");
+        File gunConfig = new File(getConfigFolder(server, isAmmo), registryName.getPath() + ".json");
 
         if(!gunConfig.exists())
         {
@@ -83,7 +83,7 @@ public class GunConfigs
 
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(gunConfig)))
             {
-                GSON.toJson(gun.toJsonObject(), writer);
+                GSON.toJson(serializable.toJsonObject(), writer);
             }
             catch(IOException e)
             {
@@ -109,9 +109,9 @@ public class GunConfigs
         return jsonObject;
     }
 
-    private static File getConfigFolder(MinecraftServer server)
+    private static File getConfigFolder(MinecraftServer server, boolean isAmmo)
     {
-        File folder = new File(server.getServerDirectory(), "config/guns");
+        File folder = new File(server.getServerDirectory(), "config/cgm/" + (isAmmo ? "ammo" : "guns"));
         if(!folder.exists())
             folder.mkdirs();
         return folder;

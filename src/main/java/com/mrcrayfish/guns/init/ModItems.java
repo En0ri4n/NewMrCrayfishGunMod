@@ -4,14 +4,7 @@ import com.mrcrayfish.guns.GunMod;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.common.Attachments;
 import com.mrcrayfish.guns.common.GunModifiers;
-import com.mrcrayfish.guns.item.AmmoItem;
-import com.mrcrayfish.guns.item.BarrelItem;
-import com.mrcrayfish.guns.item.GrenadeItem;
-import com.mrcrayfish.guns.item.GunItem;
-import com.mrcrayfish.guns.item.ScopeItem;
-import com.mrcrayfish.guns.item.StockItem;
-import com.mrcrayfish.guns.item.StunGrenadeItem;
-import com.mrcrayfish.guns.item.UnderBarrelItem;
+import com.mrcrayfish.guns.item.*;
 import com.mrcrayfish.guns.item.attachment.impl.Barrel;
 import com.mrcrayfish.guns.item.attachment.impl.Stock;
 import com.mrcrayfish.guns.item.attachment.impl.UnderBarrel;
@@ -34,10 +27,10 @@ public class ModItems
     public static final RegistryObject<Item> MACHINE_PISTOL = REGISTER.register("machine_pistol", () -> new GunItem(new Item.Properties().stacksTo(1).tab(GunMod.GROUP)));
     public static final RegistryObject<Item> HEAVY_RIFLE = REGISTER.register("heavy_rifle", () -> new GunItem(new Item.Properties().stacksTo(1).tab(GunMod.GROUP)));
 
-    public static final RegistryObject<Item> BASIC_AMMO = REGISTER.register("basic_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
-    public static final RegistryObject<Item> ADVANCED_AMMO = REGISTER.register("advanced_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
-    public static final RegistryObject<Item> SHELL_AMMO = REGISTER.register("shell_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
-    public static final RegistryObject<Item> MISSILE_AMMO = REGISTER.register("missile_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> BASIC_AMMO = REGISTER.register("basic_ammo", () -> new MagazineItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> ADVANCED_AMMO = REGISTER.register("advanced_ammo", () -> new MagazineItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> SHELL_AMMO = REGISTER.register("shell_ammo", () -> new MagazineItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> MISSILE_AMMO = REGISTER.register("missile_ammo", () -> new MagazineItem(new Item.Properties().tab(GunMod.GROUP)));
 
     public static final RegistryObject<Item> GRENADE = REGISTER.register("grenade", () -> new GrenadeItem(new Item.Properties().tab(GunMod.GROUP), 20 * 4));
     public static final RegistryObject<Item> STUN_GRENADE = REGISTER.register("stun_grenade", () -> new StunGrenadeItem(new Item.Properties().tab(GunMod.GROUP), 72000));
@@ -58,4 +51,7 @@ public class ModItems
     /* Under Barrel Attachments */
     public static final RegistryObject<Item> LIGHT_GRIP = REGISTER.register("light_grip", () -> new UnderBarrelItem(UnderBarrel.create(GunModifiers.LIGHT_RECOIL), new Item.Properties().stacksTo(1).tab(GunMod.GROUP)));
     public static final RegistryObject<Item> SPECIALISED_GRIP = REGISTER.register("specialised_grip", () -> new UnderBarrelItem(UnderBarrel.create(GunModifiers.REDUCED_RECOIL), new Item.Properties().stacksTo(1).tab(GunMod.GROUP)));
+
+    /* Potions */
+    public static final RegistryObject<Item> POTION = REGISTER.register("potion", CustomPotionItem::new);
 }

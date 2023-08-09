@@ -6,22 +6,18 @@ import com.mrcrayfish.guns.client.CustomGunManager;
 import com.mrcrayfish.guns.client.audio.GunShotSound;
 import com.mrcrayfish.guns.client.handler.BulletTrailRenderingHandler;
 import com.mrcrayfish.guns.client.handler.GunRenderingHandler;
+import com.mrcrayfish.guns.common.NetworkAmmoManager;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.common.NotificationType;
 import com.mrcrayfish.guns.init.ModParticleTypes;
 import com.mrcrayfish.guns.init.ModSounds;
 import com.mrcrayfish.guns.network.message.*;
 import com.mrcrayfish.guns.particles.BulletHoleData;
-import net.minecraft.commands.arguments.ComponentArgument;
-import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.Vec3i;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
-import net.minecraft.server.commands.TitleCommand;
-import net.minecraft.world.level.block.JukeboxBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -207,7 +203,7 @@ public class ClientPlayHandler
         if(event == null)
             return;
 
-        mc.getSoundManager().play(ModSounds.forSource(event, SoundSource.AMBIENT, 1.0F, 1.0F + world.random.nextFloat() * 0.2F));
+        mc.getSoundManager().play(ModSounds.forSource(event, SoundSource.AMBIENT, 1.0F, 1.0F + world.random.nextFloat() * 0.2F, message.getX(), message.getY(), message.getZ()));
     }
 
     @Nullable
@@ -242,9 +238,10 @@ public class ClientPlayHandler
         BulletTrailRenderingHandler.get().remove(message.getEntityId());
     }
 
-    public static void handleUpdateGuns(S2CMessageUpdateGuns message)
+    public static void handleUpdateGunsAndAmmos(S2CMessageUpdateGunsAndAmmos message)
     {
         NetworkGunManager.updateRegisteredGuns(message);
         CustomGunManager.updateCustomGuns(message);
+        NetworkAmmoManager.updateRegisteredAmmos(message);
     }
 }

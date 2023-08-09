@@ -2,6 +2,7 @@ package com.mrcrayfish.guns.util;
 
 import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.init.ModEffects;
+import com.mrcrayfish.guns.item.IHasAmmo;
 import com.mrcrayfish.guns.particles.TrailData;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -64,9 +65,9 @@ public class GunPotionHelper
         return level > 0 ? 1.5 : 1.0;
     }
 
-    public static int getAmmoCapacity(Player player, ItemStack weapon, Gun modifiedGun)
+    public static int getAmmoCapacity(Player player, ItemStack weapon, IHasAmmo iHasAmmo)
     {
-        int capacity = modifiedGun.getGeneral().getMaxAmmo();
+        int capacity = iHasAmmo.getMaxAmmo(weapon);
         int level = GunPotionHelper.getEffectLevel(player, ModEffects.OVER_CAPACITY.get());
         if(level > 0)
         {

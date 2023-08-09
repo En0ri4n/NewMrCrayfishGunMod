@@ -18,7 +18,7 @@ import net.minecraft.world.level.Level;
  *
  * Transformed and adapted as needed by: En0ri4n
  */
-public class GrenadeItem extends AmmoItem
+public class GrenadeItem extends MagazineItem
 {
     protected int maxCookTime;
 

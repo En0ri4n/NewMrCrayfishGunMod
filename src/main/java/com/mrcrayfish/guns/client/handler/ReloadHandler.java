@@ -1,14 +1,12 @@
 package com.mrcrayfish.guns.client.handler;
 
 import com.mrcrayfish.guns.client.KeyBinds;
-import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.event.GunReloadEvent;
 import com.mrcrayfish.guns.init.ModSyncedDataKeys;
-import com.mrcrayfish.guns.item.GunItem;
+import com.mrcrayfish.guns.item.IHasAmmo;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.C2SMessageReload;
 import com.mrcrayfish.guns.network.message.C2SMessageUnload;
-import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -90,14 +88,7 @@ public class ReloadHandler
 
     public void reloadGun(Player player)
     {
-        if(!ModSyncedDataKeys.RELOADING.getValue(player))
-        {
-            this.setReloading(true);
-        }
-        else
-        {
-            this.setReloading(false);
-        }
+        this.setReloading(!ModSyncedDataKeys.RELOADING.getValue(player));
     }
 
     public void setReloading(boolean reloading)
@@ -108,13 +99,13 @@ public class ReloadHandler
             if(reloading)
             {
                 ItemStack stack = player.getMainHandItem();
-                if(stack.getItem() instanceof GunItem)
+                if(stack.getItem() instanceof IHasAmmo)
                 {
                     CompoundTag tag = stack.getTag();
                     if(tag != null && !tag.contains("IgnoreAmmo", Tag.TAG_BYTE))
                     {
-                        Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
-                        if(tag.getInt("AmmoCount") >= GunPotionHelper.getAmmoCapacity(player, stack, gun))
+                        IHasAmmo iHasAmmo = (IHasAmmo) stack.getItem();
+                        if(tag.getInt("AmmoCount") >= iHasAmmo.getAmmoCapacity(player, stack))
                             return;
                         if(MinecraftForge.EVENT_BUS.post(new GunReloadEvent.Pre(player, stack)))
                             return;

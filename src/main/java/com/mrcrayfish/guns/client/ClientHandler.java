@@ -34,6 +34,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -129,6 +130,8 @@ public class ClientHandler
                 Minecraft.getInstance().getItemColors().register(color, item);
             }
         });
+
+        Minecraft.getInstance().getItemColors().register((stack, index) -> index > 0 ? -1 : PotionUtils.getColor(stack), ModItems.POTION.get());
     }
 
     private static void registerModelOverrides()

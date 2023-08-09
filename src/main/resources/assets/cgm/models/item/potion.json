@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "cgm:items/potion_overlay",
+        "layer1": "cgm:items/potion"
+    }
+}

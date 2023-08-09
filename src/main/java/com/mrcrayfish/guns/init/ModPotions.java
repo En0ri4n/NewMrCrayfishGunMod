@@ -7,6 +7,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
 /**
  * Author: En0ri4n
  */
@@ -14,6 +18,20 @@ public class ModPotions
 {
     public static final DeferredRegister<Potion> REGISTER = DeferredRegister.create(ForgeRegistries.POTIONS, Reference.MOD_ID);
 
-    public static final RegistryObject<Potion> QUICK_HANDS = REGISTER.register("quick_hands", () -> new Potion(new MobEffectInstance(ModEffects.QUICK_HANDS.get())));
+    public static final List<Supplier<Potion>> POTIONS = new ArrayList<>();
 
+    public static final RegistryObject<Potion> QUICK_HANDS = register("quick_hands", () -> new Potion(new MobEffectInstance(ModEffects.QUICK_HANDS.get())));
+    public static final RegistryObject<Potion> OVER_CAPACITY = register("over_capacity", () -> new Potion(new MobEffectInstance(ModEffects.OVER_CAPACITY.get())));
+    public static final RegistryObject<Potion> TRIGGER_FINGER = register("trigger_finger", () -> new Potion(new MobEffectInstance(ModEffects.TRIGGER_FINGER.get())));
+    public static final RegistryObject<Potion> LIGHTWEIGHT = register("lightweight", () -> new Potion(new MobEffectInstance(ModEffects.LIGHTWEIGHT.get())));
+    public static final RegistryObject<Potion> ACCELERATOR = register("accelerator", () -> new Potion(new MobEffectInstance(ModEffects.ACCELERATOR.get())));
+    public static final RegistryObject<Potion> PUNCTURING = register("puncturing", () -> new Potion(new MobEffectInstance(ModEffects.PUNCTURING.get())));
+    public static final RegistryObject<Potion> FIRE_STARTER = register("fire_starter", () -> new Potion(new MobEffectInstance(ModEffects.FIRE_STARTER.get())));
+    public static final RegistryObject<Potion> COLLATERAL = register("collateral", () -> new Potion(new MobEffectInstance(ModEffects.COLLATERAL.get())));
+    
+    private static RegistryObject<Potion> register(String name, Supplier<Potion> potion)
+    {
+        POTIONS.add(potion);
+        return REGISTER.register(name, potion);
+    }
 }

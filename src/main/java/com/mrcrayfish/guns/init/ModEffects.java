@@ -1,8 +1,6 @@
 package com.mrcrayfish.guns.init;
 
 import com.mrcrayfish.guns.Reference;
-import com.mrcrayfish.guns.cache.ObjectCache;
-import com.mrcrayfish.guns.client.handler.AimingHandler;
 import com.mrcrayfish.guns.effect.EmptyEffect;
 import com.mrcrayfish.guns.effect.IncurableEffect;
 import net.minecraft.world.effect.MobEffect;

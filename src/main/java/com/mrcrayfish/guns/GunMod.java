@@ -5,6 +5,7 @@ import com.mrcrayfish.guns.client.ClientHandler;
 import com.mrcrayfish.guns.client.CustomGunManager;
 import com.mrcrayfish.guns.client.MetaLoader;
 import com.mrcrayfish.guns.client.handler.CrosshairHandler;
+import com.mrcrayfish.guns.client.handler.ReloadHandler;
 import com.mrcrayfish.guns.commands.CreloadCommand;
 import com.mrcrayfish.guns.common.BoundingBoxManager;
 import com.mrcrayfish.guns.common.ProjectileManager;
@@ -17,12 +18,12 @@ import com.mrcrayfish.guns.entity.GrenadeEntity;
 import com.mrcrayfish.guns.entity.MissileEntity;
 import com.mrcrayfish.guns.init.*;
 import com.mrcrayfish.guns.network.PacketHandler;
-import cpw.mods.modlauncher.EnumerationHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -65,6 +66,11 @@ public class GunMod
         {
             super.fillItemList(items);
             CustomGunManager.fill(items);
+            ModPotions.POTIONS.forEach(pot ->
+            {
+                if(pot.get().getRegistryName() != null && pot.get().getRegistryName().getNamespace().equals(Reference.MOD_ID))
+                    items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), pot.get()));
+            });
         }
     }.setEnchantmentCategories(EnchantmentTypes.GUN, EnchantmentTypes.SEMI_AUTO_GUN);
 
@@ -77,13 +83,13 @@ public class GunMod
         ModBlocks.REGISTER.register(bus);
         ModContainers.REGISTER.register(bus);
         ModEffects.REGISTER.register(bus);
-        ModPotions.REGISTER.register(bus);
         ModEntities.REGISTER.register(bus);
         ModItems.REGISTER.register(bus);
         ModParticleTypes.REGISTER.register(bus);
         ModRecipeSerializers.REGISTER.register(bus);
         ModSounds.REGISTER.register(bus);
         ModTileEntities.REGISTER.register(bus);
+        ModPotions.REGISTER.register(bus);
         bus.addListener(this::onCommonSetup);
         bus.addListener(this::onClientSetup);
         bus.addListener(this::onGatherData);

@@ -3,15 +3,13 @@ package com.mrcrayfish.guns.client.screen.overlay;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrcrayfish.guns.Reference;
-import com.mrcrayfish.guns.common.Gun;
-import com.mrcrayfish.guns.item.GunItem;
+import com.mrcrayfish.guns.item.IHasAmmo;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
@@ -22,10 +20,7 @@ public class GunInfosOverlay implements IIngameOverlay
 
     public static GunInfosOverlay get()
     {
-        if(instance == null)
-            return instance = new GunInfosOverlay();
-
-        return instance;
+        return instance == null ? instance = new GunInfosOverlay() : instance;
     }
 
     private final Minecraft mc;
@@ -41,19 +36,18 @@ public class GunInfosOverlay implements IIngameOverlay
         if(mc.player == null)
             return;
 
-        if(isCarriyngGun(mc.player))
-        {
-            ItemStack gunStack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
-            Gun gun = getGunInHand(mc.player).getGun();
+        ItemStack stack = mc.player.getItemInHand(InteractionHand.MAIN_HAND);
 
-            CompoundTag tagCompound = gunStack.getTag();
+        if(stack.getItem() instanceof IHasAmmo iHasAmmo)
+        {
+            CompoundTag tagCompound = stack.getTag();
 
             if(tagCompound != null)
             {
                 int ammoCount = tagCompound.getInt("AmmoCount");
                 int displayHeight = height - (mc.player.isCreative() ? 33 : 48);
 
-                String ammo = ChatFormatting.GRAY + "" + ammoCount + "/" + gun.getGeneral().getMaxAmmo();
+                String ammo = ChatFormatting.GRAY + "" + ammoCount + "/" + iHasAmmo.getMaxAmmo(stack);
 
                 RenderSystem.setShaderTexture(0, new ResourceLocation(Reference.MOD_ID, "textures/bullet.png"));
                 Screen.blit(poseStack, width / 2 + mc.font.width(ammo) / 2 - 2, displayHeight - 1, 10, 10, 0, 0,64, 64, 64, 64);
@@ -61,15 +55,5 @@ public class GunInfosOverlay implements IIngameOverlay
                 Screen.drawString(poseStack, mc.font, ammo, width / 2 - mc.font.width(ammo) / 2, displayHeight, 0xFFFFFFFF);
             }
         }
-    }
-
-    private boolean isCarriyngGun(Player player)
-    {
-        return player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof GunItem;
-    }
-
-    private GunItem getGunInHand(Player player)
-    {
-        return (GunItem) player.getItemInHand(InteractionHand.MAIN_HAND).getItem();
     }
 }

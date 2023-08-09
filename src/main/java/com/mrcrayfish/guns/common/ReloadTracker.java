@@ -113,9 +113,9 @@ public class ReloadTracker
             if(tag != null)
             {
                 int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.iHasAmmo);
-                amount = Math.min(amount, stack.getCount());
+                amount = Math.min(amount, ammo.getCount());
                 tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
-                stack.shrink(amount);
+                ammo.shrink(amount);
             }
 
             // Trigger that the container changed

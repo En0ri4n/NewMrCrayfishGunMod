@@ -74,10 +74,8 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
             Preconditions.checkArgument(this.maxAmmo > 0, "Max ammo must be more than zero");
             Preconditions.checkArgument(this.reloadAmount >= 1, "Reload angle must be more than or equal to zero");
             JsonObject object = new JsonObject();
-            object.addProperty("auto", true);
             object.addProperty("maxAmmo", this.maxAmmo);
             object.addProperty("reloadAmount", this.reloadAmount);
-            object.addProperty("alwaysSpread", true);
             return object;
         }
 

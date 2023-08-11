@@ -22,11 +22,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * A basic item class that implements {@link IAmmo} to indicate this item is ammunition
+ * A item class that implements {@link IAmmo} and {@link IHasAmmo} to indicate this item is loadable ammunition
  * <p>
- * Author: MrCrayfish
- *
- * Transformed by En0ri4n
+ * Author: En0ri4n
  */
 public class MagazineItem extends Item implements IAmmo, IHasAmmo
 {
@@ -48,7 +46,7 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
 
         CompoundTag tagCompound = stack.getTag();
 
-        if(tagCompound != null && getMaxAmmo(stack) > 1)
+        if(tagCompound != null && getMaxAmmo(stack) > 0)
         {
             tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + getAmmoCount(stack) + "/" + getMaxAmmo(stack)).withStyle(ChatFormatting.GRAY));
         }
@@ -63,7 +61,14 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
     @Override
     public int getBarColor(ItemStack pStack)
     {
-        return pStack.getOrCreateTag().getInt("AmmoCount") < this.ammo.getGeneral().getMaxAmmo() ? 0xECC906 : 0xFF0000;
+        float percent = (float) getAmmoCount(pStack) / (float) getMaxAmmo(pStack);
+
+        int result = 255 << 8;
+        result += (int) (percent * 255);
+        result = result << 8;
+
+        return result;
+
     }
 
     public void setAmmo(NetworkAmmoManager.Supplier supplier)
@@ -99,6 +104,12 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
     }
 
     @Override
+    public boolean hasAmmoMagazine(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public int getReloadAmount(ItemStack stack)
     {
         return this.ammo.getGeneral().getReloadAmount();
@@ -111,26 +122,25 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
     }
 
     @Override
+    public boolean isGun(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public boolean ignoreAmmo(ItemStack stack)
     {
         return stack.getItem() instanceof MagazineItem && stack.getOrCreateTag().getBoolean("IgnoreAmmo");
     }
 
     @Override
-    public boolean isAmmo(ItemStack stack)
+    public void decreaseAmmo(ItemStack stack, int amount)
     {
         if(stack.getItem() instanceof MagazineItem)
         {
-            return this.ammo.getProjectile().getItem().equals(stack.getItem().getRegistryName());
+            int ammoCount = getAmmoCount(stack);
+            stack.getOrCreateTag().putInt("AmmoCount", Math.max(0, ammoCount - amount));
         }
-
-        return false;
-    }
-
-    @Override
-    public int getAmmoCapacity(Player player, ItemStack stack)
-    {
-        return this.ammo.getGeneral().getMaxAmmo();
     }
 
     @Override

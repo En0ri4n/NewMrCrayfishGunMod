@@ -6,12 +6,10 @@ import com.google.gson.JsonObject;
 import com.mrcrayfish.guns.GunMod;
 import com.mrcrayfish.guns.common.Ammo;
 import com.mrcrayfish.guns.common.Gun;
-import com.mrcrayfish.guns.item.MagazineItem;
 import com.mrcrayfish.guns.item.GunItem;
-import com.mrcrayfish.guns.util.ReflectionUtil;
+import com.mrcrayfish.guns.item.MagazineItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.*;
@@ -24,6 +22,7 @@ import java.util.Map;
 public class GunConfigs
 {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+
     private static final Map<ResourceLocation, Gun> guns = new HashMap<>();
     private static final Map<ResourceLocation, Ammo> ammos = new HashMap<>();
 
@@ -47,7 +46,6 @@ public class GunConfigs
             JsonObject config = getConfig(server, id, gun, false);
             GunMod.LOGGER.debug("Loading config for gun " + id);
             gun.loadConfig(config);
-            setDurability(id, gun.getGeneral().getDurability()); // Special case for durability because we need to use Reflection
         });
 
         ammos.forEach((id, ammo) ->
@@ -56,12 +54,6 @@ public class GunConfigs
             GunMod.LOGGER.debug("Loading config for ammo " + id);
             ammo.loadConfig(config);
         });
-    }
-
-    private static void setDurability(ResourceLocation id, int durability)
-    {
-        Item item = ForgeRegistries.ITEMS.getValue(id);
-        ReflectionUtil.setItemMaxDurability(item, durability);
     }
 
     private static JsonObject getConfig(MinecraftServer server, ResourceLocation registryName, JsonSerializable serializable, boolean isAmmo)
@@ -111,7 +103,7 @@ public class GunConfigs
 
     private static File getConfigFolder(MinecraftServer server, boolean isAmmo)
     {
-        File folder = new File(server.getServerDirectory(), "config/cgm/" + (isAmmo ? "ammo" : "guns"));
+        File folder = new File(server.getServerDirectory(), "config/cgm/" + (isAmmo ? "ammo" : "gun"));
         if(!folder.exists())
             folder.mkdirs();
         return folder;

@@ -15,10 +15,10 @@ import com.mrcrayfish.guns.debug.IEditorMenu;
 import com.mrcrayfish.guns.debug.client.screen.widget.DebugButton;
 import com.mrcrayfish.guns.debug.client.screen.widget.DebugSlider;
 import com.mrcrayfish.guns.debug.client.screen.widget.DebugToggle;
-import com.mrcrayfish.guns.item.GunItem;
-import com.mrcrayfish.guns.item.ScopeItem;
+import com.mrcrayfish.guns.item.*;
 import com.mrcrayfish.guns.item.attachment.IAttachment;
 import com.mrcrayfish.guns.item.attachment.impl.Scope;
+import com.mrcrayfish.guns.util.GunHelper;
 import com.mrcrayfish.guns.util.GunJsonUtil;
 import com.mrcrayfish.guns.util.SuperBuilder;
 import net.minecraft.client.Minecraft;
@@ -28,7 +28,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -1788,67 +1787,60 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu, JsonSeri
 
     public static AmmoContext findAmmo(Player player, ResourceLocation id)
     {
+        Item ammoItem = ForgeRegistries.ITEMS.getValue(id);
+
         if(player.isCreative())
         {
-            Item item = ForgeRegistries.ITEMS.getValue(id);
-            ItemStack ammo = item != null ? new ItemStack(item, Integer.MAX_VALUE) : ItemStack.EMPTY;
-            return new AmmoContext(ammo, null);
+            if(ammoItem == null) return new AmmoContext(ItemStack.EMPTY, null);
+
+            if(ammoItem instanceof MagazineItem) return new AmmoContext(GunHelper.getFullMagazine(id), null);
+
+            return new AmmoContext(new ItemStack(ammoItem, Integer.MAX_VALUE), null);
         }
+
         for(int i = 0; i < player.getInventory().getContainerSize(); ++i)
         {
             ItemStack stack = player.getInventory().getItem(i);
+
             if(isAmmo(stack, id))
             {
                 return new AmmoContext(stack, player.getInventory());
             }
         }
+
         if(GunMod.backpackedLoaded)
         {
             return BackpackHelper.findAmmo(player, id);
         }
-        return AmmoContext.NONE;
-    }
 
-    public static AmmoContext findNonFullAmmo(Player player, ResourceLocation id)
-    {
-        if(player.isCreative())
-        {
-            Item item = ForgeRegistries.ITEMS.getValue(id);
-            ItemStack ammo = item != null ? new ItemStack(item) : ItemStack.EMPTY;
-            return new AmmoContext(ammo, null);
-        }
-
-        for(int i = 0; i < player.getInventory().getContainerSize(); ++i)
-        {
-            ItemStack stack = player.getInventory().getItem(i);
-            if(isAmmo(stack, id) && stack.isDamaged())
-            {
-                return new AmmoContext(stack, player.getInventory());
-            }
-        }
-        if(GunMod.backpackedLoaded)
-        {
-            return BackpackHelper.findAmmo(player, id);
-        }
         return AmmoContext.NONE;
     }
 
     public static boolean isAmmo(ItemStack stack, ResourceLocation id)
     {
-        return stack != null && stack.getItem().getRegistryName().equals(id);
+        Item ammoItem = ForgeRegistries.ITEMS.getValue(id);
+
+        if(stack.isEmpty() || !(ammoItem instanceof IAmmo) || stack.getItem() != ammoItem) return false;
+
+        if(ammoItem instanceof IHasAmmo iHasAmmo)
+            return iHasAmmo.getAmmoCount(stack) > 0;
+
+        return true;
     }
 
     public static boolean hasAmmo(ItemStack gunStack)
     {
-        CompoundTag tag = gunStack.getOrCreateTag();
-        return tag.getBoolean("IgnoreAmmo") || tag.getInt("AmmoCount") > 0;
+        GunItem gunItem = (GunItem) gunStack.getItem();
+        return gunItem.ignoreAmmo(gunStack) || gunItem.getAmmoCount(gunStack) > 0;
     }
 
     public static boolean hasAmmoInInventory(Player player, GunItem gunItem)
     {
         for(ItemStack stack : player.getInventory().items)
-            if(stack.getItem() == ForgeRegistries.ITEMS.getValue(gunItem.getGun().getProjectile().getItem()))
+        {
+            if(isAmmo(stack, gunItem.getGun().getProjectile().getItem()))
                 return true;
+        }
 
         return false;
     }

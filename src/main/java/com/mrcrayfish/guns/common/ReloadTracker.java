@@ -2,14 +2,15 @@ package com.mrcrayfish.guns.common;
 
 import com.mrcrayfish.guns.Config;
 import com.mrcrayfish.guns.Reference;
+import com.mrcrayfish.guns.common.network.ServerPlayHandler;
 import com.mrcrayfish.guns.init.ModSyncedDataKeys;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.IHasAmmo;
 import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.S2CMessageGunSound;
 import com.mrcrayfish.guns.network.message.S2CMessageNotification;
+import com.mrcrayfish.guns.util.GunHelper;
 import com.mrcrayfish.guns.util.GunPotionHelper;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -66,8 +67,10 @@ public class ReloadTracker
      */
     private boolean isWeaponFull(Player player)
     {
-        CompoundTag tag = this.stack.getOrCreateTag();
-        return tag.getInt("AmmoCount") >= iHasAmmo.getAmmoCapacity(player, this.stack);
+        if(iHasAmmo.hasAmmoMagazine(stack))
+            return GunHelper.hasMagazineLoaded(stack) && iHasAmmo.getAmmoCount(stack) > 0;
+
+        return iHasAmmo.getAmmoCount(stack) >= iHasAmmo.getMaxAmmo(stack);
     }
 
     private boolean hasNoAmmo(Player player)
@@ -89,17 +92,17 @@ public class ReloadTracker
 
         if(ammo.isEmpty()) return;
 
-        int amount = Math.min(iHasAmmo.getMaxAmmo(this.stack) - iHasAmmo.getAmmoCount(this.stack), iHasAmmo.getReloadAmount(stack));
-        CompoundTag tag = this.stack.getTag();
+        int a = iHasAmmo.getAmmoCount(this.stack);
+        int m = iHasAmmo.getMaxAmmo(this.stack);
+        int r = iHasAmmo.getReloadAmount(this.stack);
+        int amount = Math.min(m - a, r);
 
-        if(context.stack().getItem() instanceof IHasAmmo)
+        if(stack.getItem() instanceof GunItem && iHasAmmo.hasAmmoMagazine(stack))
         {
-            if(tag != null)
-            {
-                int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.iHasAmmo);
-                amount = Math.min(amount, maxAmmo - tag.getInt("AmmoCount"));
-                tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
-            }
+            if(player instanceof ServerPlayer serverPlayer)
+                ServerPlayHandler.handleUnload(serverPlayer);
+
+            GunHelper.loadMagazine(stack, ammo);
 
             // Trigger that the container changed
             Container container = context.container();
@@ -110,13 +113,10 @@ public class ReloadTracker
         }
         else
         {
-            if(tag != null)
-            {
-                int maxAmmo = GunPotionHelper.getAmmoCapacity(player, this.stack, this.iHasAmmo);
-                amount = Math.min(amount, ammo.getCount());
-                tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
-                ammo.shrink(amount);
-            }
+            int maxAmmo = iHasAmmo.getMaxAmmo(stack);
+            amount = Math.min(amount, ammo.getCount());
+            GunHelper.increaseAmmo(iHasAmmo, stack, amount);
+            ammo.shrink(amount);
 
             // Trigger that the container changed
             Container container = context.container();
@@ -152,13 +152,16 @@ public class ReloadTracker
                     }
                     RELOAD_TRACKER_MAP.put(player, new ReloadTracker(player));
                 }
+
                 ReloadTracker tracker = RELOAD_TRACKER_MAP.get(player);
+
                 if(!tracker.isSameWeapon(player) || tracker.isWeaponFull(player) || tracker.hasNoAmmo(player))
                 {
                     RELOAD_TRACKER_MAP.remove(player);
                     ModSyncedDataKeys.RELOADING.setValue(player, false);
                     return;
                 }
+
                 if(tracker.canReload(player))
                 {
                     tracker.increaseAmmo(player);
@@ -188,7 +191,7 @@ public class ReloadTracker
                     }
                 }
             }
-            else if(RELOAD_TRACKER_MAP.containsKey(player))
+            else
             {
                 RELOAD_TRACKER_MAP.remove(player);
             }

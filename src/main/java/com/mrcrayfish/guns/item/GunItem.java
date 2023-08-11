@@ -5,6 +5,7 @@ import com.mrcrayfish.guns.client.GunItemStackRenderer;
 import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.debug.Debug;
+import com.mrcrayfish.guns.util.GunHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
 import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.ChatFormatting;
@@ -63,8 +64,7 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
     {
         Gun modifiedGun = this.getModifiedGun(stack);
 
-        // TODO: check if this is the right way
-        Player player = Minecraft.getInstance().player; // Pas sur que ce soit une bonne idée mais on va voir x)
+        Player player = Minecraft.getInstance().player;
 
         if(player == null) return;
 
@@ -107,8 +107,8 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
             }
             else
             {
-                int ammoCount = tagCompound.getInt("AmmoCount");
-                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + GunPotionHelper.getAmmoCapacity(player, stack, this)).withStyle(ChatFormatting.GRAY));
+                int ammoCount = getAmmoCount(stack);
+                tooltip.add(new TranslatableComponent("info.cgm.ammo", ChatFormatting.WHITE.toString() + ammoCount + "/" + getMaxAmmo(stack)).withStyle(ChatFormatting.GRAY));
             }
         }
 
@@ -127,8 +127,7 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
         if(this.allowdedIn(group))
         {
             ItemStack stack = new ItemStack(this);
-            stack.getOrCreateTag().putInt("AmmoCount", this.gun.getGeneral().getMaxAmmo());
-            stacks.add(stack);
+            stacks.add(GunHelper.setWeaponFull(stack));
         }
     }
 
@@ -183,6 +182,18 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
     }
 
     @Override
+    public int getMaxDamage(ItemStack stack)
+    {
+        return this.gun.getGeneral().getDurability();
+    }
+
+    @Override
+    public boolean canBeDepleted()
+    {
+        return super.canBeDepleted();
+    }
+
+    @Override
     public void initializeClient(Consumer<IItemRenderProperties> consumer)
     {
         consumer.accept(new IItemRenderProperties()
@@ -198,28 +209,23 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
     @Override
     public int getAmmoCount(ItemStack stack)
     {
-        if(stack.getItem() instanceof GunItem)
-        {
-            return stack.getOrCreateTag().getInt("AmmoCount");
-        }
-
-        return 0;
+        return GunHelper.getAmmoCount(stack);
     }
 
     @Override
     public int getReloadAmount(ItemStack stack)
     {
-        if(stack.getItem() instanceof GunItem)
-        {
-            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
-            return gun.getGeneral().getReloadAmount();
-        }
-
-        return 0;
+        return hasAmmoMagazine(stack) ? 1 : this.gun.getGeneral().getReloadAmount();
     }
 
     @Override
     public boolean canUnload(ItemStack stack)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isGun(ItemStack stack)
     {
         return true;
     }
@@ -231,26 +237,11 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
     }
 
     @Override
-    public boolean isAmmo(ItemStack stack)
+    public void decreaseAmmo(ItemStack stack, int amount)
     {
-        if(stack.getItem() instanceof GunItem)
-        {
-            Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
-            return gun.getProjectile().getItem().equals(stack.getItem().getRegistryName());
-        }
+        if(!(stack.getItem() instanceof GunItem) || ignoreAmmo(stack)) return;
 
-        return false;
-    }
-
-    @Override
-    public int getAmmoCapacity(Player player, ItemStack stack)
-    {
-        if(stack.getItem() instanceof GunItem)
-        {
-            return GunPotionHelper.getAmmoCapacity(player, stack, this);
-        }
-
-        return 0;
+        GunHelper.setAmmoCount(stack, GunHelper.getAmmoCount(stack) - 1);
     }
 
     @Override
@@ -268,13 +259,30 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
     @Override
     public int getMaxAmmo(ItemStack stack)
     {
-        if(stack.getItem() instanceof GunItem)
+        if(!(stack.getItem() instanceof GunItem)) return 0;
+
+        if(hasAmmoMagazine(stack))
+        {
+            if(GunHelper.hasMagazineLoaded(stack))
+            {
+                ItemStack magazineStack = GunHelper.getMagazine(stack);
+                MagazineItem magazineItem = (MagazineItem) magazineStack.getItem();
+                return magazineItem.getMaxAmmo(magazineStack);
+            }
+        }
+        else
         {
             Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
             return gun.getGeneral().getMaxAmmo();
         }
 
         return 0;
+    }
+
+    @Override
+    public boolean hasAmmoMagazine(ItemStack stack)
+    {
+        return GunHelper.getGunAmmo(stack) instanceof MagazineItem;
     }
 
     @Override

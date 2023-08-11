@@ -114,7 +114,7 @@ public class RecipeGen extends RecipeProvider
                 .build(consumer);
 
         // Ammo
-        WorkbenchRecipeBuilder.crafting(ModItems.BASIC_AMMO.get(), 64)
+        WorkbenchRecipeBuilder.crafting(ModItems.BASIC_MAGAZINE.get(), 64)
                 .addIngredient(WorkbenchIngredient.of(Items.COPPER_INGOT, 4))
                 .addIngredient(WorkbenchIngredient.of(Tags.Items.GUNPOWDER, 1))
                 .addCriterion("has_copper_ingot", has(Items.COPPER_INGOT))

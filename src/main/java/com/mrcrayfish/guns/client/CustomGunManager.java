@@ -6,6 +6,7 @@ import com.mrcrayfish.guns.common.CustomGun;
 import com.mrcrayfish.guns.common.CustomGunLoader;
 import com.mrcrayfish.guns.init.ModItems;
 import com.mrcrayfish.guns.network.message.S2CMessageUpdateGunsAndAmmos;
+import com.mrcrayfish.guns.util.GunHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -54,7 +55,7 @@ public class CustomGunManager
                 tag.put("Model", gun.getModel().save(new CompoundTag()));
                 tag.put("Gun", gun.getGun().serializeNBT());
                 tag.putBoolean("Custom", true);
-                tag.putInt("AmmoCount", gun.getGun().getGeneral().getMaxAmmo());
+                GunHelper.setWeaponFull(stack);
                 items.add(stack);
             });
         }

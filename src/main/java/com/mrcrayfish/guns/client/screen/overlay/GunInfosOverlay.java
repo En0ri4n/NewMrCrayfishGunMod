@@ -40,20 +40,15 @@ public class GunInfosOverlay implements IIngameOverlay
 
         if(stack.getItem() instanceof IHasAmmo iHasAmmo)
         {
-            CompoundTag tagCompound = stack.getTag();
+            int ammoCount = iHasAmmo.getAmmoCount(stack);
+            int displayHeight = height - (mc.player.isCreative() ? 33 : 48);
 
-            if(tagCompound != null)
-            {
-                int ammoCount = tagCompound.getInt("AmmoCount");
-                int displayHeight = height - (mc.player.isCreative() ? 33 : 48);
+            String ammo = ChatFormatting.GRAY + "" + ammoCount + "/" + iHasAmmo.getMaxAmmo(stack);
 
-                String ammo = ChatFormatting.GRAY + "" + ammoCount + "/" + iHasAmmo.getMaxAmmo(stack);
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Reference.MOD_ID, "textures/bullet.png"));
+            Screen.blit(poseStack, width / 2 + mc.font.width(ammo) / 2 - 2, displayHeight - 1, 10, 10, 0, 0,64, 64, 64, 64);
 
-                RenderSystem.setShaderTexture(0, new ResourceLocation(Reference.MOD_ID, "textures/bullet.png"));
-                Screen.blit(poseStack, width / 2 + mc.font.width(ammo) / 2 - 2, displayHeight - 1, 10, 10, 0, 0,64, 64, 64, 64);
-
-                Screen.drawString(poseStack, mc.font, ammo, width / 2 - mc.font.width(ammo) / 2, displayHeight, 0xFFFFFFFF);
-            }
+            Screen.drawString(poseStack, mc.font, ammo, width / 2 - mc.font.width(ammo) / 2, displayHeight, 0xFFFFFFFF);
         }
     }
 }

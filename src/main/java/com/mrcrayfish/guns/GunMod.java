@@ -18,6 +18,7 @@ import com.mrcrayfish.guns.entity.GrenadeEntity;
 import com.mrcrayfish.guns.entity.MissileEntity;
 import com.mrcrayfish.guns.init.*;
 import com.mrcrayfish.guns.network.PacketHandler;
+import com.mrcrayfish.guns.util.GunHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +44,8 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.function.Supplier;
+
 @Mod(Reference.MOD_ID)
 public class GunMod
 {
@@ -57,7 +60,7 @@ public class GunMod
         public ItemStack makeIcon()
         {
             ItemStack stack = new ItemStack(ModItems.PISTOL.get());
-            stack.getOrCreateTag().putInt("AmmoCount", ModItems.PISTOL.get().getGun().getGeneral().getMaxAmmo());
+            GunHelper.setWeaponFull(stack);
             return stack;
         }
 
@@ -66,11 +69,10 @@ public class GunMod
         {
             super.fillItemList(items);
             CustomGunManager.fill(items);
-            ModPotions.POTIONS.forEach(pot ->
-            {
-                if(pot.get().getRegistryName() != null && pot.get().getRegistryName().getNamespace().equals(Reference.MOD_ID))
-                    items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), pot.get()));
-            });
+            ModPotions.POTIONS.stream()
+                    .map(Supplier::get)
+                    .filter(pot -> pot.getRegistryName() != null && pot.getRegistryName().getNamespace().equals(Reference.MOD_ID))
+                    .forEach(pot -> items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), pot)));
         }
     }.setEnchantmentCategories(EnchantmentTypes.GUN, EnchantmentTypes.SEMI_AUTO_GUN);
 

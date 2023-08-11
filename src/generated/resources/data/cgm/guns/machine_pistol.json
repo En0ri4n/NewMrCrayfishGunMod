@@ -15,7 +15,7 @@
     "durability": 512
   },
   "projectile": {
-    "item": "cgm:basic_ammo",
+    "item": "cgm:basic_magazine",
     "visible": true,
     "damage": 3.0,
     "size": 0.2,

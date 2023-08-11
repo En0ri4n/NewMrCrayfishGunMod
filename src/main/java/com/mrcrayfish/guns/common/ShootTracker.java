@@ -2,12 +2,12 @@ package com.mrcrayfish.guns.common;
 
 import com.google.common.collect.Maps;
 import com.mrcrayfish.guns.item.GunItem;
-import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
+import net.minecraft.Util;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.Util;
 import net.minecraft.world.item.context.UseOnContext;
 import org.apache.commons.lang3.tuple.Pair;
 

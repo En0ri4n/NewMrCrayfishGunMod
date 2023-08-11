@@ -7,14 +7,14 @@ import com.mrcrayfish.guns.crafting.WorkbenchRecipeBuilder;
 import com.mrcrayfish.guns.init.ModBlocks;
 import com.mrcrayfish.guns.init.ModItems;
 import com.mrcrayfish.guns.init.ModRecipeSerializers;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nullable;
@@ -45,7 +45,7 @@ public class RecipeGen extends RecipeProvider
             @Override
             public ResourceLocation getId()
             {
-                return new ResourceLocation(Reference.MOD_ID, "dye_item");
+                return Reference.getLoc("dye_item");
             }
 
             @Override

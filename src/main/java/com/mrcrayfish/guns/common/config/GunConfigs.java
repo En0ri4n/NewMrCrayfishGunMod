@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mrcrayfish.guns.GunMod;
-import com.mrcrayfish.guns.common.Ammo;
 import com.mrcrayfish.guns.common.Gun;
+import com.mrcrayfish.guns.common.Magazine;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.MagazineItem;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +24,7 @@ public class GunConfigs
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 
     private static final Map<ResourceLocation, Gun> guns = new HashMap<>();
-    private static final Map<ResourceLocation, Ammo> ammos = new HashMap<>();
+    private static final Map<ResourceLocation, Magazine> ammos = new HashMap<>();
 
     private static void addGun(GunItem item)
     {

@@ -20,7 +20,7 @@ public class S2CMessageUpdateGunsAndAmmos extends PlayMessage<S2CMessageUpdateGu
 {
     private ImmutableMap<ResourceLocation, Gun> registeredGuns;
     private ImmutableMap<ResourceLocation, CustomGun> customGuns;
-    private ImmutableMap<ResourceLocation, Ammo> registeredAmmos;
+    private ImmutableMap<ResourceLocation, Magazine> registeredAmmos;
 
     public S2CMessageUpdateGunsAndAmmos() {}
 
@@ -61,7 +61,7 @@ public class S2CMessageUpdateGunsAndAmmos extends PlayMessage<S2CMessageUpdateGu
         return this.customGuns;
     }
 
-    public ImmutableMap<ResourceLocation, Ammo> getRegisteredAmmos()
+    public ImmutableMap<ResourceLocation, Magazine> getRegisteredAmmos()
     {
         return this.registeredAmmos;
     }

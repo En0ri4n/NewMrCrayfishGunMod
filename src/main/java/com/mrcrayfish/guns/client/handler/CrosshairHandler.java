@@ -50,18 +50,18 @@ public class CrosshairHandler
 
     private CrosshairHandler()
     {
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "better_default")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "circle")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "filled_circle"), false));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "square")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "round")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "arrow")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "dot")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "box")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "hit_marker")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "line")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "t")));
-        this.register(new TexturedCrosshair(new ResourceLocation(Reference.MOD_ID, "smiley")));
+        this.register(new TexturedCrosshair(Reference.getLoc("better_default")));
+        this.register(new TexturedCrosshair(Reference.getLoc("circle")));
+        this.register(new TexturedCrosshair(Reference.getLoc("filled_circle"), false));
+        this.register(new TexturedCrosshair(Reference.getLoc("square")));
+        this.register(new TexturedCrosshair(Reference.getLoc("round")));
+        this.register(new TexturedCrosshair(Reference.getLoc("arrow")));
+        this.register(new TexturedCrosshair(Reference.getLoc("dot")));
+        this.register(new TexturedCrosshair(Reference.getLoc("box")));
+        this.register(new TexturedCrosshair(Reference.getLoc("hit_marker")));
+        this.register(new TexturedCrosshair(Reference.getLoc("line")));
+        this.register(new TexturedCrosshair(Reference.getLoc("t")));
+        this.register(new TexturedCrosshair(Reference.getLoc("smiley")));
         this.register(new TechCrosshair());
     }
 

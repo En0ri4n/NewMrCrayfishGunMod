@@ -41,7 +41,7 @@ import java.util.*;
  * From {@link NetworkGunManager}
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
-public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<MagazineItem, Ammo>>
+public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<MagazineItem, Magazine>>
 {
     private static final int FILE_TYPE_LENGTH_VALUE = ".json".length();
     private static final Gson GSON_INSTANCE = Util.make(() -> {
@@ -54,12 +54,12 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
     private static List<MagazineItem> clientRegisteredAmmos = new ArrayList<>();
     private static NetworkAmmoManager instance;
 
-    private Map<ResourceLocation, Ammo> registeredAmmos = new HashMap<>();
+    private Map<ResourceLocation, Magazine> registeredAmmos = new HashMap<>();
 
     @Override
-    protected Map<MagazineItem, Ammo> prepare(ResourceManager manager, ProfilerFiller profiler)
+    protected Map<MagazineItem, Magazine> prepare(ResourceManager manager, ProfilerFiller profiler)
     {
-        Map<MagazineItem, Ammo> map = new HashMap<>();
+        Map<MagazineItem, Magazine> map = new HashMap<>();
         ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof MagazineItem).forEach(item ->
         {
             ResourceLocation id = item.getRegistryName();
@@ -85,16 +85,16 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
 
                     try(InputStream inputstream = manager.getResource(resource).getInputStream(); Reader reader = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8)))
                     {
-                        Ammo ammo = GsonHelper.fromJson(GSON_INSTANCE, reader, Ammo.class);
-                        if(ammo != null && Validator.isValidObject(ammo))
+                        Magazine magazine = GsonHelper.fromJson(GSON_INSTANCE, reader, Magazine.class);
+                        if(magazine != null && Validator.isValidObject(magazine))
                         {
                             
-                            map.put((MagazineItem) item, ammo);
+                            map.put((MagazineItem) item, magazine);
                         }
                         else
                         {
                             GunMod.LOGGER.error("Couldn't load data file {} as it is missing or malformed. Using default ammo data", resource);
-                            map.putIfAbsent((MagazineItem) item, new Ammo());
+                            map.putIfAbsent((MagazineItem) item, new Magazine());
                         }
                     }
                     catch(InvalidObjectException e)
@@ -118,9 +118,9 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
     }
 
     @Override
-    protected void apply(Map<MagazineItem, Ammo> objects, ResourceManager resourceManager, ProfilerFiller profiler)
+    protected void apply(Map<MagazineItem, Magazine> objects, ResourceManager resourceManager, ProfilerFiller profiler)
     {
-        ImmutableMap.Builder<ResourceLocation, Ammo> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<ResourceLocation, Magazine> builder = ImmutableMap.builder();
         objects.forEach((item, ammo) -> {
             Validate.notNull(item.getRegistryName());
             builder.put(item.getRegistryName(), ammo);
@@ -149,17 +149,17 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
      * @param buffer a packet buffer get
      * @return a map of registered guns from the server
      */
-    public static ImmutableMap<ResourceLocation, Ammo> readRegisteredAmmos(FriendlyByteBuf buffer)
+    public static ImmutableMap<ResourceLocation, Magazine> readRegisteredAmmos(FriendlyByteBuf buffer)
     {
         int size = buffer.readVarInt();
         if(size > 0)
         {
-            ImmutableMap.Builder<ResourceLocation, Ammo> builder = ImmutableMap.builder();
+            ImmutableMap.Builder<ResourceLocation, Magazine> builder = ImmutableMap.builder();
             for(int i = 0; i < size; i++)
             {
                 ResourceLocation id = buffer.readResourceLocation();
-                Ammo ammo = Ammo.create(buffer.readNbt());
-                builder.put(id, ammo);
+                Magazine magazine = Magazine.create(buffer.readNbt());
+                builder.put(id, magazine);
             }
             return builder.build();
         }
@@ -176,12 +176,12 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
      *
      * @return true if all registered guns were able to update their corresponding ammo item
      */
-    private static boolean updateRegisteredAmmos(Map<ResourceLocation, Ammo> registeredGuns)
+    private static boolean updateRegisteredAmmos(Map<ResourceLocation, Magazine> registeredGuns)
     {
         clientRegisteredAmmos.clear();
         if(registeredGuns != null)
         {
-            for(Map.Entry<ResourceLocation, Ammo> entry : registeredGuns.entrySet())
+            for(Map.Entry<ResourceLocation, Magazine> entry : registeredGuns.entrySet())
             {
                 Item item = ForgeRegistries.ITEMS.getValue(entry.getKey());
                 if(!(item instanceof MagazineItem))
@@ -201,7 +201,7 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
      *
      * @return a map of registered ammo objects
      */
-    public Map<ResourceLocation, Ammo> getRegisteredAmmos()
+    public Map<ResourceLocation, Magazine> getRegisteredAmmos()
     {
         return this.registeredAmmos;
     }
@@ -258,16 +258,16 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
      */
     public static class Supplier
     {
-        private Ammo ammo;
+        private Magazine magazine;
 
-        private Supplier(Ammo ammo)
+        private Supplier(Magazine magazine)
         {
-            this.ammo = ammo;
+            this.magazine = magazine;
         }
 
-        public Ammo getAmmo()
+        public Magazine getAmmo()
         {
-            return this.ammo;
+            return this.magazine;
         }
     }
 
@@ -283,7 +283,7 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
         @Override
         public Optional<String> readData(FriendlyByteBuf buffer)
         {
-            Map<ResourceLocation, Ammo> registeredGuns = NetworkAmmoManager.readRegisteredAmmos(buffer);
+            Map<ResourceLocation, Magazine> registeredGuns = NetworkAmmoManager.readRegisteredAmmos(buffer);
             NetworkAmmoManager.updateRegisteredAmmos(registeredGuns);
             return Optional.empty();
         }

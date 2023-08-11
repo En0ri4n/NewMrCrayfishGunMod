@@ -1,15 +1,15 @@
 package com.mrcrayfish.guns.client.render.pose;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.mrcrayfish.guns.client.render.IHeldAnimation;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
-import net.minecraft.util.Mth;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

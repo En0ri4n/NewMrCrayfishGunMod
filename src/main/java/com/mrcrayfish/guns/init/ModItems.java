@@ -33,6 +33,7 @@ public class ModItems
     public static final RegistryObject<Item> MISSILE_AMMO = REGISTER.register("missile_ammo", () -> new AmmoItem(new Item.Properties().tab(GunMod.GROUP)));
 
     public static final RegistryObject<Item> BASIC_MAGAZINE = REGISTER.register("basic_magazine", () -> new MagazineItem(new Item.Properties().tab(GunMod.GROUP)));
+    public static final RegistryObject<Item> ADVANCED_MAGAZINE = REGISTER.register("advanced_magazine", () -> new MagazineItem(new Item.Properties().tab(GunMod.GROUP)));
 
     public static final RegistryObject<Item> GRENADE = REGISTER.register("grenade", () -> new GrenadeItem(new Item.Properties().tab(GunMod.GROUP), 20 * 4));
     public static final RegistryObject<Item> STUN_GRENADE = REGISTER.register("stun_grenade", () -> new StunGrenadeItem(new Item.Properties().tab(GunMod.GROUP), 72000));

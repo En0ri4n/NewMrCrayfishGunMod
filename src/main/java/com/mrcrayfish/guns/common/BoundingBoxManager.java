@@ -1,18 +1,14 @@
 package com.mrcrayfish.guns.common;
 
 import com.mrcrayfish.guns.Config;
-import com.mrcrayfish.guns.common.headshot.BasicHeadshotBox;
-import com.mrcrayfish.guns.common.headshot.ChildHeadshotBox;
-import com.mrcrayfish.guns.common.headshot.NoChildHeadshotBox;
-import com.mrcrayfish.guns.common.headshot.NoChildRotatedHeadshotBox;
-import com.mrcrayfish.guns.common.headshot.RotatedHeadshotBox;
+import com.mrcrayfish.guns.common.headshot.*;
 import com.mrcrayfish.guns.interfaces.IHeadshotBox;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;

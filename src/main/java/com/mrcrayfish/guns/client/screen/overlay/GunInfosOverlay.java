@@ -7,8 +7,6 @@ import com.mrcrayfish.guns.item.IHasAmmo;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -45,7 +43,7 @@ public class GunInfosOverlay implements IIngameOverlay
 
             String ammo = ChatFormatting.GRAY + "" + ammoCount + "/" + iHasAmmo.getMaxAmmo(stack);
 
-            RenderSystem.setShaderTexture(0, new ResourceLocation(Reference.MOD_ID, "textures/bullet.png"));
+            RenderSystem.setShaderTexture(0, Reference.getLoc("textures/bullet.png"));
             Screen.blit(poseStack, width / 2 + mc.font.width(ammo) / 2 - 2, displayHeight - 1, 10, 10, 0, 0,64, 64, 64, 64);
 
             Screen.drawString(poseStack, mc.font, ammo, width / 2 - mc.font.width(ammo) / 2, displayHeight, 0xFFFFFFFF);

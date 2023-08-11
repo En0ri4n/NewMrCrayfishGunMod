@@ -1,17 +1,17 @@
 package com.mrcrayfish.guns.common;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.client.render.IHeldAnimation;
 import com.mrcrayfish.guns.client.render.pose.BazookaPose;
 import com.mrcrayfish.guns.client.render.pose.MiniGunPose;
 import com.mrcrayfish.guns.client.render.pose.OneHandedPose;
 import com.mrcrayfish.guns.client.render.pose.TwoHandedPose;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Items;
 import net.minecraft.resources.ResourceLocation;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,23 +26,23 @@ public class GripType
     /**
      * A grip type designed for weapons that are held with only one hand, like a pistol
      */
-    public static final GripType ONE_HANDED = new GripType(new ResourceLocation(Reference.MOD_ID, "one_handed"), new OneHandedPose());
+    public static final GripType ONE_HANDED = new GripType(Reference.getLoc("one_handed"), new OneHandedPose());
 
     /**
      * A grip type designed for weapons that are held with two hands, like an assault rifle
      */
-    public static final GripType TWO_HANDED = new GripType(new ResourceLocation(Reference.MOD_ID, "two_handed"), new TwoHandedPose());
+    public static final GripType TWO_HANDED = new GripType(Reference.getLoc("two_handed"), new TwoHandedPose());
 
     /**
      * A custom grip type designed for the mini gun simply due it's nature of being a completely
      * unique way to hold the weapon
      */
-    public static final GripType MINI_GUN = new GripType(new ResourceLocation(Reference.MOD_ID, "mini_gun"), new MiniGunPose());
+    public static final GripType MINI_GUN = new GripType(Reference.getLoc("mini_gun"), new MiniGunPose());
 
     /**
      * A custom grip type designed for the bazooka.
      */
-    public static final GripType BAZOOKA = new GripType(new ResourceLocation(Reference.MOD_ID, "bazooka"), new BazookaPose());
+    public static final GripType BAZOOKA = new GripType(Reference.getLoc("bazooka"), new BazookaPose());
 
     /**
      * A common method to set up a transformation of the weapon onto the players' back.

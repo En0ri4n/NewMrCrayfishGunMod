@@ -1,21 +1,21 @@
 package com.mrcrayfish.guns.client.render.pose;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import com.mrcrayfish.guns.Config;
 import com.mrcrayfish.guns.client.handler.ReloadHandler;
 import com.mrcrayfish.guns.client.util.RenderUtil;
 import com.mrcrayfish.guns.common.GripType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
-import com.mojang.math.Vector3f;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

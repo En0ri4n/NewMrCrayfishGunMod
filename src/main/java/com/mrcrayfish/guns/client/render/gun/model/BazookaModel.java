@@ -25,9 +25,9 @@ import java.util.function.Supplier;
 @Deprecated(since = "1.3.0", forRemoval = true)
 public class BazookaModel extends SimpleModel
 {
-    private static final ResourceLocation RED_DOT_RETICLE = new ResourceLocation(Reference.MOD_ID, "textures/effect/red_dot_reticle.png");
-    private static final ResourceLocation RED_DOT_RETICLE_GLOW = new ResourceLocation(Reference.MOD_ID, "textures/effect/red_dot_reticle_glow.png");
-    private static final ResourceLocation VIGNETTE = new ResourceLocation(Reference.MOD_ID, "textures/effect/scope_vignette.png");
+    private static final ResourceLocation RED_DOT_RETICLE = Reference.getLoc("textures/effect/red_dot_reticle.png");
+    private static final ResourceLocation RED_DOT_RETICLE_GLOW = Reference.getLoc("textures/effect/red_dot_reticle_glow.png");
+    private static final ResourceLocation VIGNETTE = Reference.getLoc("textures/effect/scope_vignette.png");
 
     public BazookaModel(Supplier<BakedModel> modelSupplier)
     {

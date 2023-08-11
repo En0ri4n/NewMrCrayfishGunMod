@@ -1,7 +1,6 @@
 package com.mrcrayfish.guns.client.settings;
 
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.ProgressOption;
 import net.minecraft.network.chat.Component;
 

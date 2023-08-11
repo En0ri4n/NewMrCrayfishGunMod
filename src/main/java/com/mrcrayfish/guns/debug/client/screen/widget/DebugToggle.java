@@ -1,7 +1,6 @@
 package com.mrcrayfish.guns.debug.client.screen.widget;
 
 import com.mrcrayfish.guns.debug.IDebugWidget;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
 import java.util.function.Consumer;

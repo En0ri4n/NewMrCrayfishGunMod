@@ -2,7 +2,6 @@ package com.mrcrayfish.guns.util;
 
 import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.init.ModEffects;
-import com.mrcrayfish.guns.item.IHasAmmo;
 import com.mrcrayfish.guns.particles.TrailData;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

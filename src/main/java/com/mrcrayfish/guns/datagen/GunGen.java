@@ -6,7 +6,6 @@ import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.init.ModItems;
 import com.mrcrayfish.guns.init.ModSounds;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 
 /**
  * Author: MrCrayfish
@@ -23,7 +22,7 @@ public class GunGen extends GunProvider
     @Override
     protected void registerGuns()
     {
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "assault_rifle"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("assault_rifle"), Gun.Builder.create()
                 .setAuto(true)
                 .setFireRate(3)
                 .setGripType(GripType.TWO_HANDED)
@@ -52,7 +51,7 @@ public class GunGen extends GunProvider
                 .setUnderBarrel(1.0F, 0.0, 2.799, -1.0)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "bazooka"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("bazooka"), Gun.Builder.create()
                 .setFireRate(80)
                 .setGripType(GripType.BAZOOKA)
                 .setMaxAmmo(1)
@@ -72,7 +71,7 @@ public class GunGen extends GunProvider
                         .setOffset(3.5, 4.3, 16.0))
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "grenade_launcher"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("grenade_launcher"), Gun.Builder.create()
                 .setFireRate(20)
                 .setGripType(GripType.TWO_HANDED)
                 .setMaxAmmo(1)
@@ -96,7 +95,7 @@ public class GunGen extends GunProvider
                 .setStock(1.0F, 0.0, 3.6, 8.2)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "heavy_rifle"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("heavy_rifle"), Gun.Builder.create()
                 .setFireRate(40)
                 .setGripType(GripType.TWO_HANDED)
                 .setMaxAmmo(4)
@@ -127,7 +126,7 @@ public class GunGen extends GunProvider
                 .setUnderBarrel(1.0F, 0.0, 3.0, -0.5)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "machine_pistol"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("machine_pistol"), Gun.Builder.create()
                 .setAuto(true)
                 .setFireRate(2)
                 .setGripType(GripType.ONE_HANDED)
@@ -157,7 +156,7 @@ public class GunGen extends GunProvider
                 .setStock(1.0F, 0.0,3.2, 8.2)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "mini_gun"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("mini_gun"), Gun.Builder.create()
                 .setAuto(true)
                 .setFireRate(2)
                 .setGripType(GripType.MINI_GUN)
@@ -177,7 +176,7 @@ public class GunGen extends GunProvider
                 .setMuzzleFlash(0.5, 0.0, 2.7, -11.51)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "pistol"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("pistol"), Gun.Builder.create()
                 .setFireRate(4)
                 .setGripType(GripType.ONE_HANDED)
                 .setMaxAmmo(16)
@@ -205,7 +204,7 @@ public class GunGen extends GunProvider
                 .setStock(1.0F, 0.0, 3.3, 7.95)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "rifle"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("rifle"), Gun.Builder.create()
                 .setFireRate(8)
                 .setGripType(GripType.TWO_HANDED)
                 .setMaxAmmo(10)
@@ -236,7 +235,7 @@ public class GunGen extends GunProvider
                 .setUnderBarrel(1.0F, 0.0, 2.63, -0.5)
                 .build());
 
-        this.addGun(new ResourceLocation(Reference.MOD_ID, "shotgun"), Gun.Builder.create()
+        this.addGun(Reference.getLoc("shotgun"), Gun.Builder.create()
                 .setFireRate(8)
                 .setGripType(GripType.TWO_HANDED)
                 .setMaxAmmo(8)

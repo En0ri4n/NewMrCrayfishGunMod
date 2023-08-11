@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mrcrayfish.guns.debug.IDebugWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 

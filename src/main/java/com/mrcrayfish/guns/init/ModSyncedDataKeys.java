@@ -5,7 +5,6 @@ import com.mrcrayfish.framework.api.data.sync.Serializers;
 import com.mrcrayfish.framework.api.data.sync.SyncedClassKey;
 import com.mrcrayfish.framework.api.data.sync.SyncedDataKey;
 import com.mrcrayfish.guns.Reference;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 /**
@@ -16,19 +15,19 @@ import net.minecraft.world.entity.player.Player;
 public class ModSyncedDataKeys
 {
     public static final SyncedDataKey<Player, Boolean> AIMING = SyncedDataKey.builder(SyncedClassKey.PLAYER, Serializers.BOOLEAN)
-            .id(new ResourceLocation(Reference.MOD_ID, "aiming"))
+            .id(Reference.getLoc("aiming"))
             .defaultValueSupplier(() -> false)
             .resetOnDeath()
             .build();
 
     public static final SyncedDataKey<Player, Boolean> SHOOTING = SyncedDataKey.builder(SyncedClassKey.PLAYER, Serializers.BOOLEAN)
-            .id(new ResourceLocation(Reference.MOD_ID, "shooting"))
+            .id(Reference.getLoc("shooting"))
             .defaultValueSupplier(() -> false)
             .resetOnDeath()
             .build();
 
     public static final SyncedDataKey<Player, Boolean> RELOADING = SyncedDataKey.builder(SyncedClassKey.PLAYER, Serializers.BOOLEAN)
-            .id(new ResourceLocation(Reference.MOD_ID, "reloading"))
+            .id(Reference.getLoc("reloading"))
             .defaultValueSupplier(() -> false)
             .resetOnDeath()
             .build();

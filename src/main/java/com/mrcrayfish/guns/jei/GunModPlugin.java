@@ -31,7 +31,7 @@ public class GunModPlugin implements IModPlugin
     @Override
     public ResourceLocation getPluginUid()
     {
-        return new ResourceLocation(Reference.MOD_ID, "crafting");
+        return Reference.getLoc("crafting");
     }
 
     @Override

@@ -2,12 +2,10 @@ package com.mrcrayfish.guns.client.audio;
 
 import com.mrcrayfish.guns.Config;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-
-import net.minecraft.client.resources.sounds.SoundInstance.Attenuation;
 
 /**
  * Author: MrCrayfish

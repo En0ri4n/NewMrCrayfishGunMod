@@ -5,7 +5,6 @@ import com.mrcrayfish.guns.client.ClientHandler;
 import com.mrcrayfish.guns.client.CustomGunManager;
 import com.mrcrayfish.guns.client.MetaLoader;
 import com.mrcrayfish.guns.client.handler.CrosshairHandler;
-import com.mrcrayfish.guns.client.handler.ReloadHandler;
 import com.mrcrayfish.guns.commands.CreloadCommand;
 import com.mrcrayfish.guns.common.BoundingBoxManager;
 import com.mrcrayfish.guns.common.ProjectileManager;
@@ -21,7 +20,6 @@ import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.util.GunHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionUtils;
@@ -124,7 +122,7 @@ public class GunMod
         {
             ModRecipeType.init();
             ModSyncedDataKeys.register();
-            CraftingHelper.register(new ResourceLocation(Reference.MOD_ID, "workbench_ingredient"), WorkbenchIngredient.Serializer.INSTANCE);
+            CraftingHelper.register(Reference.getLoc("workbench_ingredient"), WorkbenchIngredient.Serializer.INSTANCE);
             ProjectileManager.getInstance().registerFactory(ModItems.GRENADE.get(), (worldIn, entity, weapon, item, modifiedGun) -> new GrenadeEntity(ModEntities.GRENADE.get(), worldIn, entity, weapon, item, modifiedGun));
             ProjectileManager.getInstance().registerFactory(ModItems.MISSILE_AMMO.get(), (worldIn, entity, weapon, item, modifiedGun) -> new MissileEntity(ModEntities.MISSILE.get(), worldIn, entity, weapon, item, modifiedGun));
             PacketHandler.init();

@@ -1,6 +1,5 @@
 package com.mrcrayfish.guns.debug.client.screen.widget;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.StringRepresentable;
 

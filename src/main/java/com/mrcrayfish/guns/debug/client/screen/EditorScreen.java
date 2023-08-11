@@ -1,12 +1,7 @@
 package com.mrcrayfish.guns.debug.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.debug.IDebugWidget;
 import com.mrcrayfish.guns.debug.IEditorMenu;
@@ -36,7 +31,7 @@ import java.util.function.Supplier;
  */
 public class EditorScreen extends Screen
 {
-    private static final ResourceLocation WINDOW_TEXTURE = new ResourceLocation(Reference.MOD_ID, "textures/gui/debug.png");
+    private static final ResourceLocation WINDOW_TEXTURE = Reference.getLoc("textures/gui/debug.png");
     private static final int WIDTH = 150;
 
     private final Screen parent;

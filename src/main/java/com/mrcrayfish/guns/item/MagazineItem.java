@@ -1,6 +1,6 @@
 package com.mrcrayfish.guns.item;
 
-import com.mrcrayfish.guns.common.Ammo;
+import com.mrcrayfish.guns.common.Magazine;
 import com.mrcrayfish.guns.common.NetworkAmmoManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class MagazineItem extends Item implements IAmmo, IHasAmmo
 {
-    private Ammo ammo = new Ammo();
+    private Magazine magazine = new Magazine();
 
     public MagazineItem(Properties properties)
     {
@@ -73,12 +73,12 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
 
     public void setAmmo(NetworkAmmoManager.Supplier supplier)
     {
-        this.ammo = supplier.getAmmo();
+        this.magazine = supplier.getAmmo();
     }
 
-    public Ammo getAmmo()
+    public Magazine getAmmo()
     {
-        return this.ammo;
+        return this.magazine;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
         if(this.allowdedIn(group))
         {
             ItemStack stack = new ItemStack(this);
-            stack.getOrCreateTag().putInt("AmmoCount", this.ammo.getGeneral().getMaxAmmo());
+            stack.getOrCreateTag().putInt("AmmoCount", this.magazine.getGeneral().getMaxAmmo());
             stacks.add(stack);
         }
     }
@@ -112,7 +112,7 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
     @Override
     public int getReloadAmount(ItemStack stack)
     {
-        return this.ammo.getGeneral().getReloadAmount();
+        return this.magazine.getGeneral().getReloadAmount();
     }
 
     @Override
@@ -146,18 +146,18 @@ public class MagazineItem extends Item implements IAmmo, IHasAmmo
     @Override
     public ResourceLocation getAmmoType(ItemStack stack)
     {
-        return this.ammo.getProjectile().getItem();
+        return this.magazine.getProjectile().getItem();
     }
 
     @Override
     public int getMaxAmmo(ItemStack stack)
     {
-        return this.ammo.getGeneral().getMaxAmmo();
+        return this.magazine.getGeneral().getMaxAmmo();
     }
 
     @Override
     public ResourceLocation getReloadSound(ItemStack stack)
     {
-        return this.ammo.getSounds().getReload();
+        return this.magazine.getSounds().getReload();
     }
 }

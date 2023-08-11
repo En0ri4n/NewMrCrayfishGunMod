@@ -4,19 +4,13 @@ import com.mrcrayfish.guns.Config;
 import com.mrcrayfish.guns.client.handler.CrosshairHandler;
 import com.mrcrayfish.guns.client.render.crosshair.Crosshair;
 import net.minecraft.client.CycleOption;
-import net.minecraft.client.Option;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.ProgressOption;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import java.text.DecimalFormat;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Author: MrCrayfish<p>

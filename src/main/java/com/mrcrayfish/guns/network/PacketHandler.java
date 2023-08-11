@@ -7,7 +7,6 @@ import com.mrcrayfish.guns.client.CustomGunManager;
 import com.mrcrayfish.guns.common.NetworkAmmoManager;
 import com.mrcrayfish.guns.common.NetworkGunManager;
 import com.mrcrayfish.guns.network.message.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -45,8 +44,8 @@ public class PacketHandler
                 .registerPlayMessage(S2CMessageNotification.class, NetworkDirection.PLAY_TO_CLIENT)
                 .build();
 
-        FrameworkAPI.registerLoginData(new ResourceLocation(Reference.MOD_ID, "network_gun_manager"), NetworkGunManager.LoginData::new);
-        FrameworkAPI.registerLoginData(new ResourceLocation(Reference.MOD_ID, "custom_gun_manager"), CustomGunManager.LoginData::new);
-        FrameworkAPI.registerLoginData(new ResourceLocation(Reference.MOD_ID, "network_ammo_manager"), NetworkAmmoManager.LoginData::new);
+        FrameworkAPI.registerLoginData(Reference.getLoc("network_gun_manager"), NetworkGunManager.LoginData::new);
+        FrameworkAPI.registerLoginData(Reference.getLoc("custom_gun_manager"), CustomGunManager.LoginData::new);
+        FrameworkAPI.registerLoginData(Reference.getLoc("network_ammo_manager"), NetworkAmmoManager.LoginData::new);
     }
 }

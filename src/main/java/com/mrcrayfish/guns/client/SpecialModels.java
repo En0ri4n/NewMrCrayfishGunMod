@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
@@ -50,7 +49,7 @@ public enum SpecialModels
      */
     SpecialModels(String modelName)
     {
-        this.modelLocation = new ResourceLocation(Reference.MOD_ID, "special/" + modelName);
+        this.modelLocation = Reference.getLoc("special/" + modelName);
     }
 
     /**

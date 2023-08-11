@@ -424,7 +424,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu, JsonSeri
 
     public static class Projectile implements INBTSerializable<CompoundTag>, JsonSerializable
     {
-        private ResourceLocation item = new ResourceLocation(Reference.MOD_ID, "basic_ammo");
+        private ResourceLocation item = Reference.getLoc("basic_ammo");
         @Optional
         private boolean visible;
         private float damage;

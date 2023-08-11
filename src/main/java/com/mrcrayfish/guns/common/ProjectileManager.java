@@ -3,8 +3,8 @@ package com.mrcrayfish.guns.common;
 import com.mrcrayfish.guns.entity.ProjectileEntity;
 import com.mrcrayfish.guns.init.ModEntities;
 import com.mrcrayfish.guns.interfaces.IProjectileFactory;
-import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;

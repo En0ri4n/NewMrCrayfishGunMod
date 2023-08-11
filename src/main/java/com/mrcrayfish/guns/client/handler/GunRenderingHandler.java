@@ -24,8 +24,8 @@ import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.attachment.IAttachment;
 import com.mrcrayfish.guns.item.attachment.IBarrel;
 import com.mrcrayfish.guns.item.attachment.impl.Scope;
-import com.mrcrayfish.guns.util.GunPotionHelper;
 import com.mrcrayfish.guns.util.GunModifierHelper;
+import com.mrcrayfish.guns.util.GunPotionHelper;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
@@ -51,8 +51,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LightLayer;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -61,12 +61,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class GunRenderingHandler
 {
@@ -81,7 +76,7 @@ public class GunRenderingHandler
         return instance;
     }
 
-    public static final ResourceLocation MUZZLE_FLASH_TEXTURE = new ResourceLocation(Reference.MOD_ID, "textures/effect/muzzle_flash.png");
+    public static final ResourceLocation MUZZLE_FLASH_TEXTURE = Reference.getLoc("textures/effect/muzzle_flash.png");
 
     private final Random random = new Random();
     private final Set<Integer> entityIdForMuzzleFlash = new HashSet<>();

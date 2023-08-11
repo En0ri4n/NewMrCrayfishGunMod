@@ -12,8 +12,6 @@ import com.mrcrayfish.guns.client.screen.WorkbenchScreen;
 import com.mrcrayfish.guns.client.screen.overlay.GunInfosOverlay;
 import com.mrcrayfish.guns.client.settings.GunOptions;
 import com.mrcrayfish.guns.client.util.PropertyHelper;
-import com.mrcrayfish.guns.debug.Debug;
-import com.mrcrayfish.guns.debug.client.screen.EditorScreen;
 import com.mrcrayfish.guns.debug.IEditorMenu;
 import com.mrcrayfish.guns.debug.client.screen.EditorScreen;
 import com.mrcrayfish.guns.init.ModBlocks;

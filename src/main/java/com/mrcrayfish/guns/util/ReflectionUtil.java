@@ -11,7 +11,6 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 
 /**
  * Author: MrCrayfish<p>

@@ -42,8 +42,6 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.function.Supplier;
-
 @Mod(Reference.MOD_ID)
 public class GunMod
 {

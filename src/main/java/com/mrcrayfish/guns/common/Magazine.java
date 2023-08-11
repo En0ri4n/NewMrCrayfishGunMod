@@ -2,30 +2,24 @@ package com.mrcrayfish.guns.common;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
-import com.mrcrayfish.guns.GunMod;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.annotation.Optional;
 import com.mrcrayfish.guns.common.config.JsonSerializable;
-import com.mrcrayfish.guns.compat.BackpackHelper;
-import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.MagazineItem;
 import com.mrcrayfish.guns.util.GunJsonUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
 /**
  * Simplified version of {@link Gun} to use with an {@link MagazineItem}
  */
-public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
+public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
 {
     protected General general = new General();
     protected Projectile projectile = new Projectile();
@@ -51,8 +45,6 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
         private int maxAmmo = 1;
         @Optional
         private int reloadAmount = 1;
-        @Optional
-        private int projectileAmount = 1;
 
         @Override
         public CompoundTag serializeNBT()
@@ -60,7 +52,6 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
             CompoundTag tag = new CompoundTag();
             tag.putInt("MaxAmmo", this.maxAmmo);
             tag.putInt("ReloadSpeed", this.reloadAmount);
-            tag.putInt("ProjectileAmount", this.projectileAmount);
             return tag;
         }
 
@@ -75,10 +66,6 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
             {
                 this.reloadAmount = tag.getInt("ReloadSpeed");
             }
-            if(tag.contains("ProjectileAmount", Tag.TAG_ANY_NUMERIC))
-            {
-                this.projectileAmount = tag.getInt("ProjectileAmount");
-            }
         }
 
         @Override
@@ -86,12 +73,10 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
         {
             Preconditions.checkArgument(this.maxAmmo > 0, "Max ammo must be more than zero");
             Preconditions.checkArgument(this.reloadAmount >= 1, "Reload angle must be more than or equal to zero");
-            Preconditions.checkArgument(this.projectileAmount >= 1, "Projectile amount must be more than or equal to one");
             JsonObject object = new JsonObject();
             object.addProperty("auto", true);
             object.addProperty("maxAmmo", this.maxAmmo);
             object.addProperty("reloadAmount", this.reloadAmount);
-            object.addProperty("projectileAmount", this.projectileAmount);
             object.addProperty("alwaysSpread", true);
             return object;
         }
@@ -107,10 +92,6 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
             {
                 this.reloadAmount = json.get("reloadAmount").getAsInt();
             }
-            if(json.has("projectileAmount"))
-            {
-                this.projectileAmount = json.get("projectileAmount").getAsInt();
-            }
         }
 
         /**
@@ -121,7 +102,6 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
             General general = new General();
             general.maxAmmo = this.maxAmmo;
             general.reloadAmount = this.reloadAmount;
-            general.projectileAmount = this.projectileAmount;
             return general;
         }
 
@@ -140,19 +120,11 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
         {
             return this.reloadAmount;
         }
-
-        /**
-         * @return The amount of projectiles this ammo has
-         */
-        public int getProjectileAmount()
-        {
-            return this.projectileAmount;
-        }
     }
 
     public static class Projectile implements INBTSerializable<CompoundTag>, JsonSerializable
     {
-        private ResourceLocation item = new ResourceLocation(Reference.MOD_ID, "basic_ammo");
+        private ResourceLocation item = Reference.getLoc("basic_ammo");
 
         @Override
         public CompoundTag serializeNBT()
@@ -328,16 +300,16 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
         }
     }
 
-    public static Ammo create(CompoundTag tag)
+    public static Magazine create(CompoundTag tag)
     {
-        Ammo gun = new Ammo();
+        Magazine gun = new Magazine();
         gun.deserializeNBT(tag);
         return gun;
     }
 
-    public Ammo copy()
+    public Magazine copy()
     {
-        Ammo gun = new Ammo();
+        Magazine gun = new Magazine();
         gun.general = this.general.copy();
         gun.projectile = this.projectile.copy();
         gun.sounds = this.sounds.copy();
@@ -346,11 +318,11 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
 
     public static class Builder
     {
-        private final Ammo ammo;
+        private final Magazine magazine;
 
         private Builder()
         {
-            this.ammo = new Ammo();
+            this.magazine = new Magazine();
         }
 
         public static Builder create()
@@ -358,38 +330,32 @@ public class Ammo implements INBTSerializable<CompoundTag>, JsonSerializable
             return new Builder();
         }
 
-        public Ammo build()
+        public Magazine build()
         {
-            return this.ammo.copy(); //Copy since the builder could be used again
+            return this.magazine.copy(); //Copy since the builder could be used again
         }
 
         public Builder setMaxAmmo(int maxAmmo)
         {
-            this.ammo.general.maxAmmo = maxAmmo;
+            this.magazine.general.maxAmmo = maxAmmo;
             return this;
         }
 
         public Builder setReloadAmount(int reloadAmount)
         {
-            this.ammo.general.reloadAmount = reloadAmount;
-            return this;
-        }
-
-        public Builder setProjectileAmount(int projectileAmount)
-        {
-            this.ammo.general.projectileAmount = projectileAmount;
+            this.magazine.general.reloadAmount = reloadAmount;
             return this;
         }
 
         public Builder setAmmo(Item item)
         {
-            this.ammo.projectile.item = item.getRegistryName();
+            this.magazine.projectile.item = item.getRegistryName();
             return this;
         }
 
         public Builder setReloadSound(SoundEvent sound)
         {
-            this.ammo.sounds.reload = sound.getRegistryName();
+            this.magazine.sounds.reload = sound.getRegistryName();
             return this;
         }
     }

@@ -149,6 +149,7 @@ public class GunMod
         generator.addProvider(new ItemTagGen(generator, blockTagGen, existingFileHelper));
         generator.addProvider(new LanguageGen(generator));
         generator.addProvider(new GunGen(generator));
+        generator.addProvider(new MagazineGen(generator));
     }
 
     public static boolean isDebugging()

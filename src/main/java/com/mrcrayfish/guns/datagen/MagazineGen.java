@@ -17,14 +17,14 @@ public class MagazineGen extends MagazineProvider
     protected void registerMagazines()
     {
         addMagazine(Reference.getLoc("basic_magazine"), Magazine.Builder.create()
-                .setAmmo(ModItems.BASIC_AMMO.get())
+                .setStoredAmmo(ModItems.BASIC_AMMO.get())
                 .setMaxAmmo(30)
                 .setReloadAmount(10)
                 .setReloadSound(ModSounds.ITEM_PISTOL_RELOAD.get())
                 .build());
 
         addMagazine(Reference.getLoc("advanced_magazine"), Magazine.Builder.create()
-                .setAmmo(ModItems.ADVANCED_AMMO.get())
+                .setStoredAmmo(ModItems.ADVANCED_AMMO.get())
                 .setMaxAmmo(60)
                 .setReloadAmount(20)
                 .setReloadSound(ModSounds.ITEM_PISTOL_RELOAD.get())

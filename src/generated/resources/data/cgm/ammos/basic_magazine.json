@@ -1,11 +1,9 @@
 {
   "general": {
-    "auto": true,
     "maxAmmo": 30,
-    "reloadAmount": 10,
-    "alwaysSpread": true
+    "reloadAmount": 10
   },
-  "projectile": {
+  "storedAmmo": {
     "item": "cgm:basic_ammo"
   },
   "sounds": {

@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
 {
     protected General general = new General();
-    protected Projectile projectile = new Projectile();
+    protected StoredAmmo storedAmmo = new StoredAmmo();
     protected Sounds sounds = new Sounds();
 
     public General getGeneral()
@@ -30,9 +30,9 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
         return this.general;
     }
 
-    public Projectile getProjectile()
+    public StoredAmmo getProjectile()
     {
-        return this.projectile;
+        return this.storedAmmo;
     }
 
     public Sounds getSounds()
@@ -120,7 +120,7 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
         }
     }
 
-    public static class Projectile implements INBTSerializable<CompoundTag>, JsonSerializable
+    public static class StoredAmmo implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         private ResourceLocation item = Reference.getLoc("basic_ammo");
 
@@ -158,11 +158,11 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
             }
         }
 
-        public Projectile copy()
+        public StoredAmmo copy()
         {
-            Projectile projectile = new Projectile();
-            projectile.item = this.item;
-            return projectile;
+            StoredAmmo storedAmmo = new StoredAmmo();
+            storedAmmo.item = this.item;
+            return storedAmmo;
         }
 
         /**
@@ -249,7 +249,7 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         CompoundTag tag = new CompoundTag();
         tag.put("General", this.general.serializeNBT());
-        tag.put("Projectile", this.projectile.serializeNBT());
+        tag.put("StoredAmmo", this.storedAmmo.serializeNBT());
         tag.put("Sounds", this.sounds.serializeNBT());
         return tag;
     }
@@ -261,9 +261,9 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
         {
             this.general.deserializeNBT(tag.getCompound("General"));
         }
-        if(tag.contains("Projectile", Tag.TAG_COMPOUND))
+        if(tag.contains("StoredAmmo", Tag.TAG_COMPOUND))
         {
-            this.projectile.deserializeNBT(tag.getCompound("Projectile"));
+            this.storedAmmo.deserializeNBT(tag.getCompound("StoredAmmo"));
         }
         if(tag.contains("Sounds", Tag.TAG_COMPOUND))
         {
@@ -276,7 +276,7 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         JsonObject object = new JsonObject();
         object.add("general", this.general.toJsonObject());
-        object.add("projectile", this.projectile.toJsonObject());
+        object.add("storedAmmo", this.storedAmmo.toJsonObject());
         GunJsonUtil.addObjectIfNotEmpty(object, "sounds", this.sounds.toJsonObject());
         return object;
     }
@@ -288,9 +288,9 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
         {
             this.general.loadConfig(json.getAsJsonObject("general"));
         }
-        if(json.has("projectile"))
+        if(json.has("storedAmmo"))
         {
-            this.projectile.loadConfig(json.getAsJsonObject("projectile"));
+            this.storedAmmo.loadConfig(json.getAsJsonObject("storedAmmo"));
         }
         if(json.has("sounds"))
         {
@@ -309,7 +309,7 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
     {
         Magazine gun = new Magazine();
         gun.general = this.general.copy();
-        gun.projectile = this.projectile.copy();
+        gun.storedAmmo = this.storedAmmo.copy();
         gun.sounds = this.sounds.copy();
         return gun;
     }
@@ -345,9 +345,9 @@ public class Magazine implements INBTSerializable<CompoundTag>, JsonSerializable
             return this;
         }
 
-        public Builder setAmmo(Item item)
+        public Builder setStoredAmmo(Item item)
         {
-            this.magazine.projectile.item = item.getRegistryName();
+            this.magazine.storedAmmo.item = item.getRegistryName();
             return this;
         }
 

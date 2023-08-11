@@ -23,8 +23,8 @@ e96a9cd56bc3cfcbeb0291cb957dd19a37a3f136 data/cgm/advancements/recipes/cgm/stun_
 4f3b147ec44beb2b2f22df2319882675a894c07a data/cgm/advancements/recipes/cgm/tactical_stock.json
 598ccc626bddb395c73c8b64ab00513e3456672e data/cgm/advancements/recipes/cgm/weighted_stock.json
 5a3357e1d7467171a46033f0ee195d1d7910eb8c data/cgm/advancements/recipes/cgm/workbench.json
-138a721a70c0697a19c1563a646c488a8767b68a data/cgm/ammos/advanced_magazine.json
-be333c8db1cc7f215e6de39ffe814415d2051872 data/cgm/ammos/basic_magazine.json
+dbb1fca204e0321fc0f5bc686f25c053c21f46da data/cgm/ammos/advanced_magazine.json
+1c3c14b15bd2ae78281c992ed38061bb602404b6 data/cgm/ammos/basic_magazine.json
 5dca73b3cecaf78a790c1e48f2657fadda77b299 data/cgm/guns/assault_rifle.json
 6b50b4184fb656836a2f0645e0c260e4dc6d4703 data/cgm/guns/bazooka.json
 8780654870172e6b0e010cb8891288531ee25097 data/cgm/guns/grenade_launcher.json

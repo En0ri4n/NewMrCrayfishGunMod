@@ -48,12 +48,13 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/SERVER')
             property 'mixin.env.disableRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             arg '-mixin.config=cgm.mixins.json'
+            arg '-nogui'
             mods {
                 cgm {
                     source sourceSets.main
@@ -111,15 +112,23 @@ jar {
     manifest {
         attributes([
             "Specification-Title": "Gun Mod",
-            "Specification-Vendor": "MrCrayfish",
+            "Specification-Vendor": "MrCrayfish (modified by En0ri4n)",
             "Specification-Version": "1",
             "Implementation-Title": "Gun Mod",
             "Implementation-Version": project.version,
-            "Implementation-Vendor" : "MrCrayfish",
+            "Implementation-Vendor" : "MrCrayfish (modified by En0ri4n)",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "MixinConfigs": "cgm.mixins.json"
         ])
     }
+}
+
+tasks.register('sourceJar', Jar) {
+    dependsOn tasks.classes
+    from sourceSets.main.allSource
+    classifier 'sources'
+    extension 'jar'
+    group 'build'
 }
 
 jar.finalizedBy('reobfJar')
@@ -127,7 +136,10 @@ jar.finalizedBy('reobfJar')
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifact jar
+            artifacts {
+                artifact jar
+                artifact tasks.sourceJar
+            }
         }
     }
     repositories {

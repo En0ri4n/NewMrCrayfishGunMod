@@ -21,11 +21,11 @@ public class ModEffects
     public static final RegistryObject<IncurableEffect> BLINDED = REGISTER.register("blinded", () -> new IncurableEffect(MobEffectCategory.HARMFUL, 0));
     public static final RegistryObject<IncurableEffect> DEAFENED = REGISTER.register("deafened", () -> new IncurableEffect(MobEffectCategory.HARMFUL, 0));
 
-    public static final RegistryObject<MobEffect> QUICK_HANDS = REGISTER.register("quick_hands", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> TRIGGER_FINGER = REGISTER.register("trigger_finger", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> LIGHTWEIGHT = REGISTER.register("lightweight", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> ACCELERATOR = REGISTER.register("accelerator", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> PUNCTURING = REGISTER.register("puncturing", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> FIRE_STARTER = REGISTER.register("fire_starter", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> COLLATERAL = REGISTER.register("collateral", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
+    public static final RegistryObject<MobEffect> QUICK_HANDS = REGISTER.register("quick_hands", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0xFAC8CD));
+    public static final RegistryObject<MobEffect> TRIGGER_FINGER = REGISTER.register("trigger_finger", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x629677));
+    public static final RegistryObject<MobEffect> LIGHTWEIGHT = REGISTER.register("lightweight", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x495D63));
+    public static final RegistryObject<MobEffect> ACCELERATOR = REGISTER.register("accelerator", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x34F6F2));
+    public static final RegistryObject<MobEffect> PUNCTURING = REGISTER.register("puncturing", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0xD1F5FF));
+    public static final RegistryObject<MobEffect> FIRE_STARTER = REGISTER.register("fire_starter", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x41E2BA));
+    public static final RegistryObject<MobEffect> COLLATERAL = REGISTER.register("collateral", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x3C4F76));
 }

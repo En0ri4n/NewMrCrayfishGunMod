@@ -7,8 +7,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -17,8 +15,6 @@ import java.util.function.Supplier;
 public class ModPotions
 {
     public static final DeferredRegister<Potion> REGISTER = DeferredRegister.create(ForgeRegistries.POTIONS, Reference.MOD_ID);
-
-    public static final List<Supplier<Potion>> POTIONS = new ArrayList<>();
 
     private static final int POTION_DURATION = 20 * 180; // 3 minutes
 
@@ -32,7 +28,6 @@ public class ModPotions
     
     private static RegistryObject<Potion> register(String name, Supplier<Potion> potion)
     {
-        POTIONS.add(potion);
         return REGISTER.register(name, potion);
     }
 }

@@ -67,10 +67,13 @@ public class GunMod
         {
             super.fillItemList(items);
             CustomGunManager.fill(items);
-            ModPotions.POTIONS.stream()
-                    .map(Supplier::get)
-                    .filter(pot -> pot.getRegistryName() != null && pot.getRegistryName().getNamespace().equals(Reference.MOD_ID))
-                    .forEach(pot -> items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), pot)));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.QUICK_HANDS.get()));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.TRIGGER_FINGER.get()));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.LIGHTWEIGHT.get()));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.ACCELERATOR.get()));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.PUNCTURING.get()));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.FIRE_STARTER.get()));
+            items.add(PotionUtils.setPotion(new ItemStack(ModItems.POTION.get()), ModPotions.COLLATERAL.get()));
         }
     }.setEnchantmentCategories(EnchantmentTypes.GUN, EnchantmentTypes.SEMI_AUTO_GUN);
 

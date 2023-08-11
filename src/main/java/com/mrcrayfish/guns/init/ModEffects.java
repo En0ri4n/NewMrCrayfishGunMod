@@ -22,7 +22,6 @@ public class ModEffects
     public static final RegistryObject<IncurableEffect> DEAFENED = REGISTER.register("deafened", () -> new IncurableEffect(MobEffectCategory.HARMFUL, 0));
 
     public static final RegistryObject<MobEffect> QUICK_HANDS = REGISTER.register("quick_hands", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
-    public static final RegistryObject<MobEffect> OVER_CAPACITY = REGISTER.register("over_capacity", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
     public static final RegistryObject<MobEffect> TRIGGER_FINGER = REGISTER.register("trigger_finger", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
     public static final RegistryObject<MobEffect> LIGHTWEIGHT = REGISTER.register("lightweight", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));
     public static final RegistryObject<MobEffect> ACCELERATOR = REGISTER.register("accelerator", () -> new EmptyEffect(MobEffectCategory.BENEFICIAL, 0x4D4D4D));

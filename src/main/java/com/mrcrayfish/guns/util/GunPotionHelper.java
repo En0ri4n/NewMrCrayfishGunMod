@@ -65,17 +65,6 @@ public class GunPotionHelper
         return level > 0 ? 1.5 : 1.0;
     }
 
-    public static int getAmmoCapacity(Player player, ItemStack weapon, IHasAmmo iHasAmmo)
-    {
-        int capacity = iHasAmmo.getMaxAmmo(weapon);
-        int level = GunPotionHelper.getEffectLevel(player, ModEffects.OVER_CAPACITY.get());
-        if(level > 0)
-        {
-            capacity += Math.max(level, (capacity / 2) * level);
-        }
-        return capacity;
-    }
-
     public static double getProjectileSpeedModifier(LivingEntity shooter, ItemStack weapon)
     {
         int level = GunPotionHelper.getEffectLevel(shooter, ModEffects.ACCELERATOR.get());

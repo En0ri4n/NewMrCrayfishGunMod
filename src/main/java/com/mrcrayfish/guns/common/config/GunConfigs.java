@@ -8,8 +8,11 @@ import com.mrcrayfish.guns.common.Gun;
 import com.mrcrayfish.guns.common.Magazine;
 import com.mrcrayfish.guns.item.GunItem;
 import com.mrcrayfish.guns.item.MagazineItem;
+import com.mrcrayfish.guns.network.PacketHandler;
+import com.mrcrayfish.guns.network.message.S2CMessageUpdateGunsAndAmmos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.io.*;
@@ -54,6 +57,8 @@ public class GunConfigs
             GunMod.LOGGER.debug("Loading config for ammo " + id);
             ammo.loadConfig(config);
         });
+
+        PacketHandler.getPlayChannel().send(PacketDistributor.ALL.noArg(), new S2CMessageUpdateGunsAndAmmos()); // Ensure all clients have synced
     }
 
     private static JsonObject getConfig(MinecraftServer server, ResourceLocation registryName, JsonSerializable serializable, boolean isAmmo)

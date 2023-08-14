@@ -1,5 +1,6 @@
 {
     "block.cgm.workbench": "Workbench",
+
     "item.cgm.pistol": "Pistol",
     "item.cgm.shotgun": "Shotgun",
     "item.cgm.sniper_rifle": "Sniper Rifle",
@@ -12,6 +13,7 @@
     "item.cgm.heavy_rifle": "Heavy Rifle",
 
     "item.cgm.basic_magazine": "Basic Magazine",
+    "item.cgm.advanced_magazine": "Advanced Magazine",
 
     "item.cgm.basic_ammo": "Basic Ammo",
     "item.cgm.advanced_ammo": "Advanced Bullet",
@@ -29,16 +31,20 @@
     "item.cgm.weighted_stock": "Weighted Stock",
     "item.cgm.light_grip": "Light Grip",
     "item.cgm.specialised_grip": "Specialised Grip",
+
     "item.minecraft.potion.effect.blinding": "Potion of Blinding",
     "item.minecraft.potion.effect.deafening": "Potion of Deafening",
     "item.minecraft.lingering_potion.effect.blinding": "Lingering Potion of Blinding",
     "item.minecraft.lingering_potion.effect.deafening": "Lingering Potion of Deafening",
+
     "itemGroup.cgm": "MrCrayfish's Gun Mod",
+
     "death.attack.cgm.bullet.killed": "%1$s was taken down by %2$s",
     "death.attack.cgm.bullet.eliminated": "%1$s was eliminated by %2$s",
     "death.attack.cgm.bullet.executed": "%1$s was executed by %2$s",
     "death.attack.cgm.bullet.annihilated": "%1$s was annihilated by %2$s",
     "death.attack.cgm.bullet.decimated": "%1$s was decimated by %2$s",
+
     "info.cgm.damage": "Damage: %s",
     "info.cgm.ignore_ammo": "Infinite Ammo",
     "info.cgm.ammo": "Ammo: %s",
@@ -58,6 +64,7 @@
 
     "effect.cgm.blinded": "Blinded",
     "effect.cgm.deafened": "Deafened",
+
     "subtitle.cgm.stun.explosion": "Stun Grenade Explosion",
     "subtitle.cgm.stun.ring": "Ringing",
     "subtitle.cgm.fire": "Gunfire",
@@ -67,15 +74,19 @@
     "subtitle.cgm.grenade.pin": "Grenade Pin",
     "subtitle.cgm.attach": "Attachment Attach",
     "subtitle.cgm.cock": "Cocking Weapon",
+
     "cgm.option_list.no_items": "No Items",
     "cgm.options.adsSensitivity": "ADS Sensitivity",
     "cgm.options.adsSensitivity.format": "ADS Sensitivity: %s",
     "cgm.options.crosshair": "Crosshair",
+
     "cgm.crosshair.arrow": "Arrow",
     "cgm.crosshair.better_default": "Better Default",
     "cgm.crosshair.box": "Box",
     "cgm.crosshair.circle": "Circle",
+
     "minecraft.crosshair.default": "Default",
+
     "cgm.crosshair.dot": "Dot",
     "cgm.crosshair.filled_circle": "Filled Circle",
     "cgm.crosshair.hit_marker": "Hit Marker",
@@ -85,39 +96,55 @@
     "cgm.crosshair.square": "Square",
     "cgm.crosshair.t": "T",
     "cgm.crosshair.tech": "Tech",
+
     "gui.cgm.workbench.assemble": "Assemble",
     "gui.cgm.workbench.show_remaining": "Show Remaining",
     "gui.cgm.workbench.tab.weapons": "Weapons",
     "gui.cgm.workbench.tab.attachments": "Attachments",
     "gui.cgm.workbench.tab.ammo": "Ammo",
     "gui.cgm.workbench.tab.misc": "Miscellaneous",
+
     "container.cgm.workbench": "Workbench",
     "container.cgm.attachments": "Modify Attachments",
     "container.cgm.attachments.window_help": "Click to move and rotate",
+
     "slot.cgm.attachment.not_applicable": "\u00a7cNot applicable",
     "slot.cgm.attachment.incompatible": "This doesn't seem to fit...",
     "slot.cgm.attachment.scope": "Scope",
     "slot.cgm.attachment.barrel": "Barrel",
     "slot.cgm.attachment.stock": "Stock",
     "slot.cgm.attachment.under_barrel": "Under Barrel",
-    "enchantment.cgm.quick_hands": "Quick Hands",
-    "enchantment.cgm.trigger_finger": "Trigger Finger",
-    "enchantment.cgm.lightweight": "Lightweight",
-    "enchantment.cgm.collateral": "Collateral",
-    "enchantment.cgm.over_capacity": "Over Capacity",
-    "enchantment.cgm.reclaimed": "Reclaimed",
-    "enchantment.cgm.accelerator": "Accelerator",
-    "enchantment.cgm.puncturing": "Puncturing",
-    "enchantment.cgm.fire_starter": "Fire Starter",
-    "enchantment.cgm.quick_hands.desc": "Increases the speed of reloading weapons",
-    "enchantment.cgm.trigger_finger.desc": "Increases the speed you can fire weapons",
-    "enchantment.cgm.lightweight.desc": "Reduces the weight of a weapon to increase ADS speed",
-    "enchantment.cgm.collateral.desc": "Makes fired bullets travel through multiple entities",
-    "enchantment.cgm.over_capacity.desc": "Increases the ammo capacity of a weapon",
-    "enchantment.cgm.reclaimed.desc": "Creates a chance that a bullet won't be consumed upon firing a weapon",
-    "enchantment.cgm.accelerator.desc": "Increases the speed of fired projectiles causing them to do more damage",
-    "enchantment.cgm.puncturing.desc": "Creates a chance that a bullet will deal critical damage",
-    "enchantment.cgm.fire_starter.desc": "Fired bullets will set blocks and entities on fire upon impact",
+
+    "effect.cgm.quick_hands": "Quick Hands",
+    "effect.cgm.trigger_finger": "Trigger Finger",
+    "effect.cgm.lightweight": "Lightweight",
+    "effect.cgm.collateral": "Collateral",
+    "effect.cgm.over_capacity": "Over Capacity",
+    "effect.cgm.reclaimed": "Reclaimed",
+    "effect.cgm.accelerator": "Accelerator",
+    "effect.cgm.puncturing": "Puncturing",
+    "effect.cgm.fire_starter": "Fire Starter",
+
+    "item.cgm.potion.effect.quick_hands": "Potion of Quick Hands",
+    "item.cgm.potion.effect.trigger_finger": "Potion of Trigger Finger",
+    "item.cgm.potion.effect.lightweight": "Potion of Lightweight",
+    "item.cgm.potion.effect.collateral": "Potion of Collateral",
+    "item.cgm.potion.effect.over_capacity": "Potion of Over Capacity",
+    "item.cgm.potion.effect.reclaimed": "Potion of Reclaimed",
+    "item.cgm.potion.effect.accelerator": "Potion of Accelerator",
+    "item.cgm.potion.effect.puncturing": "Potion of Puncturing",
+    "item.cgm.potion.effect.fire_starter": "Potion of Fire Starter",
+
+    "effect.cgm.quick_hands.desc": "Increases the speed of reloading weapons",
+    "effect.cgm.trigger_finger.desc": "Increases the speed you can fire weapons",
+    "effect.cgm.lightweight.desc": "Reduces the weight of a weapon to increase ADS speed",
+    "effect.cgm.collateral.desc": "Makes fired bullets travel through multiple entities",
+    "effect.cgm.over_capacity.desc": "Increases the ammo capacity of a weapon",
+    "effect.cgm.reclaimed.desc": "Creates a chance that a bullet won't be consumed upon firing a weapon",
+    "effect.cgm.accelerator.desc": "Increases the speed of fired projectiles causing them to do more damage",
+    "effect.cgm.puncturing.desc": "Creates a chance that a bullet will deal critical damage",
+    "effect.cgm.fire_starter.desc": "Fired bullets will set blocks and entities on fire upon impact",
+
     "perk.cgm.title": "Perks:",
     "perk.cgm.entry.positive": "+ %s",
     "perk.cgm.entry.negative": "- %s",
@@ -142,21 +169,29 @@
     "perk.cgm.ads_speed.negative": "Reduced ADS Speed",
     "perk.cgm.rate.positive": "Increased Fire Rate",
     "perk.cgm.rate.negative": "Reduced Fire Rate",
+
     "gui.cgm.assemble": "Assemble",
     "gui.cgm.show_remaining": "Show Remaining",
+
     "button.categories.cgm": "MrCrayfish's Gun Mod",
+
     "cgm.button.shoot": "Shoot Weapon",
     "cgm.button.aim": "Aim Down Sight",
     "cgm.button.reload": "Reload / Unload",
     "cgm.button.attachments": "Modify Attachments",
     "cgm.button.steadyAim": "Steady Aim",
+
     "cgm.category.workbench.title": "Assembling",
     "cgm.category.workbench.materials": "Materials",
+
     "cgm.action.aim": "Aim",
     "cgm.action.shoot": "Shoot",
     "cgm.action.reload": "Reload",
     "cgm.action.steady_aim": "Steady Aim",
     "cgm.button.config.tooltip": "Config Options",
+
     "cgm.chat.open_curseforge_page": "Open CurseForge Page",
-    "cgm.chat.install_configured": "Install %s to access config options"
+    "cgm.chat.install_configured": "Install %s to access config options",
+
+    "commands.creload.success": "§aAll guns and ammos configurations reloaded! §7(%d guns, %d ammos, %d errors)"
 }

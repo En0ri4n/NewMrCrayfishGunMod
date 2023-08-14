@@ -817,7 +817,7 @@ public class GunRenderingHandler
         int side = hand.getOpposite() == HumanoidArm.RIGHT ? 1 : -1;
         poseStack.translate(translateX * side, 0, 0);
 
-        float interval = GunPotionHelper.getReloadInterval(mc.player, stack);
+        float interval = GunPotionHelper.getReloadInterval(mc.player);
         float reload = ((mc.player.tickCount - ReloadHandler.get().getStartReloadTick() + mc.getFrameTime()) % interval) / interval;
         float percent = 1.0F - reload;
         if(percent >= 0.5F)

@@ -59,7 +59,7 @@ public class ShootTracker
      */
     public void putCooldown(ItemStack weapon, GunItem item, Gun modifiedGun)
     {
-        int rate = GunPotionHelper.getRate(this.player, weapon, modifiedGun);
+        int rate = GunPotionHelper.getRate(this.player, modifiedGun);
         rate = GunModifierHelper.getModifiedRate(weapon, rate);
         this.cooldownMap.put(item, Pair.of(Util.getMillis(), rate * 50));
     }

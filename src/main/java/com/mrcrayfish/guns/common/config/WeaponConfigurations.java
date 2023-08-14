@@ -22,9 +22,11 @@ import java.util.Map;
 /**
  * Author: En0ri4n
  */
-public class GunConfigs
+public class WeaponConfigurations
 {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+
+    private static int errorCount = 0;
 
     private static final Map<ResourceLocation, Gun> guns = new HashMap<>();
     private static final Map<ResourceLocation, Magazine> ammos = new HashMap<>();
@@ -39,10 +41,25 @@ public class GunConfigs
         ammos.put(item.getRegistryName(), item.getAmmo());
     }
 
-    public static void load(MinecraftServer server)
+    /**
+     * Load configurations for all guns and ammos
+     * @return an array of 3 integers :<br>Number of guns<br>Number of ammos<br>Number of errors (can't load config)
+     */
+    public static int[] load(MinecraftServer server)
     {
-        ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof GunItem).forEach(item -> addGun((GunItem) item));
-        ForgeRegistries.ITEMS.getValues().stream().filter(item -> item instanceof MagazineItem).forEach(item -> addAmmo((MagazineItem) item));
+        GunMod.LOGGER.info("Loading server configs...");
+
+        errorCount = 0;
+
+        ForgeRegistries.ITEMS.getValues().stream()
+                .filter(item -> item instanceof GunItem)
+                .map(item -> ((GunItem) item))
+                .forEach(WeaponConfigurations::addGun);
+
+        ForgeRegistries.ITEMS.getValues().stream()
+                .filter(item -> item instanceof MagazineItem)
+                .map(item -> ((MagazineItem) item))
+                .forEach(WeaponConfigurations::addAmmo);
 
         guns.forEach((id, gun) ->
         {
@@ -58,7 +75,20 @@ public class GunConfigs
             ammo.loadConfig(config);
         });
 
-        PacketHandler.getPlayChannel().send(PacketDistributor.ALL.noArg(), new S2CMessageUpdateGunsAndAmmos()); // Ensure all clients have synced
+        // Ensure all clients have synced with the server
+        sendChanges();
+
+        GunMod.LOGGER.info("Loaded " + guns.size() + " guns and " + ammos.size() + " ammos (" + errorCount + " errors)");
+
+        return new int[] { guns.size(), ammos.size(), errorCount };
+    }
+
+    /**
+     * Sends a packet to all clients to update their guns and ammos to the server's config
+     */
+    public static void sendChanges()
+    {
+        PacketHandler.getPlayChannel().send(PacketDistributor.ALL.noArg(), new S2CMessageUpdateGunsAndAmmos());
     }
 
     private static JsonObject getConfig(MinecraftServer server, ResourceLocation registryName, JsonSerializable serializable, boolean isAmmo)
@@ -75,7 +105,7 @@ public class GunConfigs
             {
                 GunMod.LOGGER.debug("Failed to create gun config file for " + registryName, e);
                 GunMod.LOGGER.debug("Using default config for " + registryName);
-                guns.remove(registryName);
+                remove(isAmmo, registryName);
             }
 
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(gunConfig)))
@@ -86,7 +116,7 @@ public class GunConfigs
             {
                 GunMod.LOGGER.debug("Failed to create gun config file for " + registryName, e);
                 GunMod.LOGGER.debug("Using default config for " + registryName);
-                guns.remove(registryName);
+                remove(isAmmo, registryName);
             }
         }
 
@@ -100,10 +130,20 @@ public class GunConfigs
         {
             GunMod.LOGGER.debug("Failed to load gun config file for " + registryName, e);
             GunMod.LOGGER.debug("Using default config for " + registryName);
-            guns.remove(registryName);
+            remove(isAmmo, registryName);
         }
 
         return jsonObject;
+    }
+
+    private static void remove(boolean isAmmo, ResourceLocation registryName)
+    {
+        if(isAmmo)
+            ammos.remove(registryName);
+        else
+            guns.remove(registryName);
+
+        errorCount++;
     }
 
     private static File getConfigFolder(MinecraftServer server, boolean isAmmo)

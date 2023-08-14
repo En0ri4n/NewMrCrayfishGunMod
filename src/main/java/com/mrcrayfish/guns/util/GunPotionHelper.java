@@ -32,9 +32,10 @@ public class GunPotionHelper
         return new TrailData(weapon.isEnchanted());
     }
 
-    public static int getReloadInterval(Player player, ItemStack weapon)
+    public static int getReloadInterval(Player player)
     {
         int interval = 10;
+
         if(player.hasEffect(ModEffects.QUICK_HANDS.get()))
         {
             int level = player.getEffect(ModEffects.QUICK_HANDS.get()).getAmplifier();
@@ -43,13 +44,15 @@ public class GunPotionHelper
                 interval -= 3 * level;
             }
         }
+
         return Math.max(interval, 1);
     }
 
-    public static int getRate(Player player, ItemStack weapon, Gun modifiedGun)
+    public static int getRate(Player player, Gun gun)
     {
-        int rate = modifiedGun.getGeneral().getRate();
+        int rate = gun.getGeneral().getRate();
         int level = GunPotionHelper.getEffectLevel(player, ModEffects.TRIGGER_FINGER.get());
+
         if(level > 0)
         {
             float newRate = rate * (0.25F * level);
@@ -58,15 +61,16 @@ public class GunPotionHelper
         return rate;
     }
 
-    public static double getAimDownSightSpeed(Player player, ItemStack weapon)
+    public static double getAimDownSightSpeed(Player player)
     {
         int level = GunPotionHelper.getEffectLevel(player, ModEffects.LIGHTWEIGHT.get());
         return level > 0 ? 1.5 : 1.0;
     }
 
-    public static double getProjectileSpeedModifier(LivingEntity shooter, ItemStack weapon)
+    public static double getProjectileSpeedModifier(LivingEntity shooter)
     {
         int level = GunPotionHelper.getEffectLevel(shooter, ModEffects.ACCELERATOR.get());
+
         if(level > 0)
         {
             return 1.0 + 0.5 * level;
@@ -74,7 +78,7 @@ public class GunPotionHelper
         return 1.0;
     }
 
-    public static float getAcceleratorDamage(LivingEntity shooter, ItemStack weapon, float damage)
+    public static float getAcceleratorDamage(LivingEntity shooter, float damage)
     {
         int level = GunPotionHelper.getEffectLevel(shooter, ModEffects.ACCELERATOR.get());
         if(level > 0)
@@ -84,7 +88,7 @@ public class GunPotionHelper
         return damage;
     }
 
-    public static float getPuncturingChance(LivingEntity shooter, ItemStack weapon)
+    public static float getPuncturingChance(LivingEntity shooter)
     {
         int level = GunPotionHelper.getEffectLevel(shooter, ModEffects.PUNCTURING.get());
         return level * 0.05F;

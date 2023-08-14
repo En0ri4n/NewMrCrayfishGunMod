@@ -81,7 +81,7 @@ public class ReloadTracker
     private boolean canReload(Player player)
     {
         int deltaTicks = player.tickCount - this.startTick;
-        int interval = GunPotionHelper.getReloadInterval(player, this.stack);
+        int interval = GunPotionHelper.getReloadInterval(player);
         return deltaTicks > 0 && deltaTicks % interval == 0;
     }
 

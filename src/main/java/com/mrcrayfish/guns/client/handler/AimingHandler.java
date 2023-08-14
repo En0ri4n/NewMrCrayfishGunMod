@@ -268,7 +268,7 @@ public class AimingHandler
             {
                 if(this.currentAim < MAX_AIM_PROGRESS)
                 {
-                    double speed = GunPotionHelper.getAimDownSightSpeed(player, heldItem);
+                    double speed = GunPotionHelper.getAimDownSightSpeed(player);
                     speed = GunModifierHelper.getModifiedAimDownSightSpeed(heldItem, speed);
                     this.currentAim += speed;
                     if(this.currentAim > MAX_AIM_PROGRESS)
@@ -281,7 +281,7 @@ public class AimingHandler
             {
                 if(this.currentAim > 0)
                 {
-                    double speed = GunPotionHelper.getAimDownSightSpeed(player, heldItem);
+                    double speed = GunPotionHelper.getAimDownSightSpeed(player);
                     speed = GunModifierHelper.getModifiedAimDownSightSpeed(heldItem, speed);
                     this.currentAim -= speed;
                     if(this.currentAim < 0)

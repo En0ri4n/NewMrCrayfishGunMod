@@ -96,7 +96,7 @@ public class GunItem extends Item implements IColored, IMeta, IHasAmmo
 
         float damage = modifiedGun.getProjectile().getDamage();
         damage = GunModifierHelper.getModifiedProjectileDamage(stack, damage);
-        damage = GunPotionHelper.getAcceleratorDamage(player, stack, damage);
+        damage = GunPotionHelper.getAcceleratorDamage(player, damage);
         tooltip.add(new TranslatableComponent("info.cgm.damage", ChatFormatting.WHITE + ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(damage) + additionalDamageText).withStyle(ChatFormatting.GRAY));
 
         if(tagCompound != null)

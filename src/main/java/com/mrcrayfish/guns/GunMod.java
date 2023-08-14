@@ -8,7 +8,7 @@ import com.mrcrayfish.guns.client.handler.CrosshairHandler;
 import com.mrcrayfish.guns.commands.CreloadCommand;
 import com.mrcrayfish.guns.common.BoundingBoxManager;
 import com.mrcrayfish.guns.common.ProjectileManager;
-import com.mrcrayfish.guns.common.config.GunConfigs;
+import com.mrcrayfish.guns.common.config.WeaponConfigurations;
 import com.mrcrayfish.guns.crafting.ModRecipeType;
 import com.mrcrayfish.guns.crafting.WorkbenchIngredient;
 import com.mrcrayfish.guns.datagen.*;
@@ -108,8 +108,7 @@ public class GunMod
 
     private void onServerLaunch(ServerStartedEvent event)
     {
-        LOGGER.info("Loading gun configs...");
-        GunConfigs.load(event.getServer());
+        WeaponConfigurations.load(event.getServer());
     }
 
     private void onServerStarting(RegisterCommandsEvent event)

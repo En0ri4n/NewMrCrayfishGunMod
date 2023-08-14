@@ -229,7 +229,7 @@ public class ShootingHandler
             if(MinecraftForge.EVENT_BUS.post(new GunFireEvent.Pre(player, heldItem)))
                 return;
 
-            int rate = GunPotionHelper.getRate(player, heldItem, modifiedGun);
+            int rate = GunPotionHelper.getRate(player, modifiedGun);
             rate = GunModifierHelper.getModifiedRate(heldItem, rate);
             tracker.addCooldown(heldItem.getItem(), rate);
             PacketHandler.getPlayChannel().sendToServer(new C2SMessageShoot(player));

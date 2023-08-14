@@ -276,7 +276,7 @@ public class GunModifierHelper
                 chance += modifier.criticalChance();
             }
         }
-        chance += GunPotionHelper.getPuncturingChance(shooter, weapon);
+        chance += GunPotionHelper.getPuncturingChance(shooter);
         return Mth.clamp(chance, 0F, 1F);
     }
 }

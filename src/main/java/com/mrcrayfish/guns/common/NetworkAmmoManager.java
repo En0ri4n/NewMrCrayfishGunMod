@@ -9,7 +9,6 @@ import com.mrcrayfish.guns.GunMod;
 import com.mrcrayfish.guns.Reference;
 import com.mrcrayfish.guns.annotation.Validator;
 import com.mrcrayfish.guns.item.MagazineItem;
-import com.mrcrayfish.guns.network.PacketHandler;
 import com.mrcrayfish.guns.network.message.S2CMessageUpdateGunsAndAmmos;
 import net.minecraft.Util;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,11 +19,9 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Validate;
 
@@ -228,15 +225,6 @@ public class NetworkAmmoManager extends SimplePreparableReloadListener<Map<Magaz
         NetworkAmmoManager networkAmmoManager = new NetworkAmmoManager();
         event.addListener(networkAmmoManager);
         NetworkAmmoManager.instance = networkAmmoManager;
-    }
-
-    @SubscribeEvent
-    public static void onDatapackSync(OnDatapackSyncEvent event)
-    {
-        if(event.getPlayer() == null)
-        {
-            PacketHandler.getPlayChannel().send(PacketDistributor.ALL.noArg(), new S2CMessageUpdateGunsAndAmmos());
-        }
     }
 
     /**

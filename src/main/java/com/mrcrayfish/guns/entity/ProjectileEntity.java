@@ -98,7 +98,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         /* Get speed and set motion */
         Vec3 dir = this.getDirection(shooter, weapon, item, modifiedGun);
-        double speedModifier = GunPotionHelper.getProjectileSpeedModifier(shooter, weapon);
+        double speedModifier = GunPotionHelper.getProjectileSpeedModifier(shooter);
         double speed = GunModifierHelper.getModifiedProjectileSpeed(weapon, this.projectile.getSpeed() * speedModifier);
         this.setDeltaMovement(dir.x * speed, dir.y * speed, dir.z * speed);
         this.updateHeading();
@@ -628,7 +628,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
         float damage = initialDamage / this.general.getProjectileAmount();
         damage = GunModifierHelper.getModifiedDamage(this.weapon, this.modifiedGun, damage);
-        damage = GunPotionHelper.getAcceleratorDamage(this.shooter, this.weapon, damage);
+        damage = GunPotionHelper.getAcceleratorDamage(this.shooter, damage);
         return Math.max(0F, damage);
     }
 

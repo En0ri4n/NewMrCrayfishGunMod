@@ -108,7 +108,7 @@ public class GunMod
 
     private void onServerLaunch(ServerStartedEvent event)
     {
-        WeaponConfigurations.load(event.getServer());
+        WeaponConfigurations.onServerLoad(event.getServer());
     }
 
     private void onServerStarting(RegisterCommandsEvent event)

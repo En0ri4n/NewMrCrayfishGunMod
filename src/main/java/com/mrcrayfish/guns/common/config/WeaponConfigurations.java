@@ -42,14 +42,14 @@ public class WeaponConfigurations
     }
 
     /**
-     * Load configurations for all guns and ammos
-     * @return an array of 3 integers :<br>Number of guns<br>Number of ammos<br>Number of errors (can't load config)
+     * Called when the server is loaded, fill the guns and ammos maps
      */
-    public static int[] load(MinecraftServer server)
+    public static void onServerLoad(MinecraftServer server)
     {
         GunMod.LOGGER.info("Loading server configs...");
 
-        errorCount = 0;
+        guns.clear();
+        ammos.clear();
 
         ForgeRegistries.ITEMS.getValues().stream()
                 .filter(item -> item instanceof GunItem)
@@ -60,6 +60,20 @@ public class WeaponConfigurations
                 .filter(item -> item instanceof MagazineItem)
                 .map(item -> ((MagazineItem) item))
                 .forEach(WeaponConfigurations::addAmmo);
+
+        reloadConfiguration(server);
+    }
+
+    /**
+     * Reload configurations for all guns and ammos
+     *
+     * @return an array of 3 integers :<br>Number of guns<br>Number of ammos<br>Number of errors (can't load config)
+     */
+    public static int[] reloadConfiguration(MinecraftServer server)
+    {
+        GunMod.LOGGER.info("Reloading server configs...");
+
+        errorCount = 0;
 
         guns.forEach((id, gun) ->
         {
@@ -80,7 +94,7 @@ public class WeaponConfigurations
 
         GunMod.LOGGER.info("Loaded " + guns.size() + " guns and " + ammos.size() + " ammos (" + errorCount + " errors)");
 
-        return new int[] { guns.size(), ammos.size(), errorCount };
+        return new int[]{guns.size(), ammos.size(), errorCount};
     }
 
     /**
@@ -138,10 +152,8 @@ public class WeaponConfigurations
 
     private static void remove(boolean isAmmo, ResourceLocation registryName)
     {
-        if(isAmmo)
-            ammos.remove(registryName);
-        else
-            guns.remove(registryName);
+        if(isAmmo) ammos.remove(registryName);
+        else guns.remove(registryName);
 
         errorCount++;
     }
@@ -149,8 +161,7 @@ public class WeaponConfigurations
     private static File getConfigFolder(MinecraftServer server, boolean isAmmo)
     {
         File folder = new File(server.getServerDirectory(), "config/cgm/" + (isAmmo ? "ammo" : "gun"));
-        if(!folder.exists())
-            folder.mkdirs();
+        if(!folder.exists()) folder.mkdirs();
         return folder;
     }
 }

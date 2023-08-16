@@ -18,7 +18,7 @@ public class CreloadCommand extends ConfigCommand
 
     private static int reloadConfigs(CommandContext<CommandSourceStack> commandSender)
     {
-        int[] infos = WeaponConfigurations.load(commandSender.getSource().getServer());
+        int[] infos = WeaponConfigurations.reloadConfiguration(commandSender.getSource().getServer());
         commandSender.getSource().sendSuccess(new TranslatableComponent("commands.creload.success", infos[0], infos[1], infos[2]), true);
         return 1;
     }

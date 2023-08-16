@@ -96,6 +96,6 @@ public class GunPotionHelper
 
     public static int getEffectLevel(LivingEntity entity, MobEffect effect)
     {
-        return entity != null && entity.hasEffect(effect) ? entity.getEffect(effect).getAmplifier() : 0;
+        return entity != null && entity.hasEffect(effect) ? entity.getEffect(effect).getAmplifier() + 1 : 0;
     }
 }

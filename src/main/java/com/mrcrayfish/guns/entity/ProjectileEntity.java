@@ -487,6 +487,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
 
             int fireStarterLevel = GunPotionHelper.getEffectLevel(shooter, ModEffects.FIRE_STARTER.get());
+
             if(fireStarterLevel > 0)
             {
                 entity.setSecondsOnFire(2);
